@@ -1,0 +1,116 @@
+---
+const items = [
+  {
+    num: '01', title: 'OEM — make it yours',
+    desc: 'Your exact design, your fabric, your labels and packaging. We build the tech pack with you and manufacture to spec at MOQ 100–300 units.',
+    spec: 'MOQ 100–300',
+    feature: false,
+  },
+  {
+    num: '02', title: 'ODM — start from ours',
+    desc: 'Skip the blank canvas. Start from a catalog piece, swap the color, panel and logo, and launch a line in weeks — not quarters.',
+    spec: 'MOQ 50–100',
+    feature: false,
+  },
+  {
+    num: '03',
+    title: 'QC — nothing ships blind',
+    desc: 'Every batch is inspected before it leaves the plant. AQL 2.5 for major defects, 4.0 for minor, ISO 5077 shrinkage and ISO 105 colorfastness as the baseline. We run live video inspections and keep a man-in-plant on the floor for orders over 500 units.',
+    spec: 'AQL 2.5 / 4.0',
+    feature: true,
+    img: '/images/redesign/image-11.avif',
+    alt: 'Custom t-shirts on a production line',
+  },
+  {
+    num: '04', title: 'FBA prep — Amazon-ready',
+    desc: 'Barcoding, poly-bagging, and direct injection into Amazon FCs. Your units arrive compliant, not quarantined for repackaging.',
+    spec: 'TOS-compliant',
+    feature: false,
+  },
+  {
+    num: '05', title: 'Logistics — DDP, one number',
+    desc: 'Manufacturing, freight and duties quoted together. Express in 3–5 days, air in 7–12, sea in 25–40. The number on your quote is the number on your invoice.',
+    spec: 'Express 3–5d · Air 7–12d · Sea 25–40d',
+    feature: false,
+  },
+];
+---
+
+<section class="deliver" id="deliver">
+  <span class="sideline" aria-hidden="true"></span>
+  <div class="container">
+    <div class="deliver__head">
+      <div class="num-outline deliver__num" data-reveal="clip">02</div>
+      <div>
+        <p class="label" data-reveal="left">What we deliver</p>
+        <h2 class="h2" data-reveal="up" style="--rv-delay:80ms">Five things for one invoice</h2>
+      </div>
+    </div>
+
+    <div class="deliver__grid">
+      {items.map((item, i) =>
+        item.feature ? (
+          <article class="deliver__feature" data-reveal="up" style="--rv-delay:120ms">
+            <div class="deliver__featureimg">
+              <img src={item.img} alt={item.alt} loading="lazy" decoding="async" />
+              <span class="plus" style="top:16px; left:16px" aria-hidden="true"></span>
+            </div>
+            <div class="deliver__featurebody">
+              <span class="deliver__num num-outline">{item.num}</span>
+              <h3 class="h3 deliver__title">{item.title}</h3>
+              <p class="muted deliver__desc">{item.desc}</p>
+              <span class="deliver__spec">{item.spec}</span>
+            </div>
+          </article>
+        ) : (
+          <article class="deliver__card" data-reveal="up" style={`--rv-delay:${i * 100}ms`}>
+            <div class="deliver__cardtop">
+              <span class="deliver__num num-outline">{item.num}</span>
+              <h3 class="h3 deliver__title">{item.title}</h3>
+            </div>
+            <p class="muted deliver__desc">{item.desc}</p>
+            <span class="deliver__spec">{item.spec}</span>
+          </article>
+        )
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .deliver { position: relative; padding-block: clamp(4rem, 8vw, 7rem); background: var(--color-brand-primary); }
+  .deliver__head { display: flex; gap: clamp(1.5rem, 3vw, 3rem); align-items: flex-start; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .deliver__num { font-size: clamp(4rem, 9vw, 7rem); }
+  .deliver__head .label { margin-bottom: .9rem; }
+
+  .deliver__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1.2rem, 2.4vw, 1.8rem); }
+  .deliver__feature { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1.2fr; background: var(--color-brand-surface); border: 1px solid rgba(245,245,244,.07); }
+  .deliver__featureimg { position: relative; min-height: 320px; }
+  .deliver__featureimg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.85); }
+  .deliver__featurebody { padding: clamp(1.6rem, 3vw, 2.6rem); display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+  .deliver__featurebody .deliver__num { font-size: clamp(3.5rem, 6vw, 5rem); }
+
+  .deliver__card {
+    background: var(--color-brand-surface); border: 1px solid rgba(245,245,244,.07);
+    padding: clamp(1.5rem, 2.6vw, 2.2rem); display: flex; flex-direction: column; gap: .9rem;
+    align-items: flex-start;
+  }
+  .deliver__card:hover { border-color: rgba(198,241,53,.45); background: #1b1b1e; box-shadow: 0 20px 50px -30px rgba(198,241,53,.5); }
+  .deliver__card:nth-child(4) { margin-top: clamp(0px, 3vw, 2.5rem); }
+  .deliver__cardtop { display: flex; align-items: baseline; gap: 1.2rem; }
+  .deliver__num { font-size: 2.6rem; }
+  .deliver__title { color: var(--color-brand-text); }
+  .deliver__desc { line-height: 1.6; font-size: .95rem; }
+  .deliver__spec {
+    margin-top: auto; font-family: var(--font-heading); font-stretch: 62%; font-weight: 650;
+    text-transform: uppercase; letter-spacing: .1em; font-size: .7rem; color: var(--color-brand-accent);
+    border: 1px solid rgba(198,241,53,.35); padding: .45rem .75rem;
+  }
+
+  @media (max-width: 880px) {
+    .deliver__grid { grid-template-columns: 1fr; }
+    .deliver__feature { grid-template-columns: 1fr; }
+    .deliver__featureimg { min-height: 220px; }
+    .deliver__card:nth-child(4) { margin-top: 0; }
+  }
+</style>

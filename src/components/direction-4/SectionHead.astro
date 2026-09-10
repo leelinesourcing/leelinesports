@@ -1,0 +1,79 @@
+---
+interface Props {
+  index: string;
+  code: string;
+  title: string;
+  blurb?: string;
+  aside?: string;
+  dark?: boolean;
+}
+const { index, code, title, blurb = '', aside = '', dark = false } = Astro.props;
+---
+
+<div class={`sh ${dark ? 'sh--dark' : ''}`}>
+  <div class="sh-bar">
+    <span class="sh-mark mono">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <circle cx="12" cy="12" r="6.4"></circle>
+        <path d="M12 1v5.6M12 17.4V23M1 12h5.6M17.4 12H23"></path>
+      </svg>
+      SHT.{index} · {code}
+    </span>
+    <span class="sh-rule" aria-hidden="true"></span>
+    {aside && <span class="sh-aside mono">{aside}</span>}
+  </div>
+  <h2 class="sh-title" data-reveal="up">{title}</h2>
+  {blurb && <p class="sh-blurb" data-reveal="up" style="--d:0.08s">{blurb}</p>}
+</div>
+
+<style>
+  .sh-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .sh-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--blue);
+    white-space: nowrap;
+  }
+  .sh--dark .sh-mark { color: #7C93E8; }
+  .sh-rule {
+    flex: 1;
+    height: 1px;
+    background:
+      repeating-linear-gradient(90deg, var(--hair) 0 1px, transparent 1px 12px),
+      var(--hair);
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% 100%;
+  }
+  .sh--dark .sh-rule { background:
+      repeating-linear-gradient(90deg, var(--hair-white) 0 1px, transparent 1px 12px),
+      var(--hair-white);
+      background-repeat: no-repeat; background-size: 100% 100%; }
+  .sh-aside { color: var(--muted); }
+  .sh--dark .sh-aside { color: rgba(255,255,255,0.5); }
+  .sh-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.9rem, 4.4vw, 3.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    max-width: 22ch;
+    margin: 0;
+  }
+  .sh--dark .sh-title { color: #FBFBF9; }
+  .sh-blurb {
+    margin: 18px 0 0;
+    max-width: 58ch;
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .sh--dark .sh-blurb { color: rgba(255,255,255,0.66); }
+</style>

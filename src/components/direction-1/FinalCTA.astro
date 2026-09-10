@@ -1,0 +1,158 @@
+---
+const steps = [
+  { n: '01', t: 'A sourcing lead reviews your brief within one business day.' },
+  { n: '02', t: 'You get matched factories and landed DDP quotes.' },
+  { n: '03', t: 'A physical sample lands in 5–10 days.' },
+];
+---
+
+<section id="quote" class="on-dark hatch relative bg-brand-primary text-white">
+  <div class="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 sm:py-28">
+    <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <!-- Left -->
+      <div class="lg:col-span-6">
+        <p class="mb-6 flex items-center gap-3" data-reveal="rise">
+          <span class="h-px w-9 bg-brand-accent"></span>
+          <span class="mono text-[11px] uppercase tracking-[0.24em] text-white/55">§ 10 · Start</span>
+        </p>
+        <h2 class="font-heading text-[clamp(2.3rem,5vw,4.2rem)] font-semibold leading-[0.98] tracking-[-0.03em]">
+          <span data-reveal="rise">Bring us a sketch.</span><br />
+          <span data-reveal="rise" style="transition-delay:.08s">Or a tech pack.</span><br />
+          <span class="txt-outline" data-reveal="rise" style="transition-delay:.16s">Or a problem.</span>
+        </h2>
+        <p class="mt-7 max-w-[50ch] text-[15px] leading-relaxed text-white/70" data-reveal="rise" style="transition-delay:.2s">
+          We turn it into a landed, inspected, FBA-ready order. Tell us the product, the size, and the date —
+          we handle everything after that.
+        </p>
+
+        <div class="mt-9 space-y-0" data-reveal="rise" style="transition-delay:.26s">
+          {steps.map((s) => (
+            <div class="spec">
+              <span class="k">Step {s.n}</span>
+              <span class="lead"></span>
+              <span class="v max-w-[26ch] text-right">{s.t}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-x-8 gap-y-4" data-reveal="rise" style="transition-delay:.32s">
+          <a href="https://wa.me/8613986152456" class="mono flex items-center gap-2.5 text-[12px] uppercase tracking-[0.16em] text-white/80 transition-colors hover:text-brand-accent">
+            <span class="grid h-8 w-8 place-items-center border border-white/20">☎</span>
+            WhatsApp +86 139 8615 2456
+          </a>
+          <a href="mailto:info@leelinesports.com" class="mono flex items-center gap-2.5 text-[12px] uppercase tracking-[0.16em] text-white/80 transition-colors hover:text-brand-accent">
+            <span class="grid h-8 w-8 place-items-center border border-white/20">✉</span>
+            info@leelinesports.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="relative lg:col-span-6 lg:-mt-10" data-reveal="clip">
+        <div aria-hidden="true" class="absolute inset-0 hidden translate-x-2.5 translate-y-2.5 bg-brand-accent lg:block"></div>
+        <form
+          data-form
+          class="crop relative border border-brand-text/10 bg-white p-6 text-brand-primary/15 sm:p-8"
+          action="#"
+        >
+          <!-- stamp -->
+          <div class="absolute -right-3 -top-3 rotate-6 border-2 border-brand-accent bg-white px-3 py-1">
+            <span class="mono text-[10px] font-bold uppercase tracking-[0.2em] text-brand-accent">RFQ-001</span>
+          </div>
+
+          <div class="flex items-center justify-between border-b border-brand-text/10 pb-4">
+            <span class="mono text-[11px] uppercase tracking-[0.22em] text-brand-muted">Quote form · Rev B</span>
+            <span class="mono text-[10px] uppercase tracking-[0.18em] text-brand-primary">~90 seconds</span>
+          </div>
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <label class="field">
+              <span class="lbl">Name</span>
+              <input required type="text" name="name" placeholder="Your name" class="inp" />
+            </label>
+            <label class="field">
+              <span class="lbl">Company</span>
+              <input required type="text" name="company" placeholder="Brand or store" class="inp" />
+            </label>
+            <label class="field">
+              <span class="lbl">Email</span>
+              <input required type="email" name="email" placeholder="you@company.com" class="inp" />
+            </label>
+            <label class="field">
+              <span class="lbl">Phone</span>
+              <input type="tel" name="phone" placeholder="+1 …" class="inp" />
+            </label>
+            <label class="field sm:col-span-2">
+              <span class="lbl">Product type</span>
+              <select name="type" class="inp">
+                <option value="">Select a vertical</option>
+                <option>Performance wear</option>
+                <option>Team sports</option>
+                <option>Swim &amp; outdoor</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="lbl">MOQ / order size</span>
+              <input type="text" name="moq" placeholder="e.g., 500 pcs" class="inp" />
+            </label>
+            <label class="field">
+              <span class="lbl">Target date</span>
+              <input type="date" name="date" class="inp" />
+            </label>
+          </div>
+
+          <button
+            data-form-btn
+            type="submit"
+            class="btn-spring mono mt-6 w-full bg-brand-primary px-5 py-4 text-[12px] font-semibold uppercase tracking-[0.16em] text-white"
+          >
+            Request a quote
+          </button>
+
+          <p class="mono mt-4 text-center text-[10px] uppercase tracking-[0.14em] text-brand-muted">
+            No obligation · NDA on request · Replies in 1 business day
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .field {
+    display: block;
+  }
+  .lbl {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-muted);
+    margin-bottom: 0.4rem;
+  }
+  .inp {
+    width: 100%;
+    border: 1px solid color-mix(in srgb, var(--color-brand-text) 14%, transparent);
+    background: #fff;
+    padding: 0.7rem 0.8rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-brand-text);
+    border-radius: 0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .inp:focus {
+    outline: none;
+    border-color: var(--color-brand-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand-accent) 22%, transparent);
+  }
+  .inp::placeholder {
+    color: color-mix(in srgb, var(--color-brand-muted) 70%, transparent);
+  }
+  .txt-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+  }
+</style>

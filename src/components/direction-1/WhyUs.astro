@@ -1,0 +1,86 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const cols = ['Direct factory', 'Trading co', 'Western agent'];
+const rows = [
+  { label: 'QC you can see', others: ['Trust me', 'None', 'Sometimes'], us: 'AQL 2.5 + live video + man-in-plant' },
+  { label: 'IP protection', others: ['No NDA', 'No', 'Partial'], us: 'NDA + on-site supervision' },
+  { label: 'Real MOQ', others: ['1,000+', '500+', '500+'], us: '50–100 blanks · 200–300 custom' },
+  { label: 'Landed pricing', others: ['FOB + surprises', 'Hidden mark-up', 'Fee + %'], us: 'DDP · no surprise fees' },
+  { label: 'Supplier pool', others: ['One plant', 'Whoever answers', '1–2 agents'], us: '5,000+ vetted' },
+  { label: 'Ground presence', others: ['None', 'None', 'None'], us: 'Wuhan office + warehouse' },
+];
+---
+
+<section
+  id="why-us"
+  class="on-dark hatch relative bg-brand-primary text-white"
+  style="clip-path: polygon(0 0, 100% 0, 100% calc(100% - 56px), 0 100%)"
+>
+  <div class="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 sm:py-24">
+    <div class="max-w-[64ch]">
+      <SectionHead
+        tone="dark"
+        num="06"
+        mark="Why us"
+        title="One accountable partner, or four vendors."
+        intro="Direct factory, trading company, or Western agent — each one owns a slice of your supply chain and none of the risk. Leeline owns the whole lane."
+      />
+    </div>
+
+    <!-- Desktop matrix -->
+    <div class="mt-14 hidden md:block" data-reveal="clip">
+      <div class="crop border border-white/15 text-white/15">
+        <div class="grid grid-cols-[1.3fr_1fr_1fr_1fr_1.5fr]">
+          <div class="border-b border-white/15 px-5 py-4"></div>
+          {cols.map((c) => (
+            <div class="border-b border-l border-white/10 px-4 py-4">
+              <span class="mono text-[10px] uppercase tracking-[0.18em] text-white/50">{c}</span>
+            </div>
+          ))}
+          <div class="border-b border-l border-brand-accent/50 bg-brand-secondary/40 px-4 py-4">
+            <span class="mono flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-brand-accent">
+              <span class="h-1.5 w-1.5 bg-brand-accent"></span>Leeline
+            </span>
+          </div>
+
+          {rows.map((r, i) => (
+            <>
+              <div class="border-b border-white/10 px-5 py-5">
+                <span class="font-heading text-[14px] font-semibold text-white/90">{r.label}</span>
+              </div>
+              {r.others.map((o) => (
+                <div class="border-b border-l border-white/10 px-4 py-5">
+                  <span class="mono text-[12px] text-white/45">{o}</span>
+                </div>
+              ))}
+              <div class="border-b border-l border-brand-accent/40 bg-brand-secondary/30 px-4 py-5">
+                <span class="text-[13px] font-medium leading-snug text-white">✓ {r.us}</span>
+              </div>
+            </>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile stacked -->
+    <div class="mt-12 space-y-0 border-t border-white/15 md:hidden" data-stagger>
+      {rows.map((r) => (
+        <div data-reveal="rise" class="grid grid-cols-[1fr_1.25fr] gap-4 border-b border-white/15 py-5">
+          <span class="font-heading text-[14px] font-semibold text-white/90">{r.label}</span>
+          <div class="space-y-1.5">
+            <p class="mono text-[11px] leading-relaxed text-white/40">✕ {r.others.join(' · ')}</p>
+            <p class="text-[13px] font-medium leading-snug text-brand-accent">✓ {r.us}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 flex flex-wrap items-center gap-4" data-reveal="rise">
+      <a href="#quote" class="btn-spring mono bg-brand-accent px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-brand-primary">
+        Start with a quote
+      </a>
+      <span class="mono text-[11px] uppercase tracking-[0.18em] text-white/45">No obligation · replies in 1 business day</span>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,119 @@
+---
+import Underline from './Underline.astro';
+import Bell from './Bell.astro';
+import Check from './Check.astro';
+import Blob from './Blob.astro';
+---
+
+<section class="relative overflow-hidden bg-brand-bg pt-32 pb-20 sm:pt-40 sm:pb-28">
+  <Blob class="pointer-events-none absolute -top-24 -right-24 h-[420px] w-[420px] text-brand-accent/15 animate-floaty" />
+  <Blob class="pointer-events-none absolute -bottom-40 -left-32 h-[520px] w-[520px] text-brand-primary/10 animate-floaty" style="animation-delay:-4s" />
+
+  <div class="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-5 sm:px-8 lg:grid-cols-12 lg:gap-8">
+    <div class="lg:col-span-7">
+      <span
+        class="hero-rise inline-flex items-center gap-2 rounded-full border border-brand-primary/15 bg-white/60 px-4 py-2 font-body text-[13px] font-medium text-brand-primary"
+        style="--d:.05s"
+      >
+        <Bell class="h-4 w-4 text-brand-accent" />
+        Your outsourced sourcing &amp; QC team
+      </span>
+
+      <h1
+        class="hero-rise mt-6 font-heading font-semibold leading-[0.98] tracking-[-0.03em] text-brand-text text-[clamp(2.7rem,7vw,5.3rem)]"
+        style="--d:.14s"
+      >
+        We handle
+        <span class="relative inline-block whitespace-nowrap">
+          the mess.
+          <Underline class="absolute -bottom-2 left-0 h-[0.3em] w-full sm:-bottom-3" />
+        </span>
+        <br />
+        You handle the sales.
+      </h1>
+
+      <p
+        class="hero-rise mt-7 max-w-xl font-body text-[clamp(1.05rem,1.5vw,1.2rem)] leading-relaxed text-brand-muted"
+        style="--d:.24s"
+      >
+        LeelineSports runs your China supply chain end to end — 5,000+ vetted suppliers,
+        AQL 2.5 inspections, and DDP delivery with no surprise fees. Bring a sketch or a
+        tech pack; we handle the rest.
+      </p>
+
+      <div class="hero-rise mt-9 flex flex-wrap items-center gap-3" style="--d:.34s">
+        <a
+          href="#quote"
+          class="inline-flex items-center gap-2 rounded-full bg-brand-accent px-7 py-4 font-body text-[15px] font-semibold text-brand-primary shadow-[0_18px_40px_-18px_rgba(224,154,62,.95)] spring"
+        >
+          Request a quote
+        </a>
+        <a
+          href="https://wa.me/8613986152456"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 rounded-full border border-brand-primary/20 bg-white/50 px-6 py-4 font-body text-[15px] font-medium text-brand-primary transition-colors hover:bg-white"
+        >
+          <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.9-1.4A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-2.9.8.8-2.8-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.7.8-.8 1-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.3-2.9c-.2-.4 0-.6.2-.8l.4-.5c.1-.2.1-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1 2.1-.1 3.6a11 11 0 0 0 4.4 4c.6.3 1.1.5 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.5-.3Z" />
+          </svg>
+          WhatsApp us
+        </a>
+      </div>
+
+      <ul class="hero-rise mt-10 flex flex-wrap gap-x-6 gap-y-3 font-body text-[13px] text-brand-muted" style="--d:.44s">
+        <li class="flex items-center gap-2"><Check class="h-4 w-4 text-brand-secondary" /> ISO 5077 · shrinkage ≤5%</li>
+        <li class="flex items-center gap-2"><Check class="h-4 w-4 text-brand-secondary" /> ISO 105 · colorfast Grade 4+</li>
+        <li class="flex items-center gap-2"><Check class="h-4 w-4 text-brand-secondary" /> Samples in 5–10 days</li>
+      </ul>
+    </div>
+
+    <div class="relative lg:col-span-5">
+      <div class="hero-rise relative mx-auto max-w-md" style="--d:.3s">
+        <div class="relative overflow-hidden rounded-[2rem] border border-white/60 shadow-[0_50px_90px_-40px_rgba(20,58,53,.5)]">
+          <img
+            src="/images/redesign/image-06.webp"
+            alt="Yoga and activewear produced by LeelineSports"
+            width="800"
+            height="1000"
+            class="aspect-[4/5] w-full object-cover"
+            loading="eager"
+            decoding="async"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-brand-primary/30 via-transparent to-transparent"></div>
+        </div>
+
+        <div class="absolute -left-4 -top-5 sm:-left-8">
+          <span class="inline-flex items-center gap-2 rounded-full bg-brand-primary px-4 py-2 font-body text-[13px] font-semibold text-brand-bg shadow-lg">
+            <Check class="h-4 w-4 text-brand-accent" />
+            AQL 2.5 QC
+          </span>
+        </div>
+
+        <div class="absolute -right-3 bottom-24 sm:-right-6">
+          <span class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-body text-[13px] font-semibold text-brand-primary shadow-lg">
+            <Bell class="h-4 w-4 text-brand-accent animate-bell" />
+            5,000+ suppliers
+          </span>
+        </div>
+
+        <div class="absolute -bottom-8 -left-3 w-[86%] sm:-left-6">
+          <div class="rounded-3xl border border-brand-primary/10 bg-white/90 p-4 shadow-[0_30px_60px_-30px_rgba(20,58,53,.55)] backdrop-blur">
+            <div class="flex items-start gap-3">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-secondary to-brand-primary font-heading text-sm font-semibold text-brand-bg">
+                L
+              </span>
+              <div class="min-w-0">
+                <p class="font-body text-sm font-semibold text-brand-text">Nora Chen · your supply partner</p>
+                <p class="mt-1 inline-flex items-center gap-1.5 rounded-full bg-brand-surface px-3 py-1 font-body text-[12px] text-brand-primary">
+                  <Check class="h-3.5 w-3.5 text-brand-secondary" />
+                  QC report for batch #214 sent
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

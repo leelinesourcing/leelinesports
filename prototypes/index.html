@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeelineSports — Homepage Concept Prototypes</title>
+  <style>
+    :root {
+      --ink: #101820;
+      --muted: #64748B;
+      --bg: #F5F7FA;
+      --surface: #E9EEF4;
+      --accent: #F2A33C;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+    main { max-width: 760px; margin: 0 auto; padding: 4rem 1.5rem; }
+    h1 { font-size: 2rem; line-height: 1.1; margin: 0 0 .5rem; }
+    .sub { color: var(--muted); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2.5rem; }
+    .note { font-size: .9rem; color: var(--muted); margin-top: 3rem; }
+    .card { display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: var(--surface); border: 1px solid rgba(16,24,32,.08); border-radius: 12px; text-decoration: none; color: inherit; transition: transform .18s ease, box-shadow .18s ease; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(16,24,32,.08); }
+    .num { font-weight: 700; color: var(--accent); font-size: .8rem; letter-spacing: .1em; min-width: 1.75rem; padding-top: .2rem; }
+    .card h2 { margin: 0 0 .35rem; font-size: 1.2rem; }
+    .card p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+    .rationale { font-style: italic; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>LeelineSports — Homepage Concepts</h1>
+    <p class="sub">Start <code>npm run dev</code> first, then click each direction below (they resolve to <code>localhost:4321</code>).</p>
+
+    <a class="card" href="http://localhost:4321/direction-1-field-manual">
+      <span class="num">01</span>
+      <div>
+        <h2>Field Manual</h2>
+        <p>Technical, evidence-forward. Spec sheets, AQL tables, and hairline rules make the Guardian archetype literal.</p>
+        <p class="rationale">Compliance and standards, made visual.</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://localhost:4321/direction-2-the-atelier">
+      <span class="num">02</span>
+      <div>
+        <h2>The Atelier</h2>
+        <p>Premium craft. Oversized serif display, bone + deep forest, brass CTAs — the Magician transformation story.</p>
+        <p class="rationale">"You bring a sketch, we deliver a brand."</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://localhost:4321/direction-3-the-arena">
+      <span class="num">03</span>
+      <div>
+        <h2>The Arena</h2>
+        <p>Bold athletic. Dark stadium energy with expanded-grotesque headlines and one electric-lime accent.</p>
+        <p class="rationale">Reclaims the sportswear identity, kept credible by B2B copy.</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://localhost:4321/direction-4-the-blueprint">
+      <span class="num">04</span>
+      <div>
+        <h2>The Blueprint</h2>
+        <p>Systematic Swiss grid. The 5-step process is the hero — built for procurement managers who value timelines.</p>
+        <p class="rationale">Process-as-hero answers "how does this work, and when?"</p>
+      </div>
+    </a>
+
+    <a class="card" href="http://localhost:4321/direction-5-the-concierge">
+      <span class="num">05</span>
+      <div>
+        <h2>The Concierge</h2>
+        <p>Warm and human. Rounded, soft, protective — "we handle the mess, you handle the sales."</p>
+        <p class="rationale">Soothes the anxiety of importing from China.</p>
+      </div>
+    </a>
+
+    <p class="note">Prototype imagery sourced from the current live site (public/images/redesign/) and design references (.new-site/references/).</p>
+  </main>
+</body>
+</html>

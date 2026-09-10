@@ -1,0 +1,100 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const anomalies = [
+  {
+    code: 'ANOMALY-01',
+    title: 'The see-through fabric',
+    fear: 'The sample passes at 9am and goes sheer by noon. Your buyer photos it in daylight and the reviews start.',
+    fix: 'GSM locked at sampling; ISO 105 colorfastness Grade 4+ re-checked on every production lot.',
+  },
+  {
+    code: 'ANOMALY-02',
+    title: 'Customs surprises',
+    fear: 'The invoice says one number, the dock asks for another, and your margin pays the difference.',
+    fix: 'DDP pricing — manufacturing, freight and duties in a single landed cost. No line items to argue with.',
+  },
+  {
+    code: 'ANOMALY-03',
+    title: 'The QC black box',
+    fear: 'You approve photos, not product. Defects surface in your warehouse, six weeks too late to fix.',
+    fix: 'AQL 2.5 inline plus a final inspection — live video, with our man-in-plant standing next to the line.',
+  },
+  {
+    code: 'ANOMALY-04',
+    title: 'The TOS flag',
+    fear: 'Amazon suspends the listing, not the supplier. A missing poly-bag or barcode is your account on the line.',
+    fix: 'FBA-native prep — barcoding, poly-bagging and direct injection into Amazon FCs, done before it ships.',
+  },
+];
+---
+
+<section id="pain" class="pain">
+  <div class="wrap">
+    <SectionHead index="03" code="FAILURE MODES" title="Four ways a shipment goes wrong." blurb="Importing doesn't fail all at once. It fails in the same four places, quietly, every time. We designed the process so each one is closed before it opens." aside="DIAGNOSTIC" />
+
+    <div class="pain-grid">
+      <div class="pain-aside" data-reveal="left">
+        <p class="pain-aside-copy">
+          Most factories are great at <em>one</em> thing: making. What they don't
+          catch is the gap between the sample you approve and the carton you
+          receive — the part nobody owns.
+        </p>
+        <div class="pain-metric">
+          <span class="mono">TYPICAL UNOWNED GAP</span>
+          <span class="pain-big">6<span>wks</span></span>
+          <span class="mono pain-dim">between approval and defect discovery</span>
+        </div>
+      </div>
+
+      <div class="anom-grid">
+        {anomalies.map((a, i) => (
+          <article class="anom" data-reveal="up" style={`--d:${i * 0.07}s`}>
+            <header class="anom-head">
+              <span class="mono anom-code">{a.code}</span>
+              <span class="anom-alert" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                  <path d="M12 3 2.5 20h19L12 3Z"></path>
+                  <path d="M12 10v4M12 17h.01"></path>
+                </svg>
+              </span>
+            </header>
+            <h3 class="anom-title">{a.title}</h3>
+            <p class="anom-fear">{a.fear}</p>
+            <div class="anom-fix">
+              <span class="mono anom-fix-label"><i></i>RESOLVED</span>
+              <p>{a.fix}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pain { background: var(--surface); padding: 110px 0 120px; }
+  .pain-grid { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 56px; }
+  @media (min-width: 1024px) { .pain-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 56px; } }
+
+  .pain-aside-copy { font-size: 1.12rem; line-height: 1.6; color: var(--ink); margin: 0 0 40px; max-width: 34ch; }
+  .pain-aside-copy em { font-style: italic; }
+  .pain-metric { border-top: 1px solid var(--hair); padding-top: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .pain-metric .mono { color: var(--muted); }
+  .pain-big { font-family: var(--font-heading); font-weight: 600; font-size: 3.4rem; line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+  .pain-big span { font-size: 0.5em; color: var(--muted); font-weight: 500; }
+  .pain-dim { font-size: 0.62rem; }
+
+  .anom-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--hair); border: 1px solid var(--hair); }
+  @media (min-width: 640px) { .anom-grid { grid-template-columns: 1fr 1fr; } }
+  .anom { background: var(--paper); padding: 26px 26px 28px; display: flex; flex-direction: column; }
+  .anom-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .anom-code { color: var(--blue); }
+  .anom-alert { color: var(--ink); opacity: 0.85; }
+  .anom-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .anom-fear { font-size: 0.95rem; line-height: 1.6; color: var(--muted); margin: 0 0 20px; }
+  .anom-fix { margin-top: auto; border-top: 1px solid var(--hair); padding-top: 16px; display: grid; gap: 8px; }
+  .anom-fix-label { display: inline-flex; align-items: center; gap: 7px; color: var(--blue); }
+  .anom-fix-label i { width: 7px; height: 7px; background: var(--blue); }
+  .anom-fix p { margin: 0; font-size: 0.9rem; line-height: 1.55; color: var(--ink); font-weight: 500; }
+</style>

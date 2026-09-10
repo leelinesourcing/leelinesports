@@ -1,0 +1,66 @@
+---
+const quotes = [
+  {
+    quote: 'I stopped emailing 14 factories. LeelineSports gives me one QC report I can actually read, on time.',
+    name: 'Priya R.',
+    context: 'Founder, 2-person activewear brand · FBA',
+  },
+  {
+    quote: 'We reordered in 50s between seasons. Same sizes, same dye lot, zero drama.',
+    name: 'Marcus T.',
+    context: 'League procurement, 40-team basketball org',
+  },
+  {
+    quote: 'The DDP number was the number on my invoice. First time that’s ever happened importing from China.',
+    name: 'Dana K.',
+    context: 'E-commerce manager, $1M+ outdoor retailer',
+  },
+];
+---
+
+<section class="quotes" id="testimonials">
+  <span class="sideline" aria-hidden="true"></span>
+  <div class="container">
+    <div class="quotes__head">
+      <div>
+        <p class="label" data-reveal="left">Testimonials</p>
+        <h2 class="h2" data-reveal="up" style="--rv-delay:80ms">What partners say<br />after the first order</h2>
+      </div>
+    </div>
+
+    <div class="quotes__grid">
+      {quotes.map((q, i) => (
+        <figure class="quote" data-reveal="up" style={`--rv-delay:${i * 110}ms`}>
+          <span class="quote__mark" aria-hidden="true">“</span>
+          <blockquote class="quote__text">{q.quote}</blockquote>
+          <figcaption class="quote__by">
+            <span class="quote__name">{q.name}</span>
+            <span class="quote__context muted">{q.context}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .quotes { position: relative; padding-block: clamp(5rem, 9vw, 8rem); background: var(--color-brand-primary); }
+  .quotes__head .label { margin-bottom: .9rem; }
+  .quotes__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.2rem, 2.5vw, 2rem); margin-top: clamp(2.5rem, 5vw, 4rem); align-items: start; }
+
+  .quote { display: flex; flex-direction: column; gap: 1.2rem; }
+  .quote:nth-child(2) { margin-top: clamp(0px, 4vw, 3rem); }
+  .quote__mark {
+    font-family: var(--font-heading); font-stretch: 125%; font-weight: 900;
+    font-size: clamp(3rem, 6vw, 4.5rem); line-height: .5; color: var(--color-brand-accent);
+  }
+  .quote__text { font-size: clamp(1.1rem, 1.8vw, 1.35rem); line-height: 1.5; color: var(--color-brand-text); }
+  .quote__by { display: flex; flex-direction: column; gap: .2rem; padding-top: 1rem; border-top: 1px solid rgba(245,245,244,.1); }
+  .quote__name { font-family: var(--font-heading); font-stretch: 118%; font-weight: 750; text-transform: uppercase; letter-spacing: -0.01em; font-size: .95rem; }
+  .quote__context { font-size: .82rem; }
+
+  @media (max-width: 880px) {
+    .quotes__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .quote:nth-child(2) { margin-top: 0; }
+  }
+</style>

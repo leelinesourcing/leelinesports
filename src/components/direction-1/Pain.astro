@@ -1,0 +1,57 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const risks = [
+  { code: 'R-01', title: 'See-through fabric', body: 'The 200-unit reorder arrives sheer. You eat the refunds and the one-star reviews.', cost: 'Refunds' },
+  { code: 'R-02', title: 'Customs surprise', body: 'A 22% duty appears at the port. Your quoted margin is gone before the carton clears.', cost: 'Margin' },
+  { code: 'R-03', title: 'The silent swap', body: 'Approved sample ≠ shipped bulk. No one at the plant caught the fabric substitution.', cost: 'Quality' },
+  { code: 'R-04', title: 'Deadline drift', body: 'A 14-day lead stretches to 34. Your launch date is the first thing you lose.', cost: 'Launch' },
+  { code: 'R-05', title: 'The middleman mark-up', body: 'A trading company adds 18% and owns none of the risk when the order fails.', cost: 'Cost' },
+];
+---
+
+<section id="pain" class="grid-tex border-t border-brand-text/10 bg-brand-surface">
+  <div class="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 sm:py-28">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <!-- Left: heading -->
+      <div class="lg:col-span-5">
+        <div class="lg:sticky lg:top-28">
+          <SectionHead
+            num="02"
+            mark="The sourcing anxiety"
+            title="The mess we inherit."
+            intro="Every order you place direct with an overseas factory is a bet you can't see from where you're standing. These are the five that quietly lose the most money."
+          />
+          <p class="mt-8 border-l-2 border-brand-accent pl-4 text-[15px] font-medium leading-relaxed text-brand-text">
+            This manual exists to make those five bets unnecessary.
+          </p>
+          <a href="#deliver" class="btn-spring group mt-8 inline-flex items-center gap-2 font-heading text-[14px] font-semibold text-brand-primary hover:text-brand-accent">
+            See what we deliver
+            <span class="inline-block transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: risk ledger -->
+      <div class="lg:col-span-7">
+        <div class="border-t border-brand-text/15" data-stagger>
+          {risks.map((r) => (
+            <article
+              data-reveal="slide-right"
+              class="group grid grid-cols-[auto_1fr] gap-x-5 gap-y-1 border-b border-brand-text/15 py-5 transition-colors hover:bg-brand-bg/60 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:px-4"
+            >
+              <span class="mono text-[11px] uppercase tracking-[0.2em] text-brand-muted">{r.code}</span>
+              <div>
+                <h3 class="font-heading text-[1.05rem] font-semibold tracking-[-0.01em] text-brand-text">{r.title}</h3>
+                <p class="mt-1 max-w-[46ch] text-[14px] leading-relaxed text-brand-muted">{r.body}</p>
+              </div>
+              <span class="mono col-start-2 text-[10px] uppercase tracking-[0.16em] text-brand-accent sm:col-start-auto sm:self-start sm:text-right">
+                Warn · {r.cost}
+              </span>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

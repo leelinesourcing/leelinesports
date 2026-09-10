@@ -1,0 +1,68 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const icps = [
+  { n: '01', tag: 'FBA', name: 'FBA Front-Runner', who: 'Solo Amazon private-label seller', bring: 'A listing that already sells.', handle: 'TOS-safe prep, locked GSM, and no customs surprises at the dock.' },
+  { n: '02', tag: 'GYM', name: 'Gym Visionary', who: 'CrossFit or gym owner', bring: 'A community that wants your merch.', handle: 'XS–3XL sizing and sublimated logos that never crack or peel.' },
+  { n: '03', tag: 'DTC', name: 'Influencer Icon', who: 'Creator launching a merch line', bring: 'An audience and a look.', handle: 'Exact Pantone matching, an NDA on your designs, and recycled fabrics.' },
+  { n: '04', tag: 'LEAGUE', name: 'League Logician', who: 'Procurement manager for teams & schools', bring: 'A deadline and a spec sheet.', handle: 'Consistency and low-MOQ reorders, season after season.' },
+  { n: '05', tag: 'RETAIL', name: 'Diversifying Retailer', who: '$1M+ e-commerce manager', bring: 'Volume and risk appetite.', handle: 'Supply-chain redundancy and QC reports you can actually rely on.' },
+];
+---
+
+<section id="who" class="icp">
+  <div class="wrap">
+    <SectionHead index="06" code="CLIENT PROFILE" title="Built for five kinds of buyer." blurb="Different goals, same fear: an overseas order going sideways. You bring the demand; we absorb the mess." aside="5 PROFILES" />
+
+    <div class="icp-list">
+      {icps.map((p, i) => (
+        <article class="icp-row" data-reveal="up" style={`--d:${i * 0.05}s`}>
+          <span class="icp-num" data-reveal="scale">{p.n}</span>
+          <div class="icp-id">
+            <span class="mono icp-tag">{p.tag}</span>
+            <h3 class="icp-name">{p.name}</h3>
+            <span class="icp-who mono">{p.who}</span>
+          </div>
+          <div class="icp-split">
+            <div class="icp-bring">
+              <span class="mono icp-k">YOU BRING</span>
+              <p>{p.bring}</p>
+            </div>
+            <span class="icp-node" aria-hidden="true"></span>
+            <div class="icp-handle">
+              <span class="mono icp-k">WE HANDLE</span>
+              <p>{p.handle}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .icp { background: var(--paper); padding: 110px 0 120px; }
+  .icp-list { margin-top: 52px; border-top: 1px solid var(--hair); }
+
+  .icp-row { display: grid; grid-template-columns: 40px 1fr; gap: 16px; padding: 26px 0; border-bottom: 1px solid var(--hair); }
+  @media (min-width: 900px) { .icp-row { grid-template-columns: 72px 260px 1fr; gap: 28px; align-items: center; } }
+
+  .icp-num { font-family: var(--font-heading); font-weight: 600; font-size: 2rem; color: var(--blue); letter-spacing: -0.02em; line-height: 1; }
+
+  .icp-id { display: flex; flex-direction: column; gap: 5px; }
+  .icp-tag { color: var(--blue); }
+  .icp-name { font-family: var(--font-heading); font-weight: 600; font-size: 1.22rem; letter-spacing: -0.02em; margin: 0; }
+  .icp-who { color: var(--muted); font-size: 0.58rem; }
+
+  .icp-split { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 22px 1fr; gap: 12px; align-items: start; }
+  @media (min-width: 900px) { .icp-split { grid-column: auto; grid-template-columns: 1fr 34px 1.15fr; gap: 16px; } }
+
+  .icp-bring p, .icp-handle p { margin: 6px 0 0; font-size: 0.95rem; line-height: 1.5; }
+  .icp-bring p { color: var(--muted); }
+  .icp-handle p { color: var(--ink); font-weight: 500; }
+  .icp-k { font-size: 0.58rem; color: var(--muted); }
+  .icp-handle .icp-k { color: var(--blue); }
+
+  .icp-node { position: relative; display: grid; place-items: center; height: 100%; }
+  .icp-node::before { content: ''; width: 7px; height: 7px; background: var(--blue); transform: rotate(45deg); }
+</style>

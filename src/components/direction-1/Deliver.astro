@@ -1,0 +1,183 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const caps = [
+  {
+    code: 'CAP-01',
+    name: 'OEM production',
+    body: 'Your tech pack, our line. We run your spec at MOQ 200–300 with the exact fabric, fit, and finish you signed off.',
+    specs: [
+      { k: 'MOQ', v: '200–300 pcs custom' },
+      { k: 'Sampling', v: '5–10 days' },
+      { k: 'IP', v: 'NDA before tech pack' },
+    ],
+  },
+  {
+    code: 'CAP-02',
+    name: 'ODM development',
+    body: 'From a sketch to a production-ready sample — fit block, fabric, and finish developed under one roof.',
+    specs: [
+      { k: 'Cycle', v: '10–14 days to sample' },
+      { k: 'Color', v: 'Pantone matched' },
+      { k: 'Fabric', v: 'Recycled options' },
+    ],
+  },
+  {
+    code: 'CAP-03',
+    name: 'FBA prep',
+    body: 'Barcoding, poly-bagging, and carton labeling, then injection straight into your Amazon FC — no third-party handling.',
+    specs: [
+      { k: 'Labels', v: 'FNSKU per unit' },
+      { k: 'Bag', v: '2.5-mil poly' },
+      { k: 'Delivery', v: 'Direct FC injection' },
+    ],
+  },
+  {
+    code: 'CAP-04',
+    name: 'Logistics — DDP',
+    body: 'One landed price: manufacturing, freight, and duties. You see the final number before the PO, and there is no bill at the port.',
+    specs: [
+      { k: 'Express', v: '3–5 days' },
+      { k: 'Air', v: '7–12 days' },
+      { k: 'Sea', v: '25–40 days' },
+    ],
+  },
+];
+
+const aql = [
+  { lot: '2–8', sample: '2', accept: '0' },
+  { lot: '9–15', sample: '3', accept: '0' },
+  { lot: '91–150', sample: '20', accept: '1' },
+  { lot: '501–1,200', sample: '80', accept: '5' },
+];
+
+const classes = [
+  { c: 'Critical', aql: '0', action: 'Reject lot' },
+  { c: 'Major', aql: '2.5', action: 'AQL II sample' },
+  { c: 'Minor', aql: '4.0', action: 'AQL II sample' },
+];
+---
+
+<section id="deliver" class="border-t border-brand-text/10 bg-brand-bg">
+  <div class="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 sm:py-28">
+    <div class="max-w-[62ch]">
+      <SectionHead
+        num="03"
+        mark="Capabilities"
+        title="What we deliver."
+        intro="Five capabilities, run by one accountable partner — so the factory, the inspector, and the freight forwarder all answer to us, not to you."
+      />
+    </div>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-2">
+      {caps.map((c) => (
+        <article data-reveal="rise" data-stagger class="card-lift flex flex-col border border-brand-text/10 bg-white">
+          <header class="flex items-center justify-between border-b border-brand-text/10 px-5 py-3">
+            <span class="mono text-[10px] uppercase tracking-[0.22em] text-brand-muted">{c.code}</span>
+            <span class="mono text-[10px] uppercase tracking-[0.18em] text-brand-primary">✓ Included</span>
+          </header>
+          <div class="flex flex-1 flex-col px-5 pb-5 pt-4">
+            <h3 class="font-heading text-[1.2rem] font-semibold tracking-[-0.015em] text-brand-text">{c.name}</h3>
+            <p class="mt-2 text-[14px] leading-relaxed text-brand-muted">{c.body}</p>
+            <div class="mt-4">
+              {c.specs.map((s) => (
+                <div class="spec">
+                  <span class="k">{s.k}</span>
+                  <span class="lead"></span>
+                  <span class="v">{s.v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- Full-bleed QC inspection report -->
+  <div class="on-dark">
+    <div class="hatch relative bg-brand-primary text-white">
+      <div class="mx-auto max-w-[1280px] px-5 py-16 sm:px-8 sm:py-20">
+        <div class="crop text-white/15" data-reveal="clip">
+          <div class="border border-white/15 p-6 sm:p-10">
+            <div class="flex flex-wrap items-start justify-between gap-4 border-b border-white/15 pb-6">
+              <div>
+                <p class="mono text-[11px] uppercase tracking-[0.24em] text-brand-accent">CAP-05 · Inspection report</p>
+                <h3 class="mt-3 font-heading text-[clamp(1.6rem,3vw,2.4rem)] font-semibold leading-[1.05] tracking-[-0.02em]">
+                  Quality control you can watch.
+                </h3>
+              </div>
+              <div class="border border-brand-accent px-4 py-2">
+                <span class="mono text-[12px] font-semibold uppercase tracking-[0.2em] text-brand-accent">Pass</span>
+              </div>
+            </div>
+
+            <div class="grid gap-10 pt-8 lg:grid-cols-12">
+              <!-- AQL table -->
+              <div class="lg:col-span-5">
+                <p class="mono mb-4 text-[10px] uppercase tracking-[0.22em] text-white/50">AQL sampling — General level II</p>
+                <div class="border-t border-white/15">
+                  <div class="grid grid-cols-3 gap-4 py-2 mono text-[10px] uppercase tracking-[0.18em] text-white/45">
+                    <span>Lot size</span><span>Sample</span><span>Accept @ 2.5</span>
+                  </div>
+                  {aql.map((r) => (
+                    <div class="grid grid-cols-3 gap-4 border-t border-white/10 py-2.5">
+                      <span class="mono text-[13px] text-white/80">{r.lot}</span>
+                      <span class="mono text-[13px] text-white/80">{r.sample}</span>
+                      <span class="mono text-[13px] text-brand-accent">{r.accept}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <!-- Defect classes -->
+              <div class="lg:col-span-4">
+                <p class="mono mb-4 text-[10px] uppercase tracking-[0.22em] text-white/50">Defect classification</p>
+                <div class="border-t border-white/15">
+                  <div class="grid grid-cols-3 gap-4 py-2 mono text-[10px] uppercase tracking-[0.18em] text-white/45">
+                    <span>Class</span><span>AQL</span><span>Action</span>
+                  </div>
+                  {classes.map((r) => (
+                    <div class="grid grid-cols-3 gap-4 border-t border-white/10 py-2.5">
+                      <span class="text-[14px] text-white/85">{r.c}</span>
+                      <span class="mono text-[13px] text-brand-accent">{r.aql}</span>
+                      <span class="mono text-[12px] text-white/70">{r.action}</span>
+                    </div>
+                  ))}
+                </div>
+                <p class="mt-5 text-[13px] leading-relaxed text-white/60">
+                  Live video inspections and a man-in-plant supervisor at every production run — you watch the
+                  count, the pull, and the verdict.
+                </p>
+              </div>
+
+              <!-- Counters -->
+              <div class="lg:col-span-3">
+                <div class="flex h-full flex-col justify-center gap-6 border-t border-white/15 pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+                  <div>
+                    <p class="font-heading text-[clamp(2.2rem,4vw,3.2rem)] font-bold leading-none tracking-[-0.03em] text-brand-accent">
+                      <span data-count data-to="99.2" data-decimals="1" data-duration="1500">0.0</span>%
+                    </p>
+                    <p class="mono mt-2 text-[10px] uppercase tracking-[0.2em] text-white/50">First-article pass rate</p>
+                  </div>
+                  <div>
+                    <p class="font-heading text-[clamp(2.2rem,4vw,3.2rem)] font-bold leading-none tracking-[-0.03em] text-white">
+                      <span data-count data-to="5000" data-suffix="+" data-duration="1800">0</span>
+                    </p>
+                    <p class="mono mt-2 text-[10px] uppercase tracking-[0.2em] text-white/50">Vetted suppliers</p>
+                  </div>
+                  <div>
+                    <p class="font-heading text-[clamp(2.2rem,4vw,3.2rem)] font-bold leading-none tracking-[-0.03em] text-white">
+                      <span data-count data-to="3" data-duration="900">0</span>
+                    </p>
+                    <p class="mono mt-2 text-[10px] uppercase tracking-[0.2em] text-white/50">Inspection gates per run</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

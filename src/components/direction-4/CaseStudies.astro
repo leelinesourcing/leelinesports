@@ -1,0 +1,92 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const cases = [
+  {
+    code: 'CASE 01 · APPAREL',
+    name: 'CrossFit affiliate',
+    place: 'Austin, TX',
+    before: 'Heat-pressed logos peeling after three washes; six-week lead times.',
+    after: 'Full sublimation, Grade 4+ colorfast, 18-day production run.',
+    result: '3×',
+    resultLabel: 'reorders in 12 months',
+  },
+  {
+    code: 'CASE 02 · FBA',
+    name: 'Amazon private-label seller',
+    place: 'United States',
+    before: 'See-through leggings, a 4.0% return rate, surprise customs bills.',
+    after: 'Locked GSM + DDP. Returns down to 1.2%, landed cost down 22%.',
+    result: '−22%',
+    resultLabel: 'landed cost, DDP',
+  },
+  {
+    code: 'CASE 03 · LEAGUE',
+    name: 'Regional lacrosse league',
+    place: 'Northeast US',
+    before: 'Fourteen teams, six sizes, one non-negotiable season opener.',
+    after: '980 jerseys, size-graded and delivered eight days early.',
+    result: '−8d',
+    resultLabel: 'ahead of deadline',
+  },
+];
+---
+
+<section id="cases" class="cases">
+  <div class="wrap">
+    <SectionHead index="08" code="FIELD RESULTS" title="Specs are fine. Results are better." blurb="Three buyers, three different problems, one system. The numbers are from real production runs." aside="3 CASES" />
+
+    <div class="c-grid">
+      {cases.map((c, i) => (
+        <article class="c-card" data-reveal="up" style={`--d:${i * 0.08}s`}>
+          <header class="c-head">
+            <span class="mono c-code">{c.code}</span>
+            <span class="c-reg" aria-hidden="true"></span>
+          </header>
+          <h3 class="c-name">{c.name}</h3>
+          <span class="mono c-place">{c.place}</span>
+
+          <div class="c-ba">
+            <div class="c-ba-col">
+              <span class="mono c-k c-k-before">BEFORE</span>
+              <p>{c.before}</p>
+            </div>
+            <div class="c-ba-col">
+              <span class="mono c-k c-k-after">AFTER</span>
+              <p>{c.after}</p>
+            </div>
+          </div>
+
+          <div class="c-result">
+            <span class="c-result-val">{c.result}</span>
+            <span class="mono c-result-label">{c.resultLabel}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cases { background: var(--paper); padding: 110px 0 120px; }
+  .c-grid { display: grid; grid-template-columns: 1fr; gap: 22px; margin-top: 56px; }
+  @media (min-width: 768px) { .c-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1024px) { .c-card:nth-child(2) { margin-top: 40px; } }
+
+  .c-card { border: 1px solid var(--hair); background: #fff; padding: 24px 24px 0; display: flex; flex-direction: column; }
+  .c-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .c-code { color: var(--blue); }
+  .c-reg { width: 10px; height: 10px; border: 1px solid var(--blue); border-radius: 50%; }
+  .c-name { font-family: var(--font-heading); font-weight: 600; font-size: 1.4rem; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .c-place { color: var(--muted); font-size: 0.6rem; }
+
+  .c-ba { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 22px 0; padding: 20px 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+  .c-ba p { margin: 6px 0 0; font-size: 0.88rem; line-height: 1.5; color: var(--ink); }
+  .c-k { font-size: 0.58rem; }
+  .c-k-before { color: var(--muted); }
+  .c-k-after { color: var(--blue); }
+
+  .c-result { margin: 0 -24px; margin-top: auto; display: flex; align-items: baseline; gap: 12px; background: var(--surface); border-top: 1px solid var(--hair); padding: 18px 24px; }
+  .c-result-val { font-family: var(--font-heading); font-weight: 600; font-size: 2.2rem; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+  .c-result-label { color: var(--muted); font-size: 0.6rem; }
+</style>

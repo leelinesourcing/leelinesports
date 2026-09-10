@@ -1,0 +1,134 @@
+---
+const productTypes = ['Performance wear', 'Team sports', 'Swim & outdoor', 'Socks & accessories', 'Other / not sure'];
+---
+
+<section class="final" id="quote">
+  <div class="final__media" aria-hidden="true">
+    <img src="/images/redesign/image-02.webp" alt="" loading="lazy" decoding="async" />
+    <div class="final__scrim"></div>
+  </div>
+  <span class="sideline" aria-hidden="true"></span>
+
+  <div class="container final__grid">
+    <div class="final__left">
+      <p class="label label--accent" data-reveal="down">Final call</p>
+      <h2 class="display-2 final__title" data-reveal="up" style="--rv-delay:80ms">
+        Let’s put your<br />name on it
+      </h2>
+      <p class="final__lede" data-reveal="up" style="--rv-delay:160ms">
+        Send a sketch, a tech pack, or a reference photo. You’ll get a
+        DDP quote, a sample timeline, and the name of the person who owns
+        your order — within 2 working days.
+      </p>
+
+      <div class="final__contacts" data-reveal="up" style="--rv-delay:240ms">
+        <a href="https://wa.me/8613986152456" class="final__contact">
+          <span class="label">WhatsApp</span>
+          <span class="final__contactval link-arrow">+86 139 8615 2456</span>
+        </a>
+        <a href="mailto:info@leelinesports.com" class="final__contact">
+          <span class="label">Email</span>
+          <span class="final__contactval link-arrow">info@leelinesports.com</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="final__formwrap" data-reveal="right" style="--rv-delay:200ms">
+      <form class="final__form" data-quote-form novalidate>
+        <div class="final__fieldrow">
+          <div class="final__field">
+            <label for="f-name" class="final__flabel">Name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="Jordan Reed" />
+          </div>
+          <div class="final__field">
+            <label for="f-company" class="final__flabel">Company</label>
+            <input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Reed Athletics" />
+          </div>
+        </div>
+
+        <div class="final__fieldrow">
+          <div class="final__field">
+            <label for="f-email" class="final__flabel">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
+          </div>
+          <div class="final__field">
+            <label for="f-phone" class="final__flabel">Phone / WhatsApp</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+1 …" />
+          </div>
+        </div>
+
+        <div class="final__field">
+          <label for="f-type" class="final__flabel">Product type</label>
+          <select id="f-type" name="product_type">
+            {productTypes.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+
+        <div class="final__fieldrow">
+          <div class="final__field">
+            <label for="f-moq" class="final__flabel">MOQ / order size</label>
+            <input id="f-moq" name="order_size" type="text" placeholder="e.g. 300 units" />
+          </div>
+          <div class="final__field">
+            <label for="f-date" class="final__flabel">Target date</label>
+            <input id="f-date" name="target_date" type="date" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary final__submit">Request a quote</button>
+        <p class="final__ok" data-form-ok hidden>
+          Brief received. We’ll reply within 2 working days — check your inbox and WhatsApp.
+        </p>
+        <p class="final__fine muted">
+          No obligation, no mailing list. Your spec and IP are protected under NDA.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final { position: relative; padding-block: clamp(5rem, 10vw, 9rem); overflow: hidden; }
+  .final__media { position: absolute; inset: 0; z-index: 0; }
+  .final__media img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.7); }
+  .final__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,11,.95), rgba(10,10,11,.82) 50%, rgba(10,10,11,.95)); }
+
+  .final__grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+  .final__title { margin-top: 1.2rem; }
+  .final__lede { margin-top: 1.5rem; max-width: 44ch; line-height: 1.65; color: var(--color-brand-text); opacity: .85; }
+
+  .final__contacts { display: flex; gap: 2.5rem; margin-top: 2.4rem; }
+  .final__contact { display: flex; flex-direction: column; gap: .35rem; }
+  .final__contactval { font-size: 1.05rem; color: var(--color-brand-text); }
+
+  .final__formwrap { background: var(--color-brand-surface); border: 1px solid rgba(245,245,244,.1); padding: clamp(1.6rem, 3vw, 2.6rem); box-shadow: 0 0 80px -20px rgba(198,241,53,.25); }
+  .final__form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .final__fieldrow { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .final__field { display: flex; flex-direction: column; gap: .45rem; }
+  .final__flabel {
+    font-family: var(--font-heading); font-stretch: 62%; font-weight: 650; text-transform: uppercase;
+    letter-spacing: .12em; font-size: .68rem; color: var(--color-brand-muted);
+  }
+  .final__field input, .final__field select {
+    background: var(--color-brand-primary); border: 1px solid rgba(245,245,244,.14);
+    color: var(--color-brand-text); font-family: var(--font-body); font-size: .98rem;
+    padding: .85rem .95rem; border-radius: 2px; width: 100%;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .final__field input::placeholder { color: rgba(156,163,175,.55); }
+  .final__field input:focus, .final__field select:focus { outline: none; border-color: var(--color-brand-accent); box-shadow: 0 0 0 1px var(--color-brand-accent); }
+  .final__submit { width: 100%; margin-top: .4rem; }
+  .final__ok {
+    background: rgba(198,241,53,.12); border: 1px solid rgba(198,241,53,.4); color: var(--color-brand-accent);
+    padding: .9rem 1rem; font-size: .92rem; line-height: 1.5;
+  }
+  .final__fine { font-size: .8rem; }
+
+  @media (max-width: 880px) {
+    .final__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+  @media (max-width: 480px) {
+    .final__fieldrow { grid-template-columns: 1fr; gap: 1.2rem; }
+    .final__contacts { flex-direction: column; gap: 1.2rem; }
+  }
+</style>

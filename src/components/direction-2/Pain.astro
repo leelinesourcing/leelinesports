@@ -1,0 +1,156 @@
+---
+import Stitch from './Stitch.astro'
+
+const rows = [
+  { fear: '“The sample looked great. The container didn’t.”', fix: 'Every lot is inspected to AQL 2.5 before it ships.' },
+  { fear: '“Customs held my pallet for three weeks.”', fix: 'DDP pricing — duties paid up front, one number.' },
+  { fear: '“The logo peeled after two washes.”', fix: 'ISO 105 colorfastness, held to Grade 4+.' },
+  { fear: '“My supplier ghosted me mid-PO.”', fix: 'Man-in-plant supervision and live video inspections.' },
+]
+---
+
+<section class="d2-pain" id="pain">
+  <div class="d2-wrap d2-pain-grid">
+    <div class="d2-pain-copy">
+      <p class="d2-eyebrow" data-reveal="up">The mess we handle</p>
+      <h2 class="d2-h2" data-reveal="up" style="--rd:80ms">Importing shouldn’t be a coin flip.</h2>
+      <p class="d2-lede" data-reveal="up" style="--rd:160ms">
+        Every brand has the same four fears. We didn’t build an atelier to soothe them with adjectives —
+        we built a spec sheet with teeth.
+      </p>
+
+      <div class="d2-pain-rows">
+        {rows.map((r) => (
+          <div class="d2-pain-row" data-reveal="left">
+            <p class="d2-pain-fear">{r.fear}</p>
+            <p class="d2-pain-fix">{r.fix}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="d2-pain-figure" data-reveal="right">
+      <figure class="d2-annotation">
+        <svg viewBox="0 0 340 320" role="img" aria-label="Pattern annotation of a t-shirt with quality tolerances">
+          <path d="M54 26 C74 20 90 24 98 34 C101 38 104 38 107 34 C115 24 131 20 151 26 L180 46 L156 78 L156 186 L48 186 L48 78 L24 46 Z"
+            fill="none" stroke="#1E2A24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+
+          <!-- chest print -->
+          <line x1="107" y1="96" x2="196" y2="72" stroke="#C8A24B" stroke-width="1" stroke-dasharray="2 4" />
+          <circle cx="107" cy="96" r="4.5" fill="#C8A24B" />
+          <text x="204" y="66" text-anchor="start" class="d2-anno-label">Colorfast</text>
+          <text x="204" y="84" text-anchor="start" class="d2-anno-value">Grade 4+ · ISO 105</text>
+
+          <!-- seam -->
+          <line x1="156" y1="132" x2="238" y2="132" stroke="#C8A24B" stroke-width="1" stroke-dasharray="2 4" />
+          <circle cx="156" cy="132" r="4.5" fill="#C8A24B" />
+          <text x="246" y="126" text-anchor="start" class="d2-anno-label">Seam tolerance</text>
+          <text x="246" y="144" text-anchor="start" class="d2-anno-value">±2mm · AQL 2.5</text>
+
+          <!-- hem -->
+          <line x1="102" y1="186" x2="102" y2="252" stroke="#C8A24B" stroke-width="1" stroke-dasharray="2 4" />
+          <circle cx="102" cy="186" r="4.5" fill="#C8A24B" />
+          <text x="102" y="274" text-anchor="middle" class="d2-anno-label">Shrinkage</text>
+          <text x="102" y="292" text-anchor="middle" class="d2-anno-value">≤5% · ISO 5077</text>
+
+          <!-- stitch detail near neck -->
+          <path d="M62 46 C66 50 70 50 74 46" fill="none" stroke="#C8A24B" stroke-width="1.2" stroke-dasharray="2 3" stroke-linecap="round" />
+        </svg>
+        <figcaption>Pattern card № 042 — the tolerances we guarantee, marked on the block.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="d2-wrap" data-reveal="up"><Stitch /></div>
+</section>
+
+<style>
+  .d2-pain {
+    padding: 6rem 0 5rem;
+    background: var(--color-brand-surface);
+  }
+  .d2-pain-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .d2-pain-copy {
+    max-width: 40rem;
+  }
+  .d2-pain-rows {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .d2-pain-row {
+    padding: 1.35rem 0;
+    border-bottom: 1px dashed rgba(138, 106, 59, 0.28);
+  }
+  .d2-pain-row:first-child {
+    border-top: 1px dashed rgba(138, 106, 59, 0.28);
+  }
+  .d2-pain-fear {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.12rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-brand-muted);
+    text-decoration: line-through;
+    text-decoration-color: rgba(138, 106, 59, 0.5);
+    text-decoration-thickness: 1px;
+  }
+  .d2-pain-fix {
+    margin: 0.4rem 0 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-brand-secondary);
+  }
+  .d2-pain-fix::before {
+    content: '↳ ';
+    color: var(--color-brand-accent);
+  }
+  .d2-pain-figure {
+    align-self: center;
+  }
+  .d2-annotation {
+    margin: 0;
+    background: var(--color-brand-bg);
+    border: 1px solid rgba(138, 106, 59, 0.2);
+    border-radius: 24px;
+    padding: 1.25rem;
+    box-shadow: 0 30px 70px -45px rgba(27, 27, 24, 0.4);
+  }
+  .d2-annotation svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .d2-annotation figcaption {
+    margin-top: 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-brand-muted);
+    letter-spacing: 0.01em;
+  }
+  :global(.d2-anno-label) {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    fill: #8A857A;
+    letter-spacing: 0.04em;
+  }
+  :global(.d2-anno-value) {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    fill: #1E2A24;
+  }
+
+  @media (min-width: 880px) {
+    .d2-pain-grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 4rem;
+      align-items: center;
+    }
+  }
+</style>

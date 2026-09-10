@@ -1,0 +1,84 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const mark: Record<string, string> = { yes: '●', some: '◐', no: '—' };
+const cols = ['Direct factory', 'Trading co.', 'Western agent'];
+
+const rows = [
+  { cap: 'One accountable partner', factory: 'no', trading: 'no', agent: 'some' },
+  { cap: 'AQL 2.5 inline + final QC', factory: 'some', trading: 'no', agent: 'some' },
+  { cap: 'DDP all-in pricing', factory: 'some', trading: 'no', agent: 'no' },
+  { cap: 'Low MOQ — 200–300 pcs', factory: 'yes', trading: 'some', agent: 'no' },
+  { cap: '5,000+ vetted suppliers', factory: 'no', trading: 'yes', agent: 'no' },
+  { cap: 'FBA-native logistics', factory: 'no', trading: 'no', agent: 'no' },
+  { cap: 'Man-in-plant supervision', factory: 'no', trading: 'no', agent: 'no' },
+];
+---
+
+<section id="why" class="why">
+  <div class="wrap">
+    <SectionHead index="07" code="COMPARISON" title="One partner beats three middlemen." blurb="A factory makes, a trading company resells, an agent forwards. Leeline owns the chain end-to-end — which is why nothing falls between the cracks." aside="AUDIT" />
+
+    <!-- desktop table -->
+    <div class="why-table" data-reveal="up">
+      <div class="why-head">
+        <span class="mono why-cap-h">CAPABILITY</span>
+        {cols.map((c) => <span class="mono why-col-h">{c.toUpperCase()}</span>)}
+        <span class="mono why-col-h why-lee">LEELINE</span>
+      </div>
+      {rows.map((r) => (
+        <div class="why-row">
+          <span class="why-cap">{r.cap}</span>
+          <span class="why-cell c-no">{mark[r.factory]}</span>
+          <span class="why-cell c-no">{mark[r.trading]}</span>
+          <span class="why-cell c-no">{mark[r.agent]}</span>
+          <span class="why-cell c-yes why-lee">{mark.yes}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- mobile list -->
+    <div class="why-mobile">
+      {rows.map((r) => (
+        <div class="wm-row" data-reveal="up">
+          <div class="wm-top">
+            <span class="wm-cap">{r.cap}</span>
+            <span class="wm-lee mono"><i>●</i>LEELINE</span>
+          </div>
+          <span class="mono wm-others">
+            FACTORY {mark[r.factory]} · TRADING {mark[r.trading]} · AGENT {mark[r.agent]}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .why { background: var(--surface); padding: 110px 0 120px; }
+  .why-table { margin-top: 52px; display: none; border: 1px solid var(--hair); background: var(--paper); }
+  @media (min-width: 900px) { .why-table { display: block; } }
+
+  .why-head, .why-row { display: grid; grid-template-columns: 1.7fr repeat(4, 1fr); }
+  .why-head { border-bottom: 1px solid var(--hair); background: rgba(22,22,22,0.02); }
+  .why-head > span, .why-row > span { padding: 15px 16px; }
+  .why-head > span:not(:first-child), .why-row > span:not(:first-child) { border-left: 1px solid var(--hair); text-align: center; }
+  .why-col-h, .why-cap-h { color: var(--muted); font-size: 0.6rem; }
+  .why-row { border-bottom: 1px solid var(--hair); }
+  .why-row:last-child { border-bottom: none; }
+  .why-row:hover { background: rgba(43,76,196,0.03); }
+  .why-cap { font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+  .why-cell { font-size: 1rem; line-height: 1; }
+  .c-no { color: var(--muted); }
+  .c-yes { color: var(--blue); }
+  .why-lee { background: rgba(43,76,196,0.07); }
+
+  .why-mobile { margin-top: 44px; border-top: 1px solid var(--hair); }
+  @media (min-width: 900px) { .why-mobile { display: none; } }
+  .wm-row { padding: 18px 0; border-bottom: 1px solid var(--hair); }
+  .wm-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .wm-cap { font-weight: 600; font-size: 1.05rem; }
+  .wm-lee { color: var(--blue); display: inline-flex; align-items: center; gap: 6px; }
+  .wm-lee i { font-style: normal; }
+  .wm-others { color: var(--muted); font-size: 0.58rem; }
+</style>

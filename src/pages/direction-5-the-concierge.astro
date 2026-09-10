@@ -1,0 +1,281 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/direction-5/Nav.astro';
+import Hero from '../components/direction-5/Hero.astro';
+import ProofMarquee from '../components/direction-5/ProofMarquee.astro';
+import Verticals from '../components/direction-5/Verticals.astro';
+import Pain from '../components/direction-5/Pain.astro';
+import Deliver from '../components/direction-5/Deliver.astro';
+import Process from '../components/direction-5/Process.astro';
+import WhoFor from '../components/direction-5/WhoFor.astro';
+import WhyUs from '../components/direction-5/WhyUs.astro';
+import CaseStudies from '../components/direction-5/CaseStudies.astro';
+import Testimonials from '../components/direction-5/Testimonials.astro';
+import Faq from '../components/direction-5/Faq.astro';
+import FinalCta from '../components/direction-5/FinalCta.astro';
+---
+
+<Layout
+  title="The Concierge — LeelineSports"
+  description="LeelineSports is your outsourced sourcing and QC team in China: 5,000+ vetted suppliers, AQL 2.5 inspections, DDP delivery, and FBA-native logistics. We handle the mess, you handle the sales."
+>
+  <style is:global>
+    :root {
+      --color-brand-primary:   #143A35;
+      --color-brand-secondary: #3E6B5F;
+      --color-brand-accent:    #E09A3E;
+      --color-brand-bg:        #F6F0E6;
+      --color-brand-surface:   #EDE4D5;
+      --color-brand-text:      #1F2A28;
+      --color-brand-muted:     #7A8A86;
+      --font-heading: 'Outfit Variable', 'Outfit', system-ui, sans-serif;
+      --font-body:    'Work Sans Variable', 'Work Sans', system-ui, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 96px;
+      overflow-x: clip;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+      background: var(--color-brand-accent);
+      color: #143A35;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--color-brand-accent);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .skip-link {
+      position: fixed;
+      left: 12px;
+      top: 12px;
+      z-index: 100;
+      transform: translateY(-300%);
+      transition: transform .2s ease;
+    }
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    /* Warm film-grain wash */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      pointer-events: none;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+    }
+
+    /* Scroll reveal — multiple motion types via data-reveal */
+    .js-reveal {
+      opacity: 0;
+      transition:
+        opacity .9s cubic-bezier(.22, .61, .36, 1),
+        transform .9s cubic-bezier(.22, .61, .36, 1),
+        filter .9s cubic-bezier(.22, .61, .36, 1);
+      transition-delay: var(--d, 0s);
+      will-change: opacity, transform;
+    }
+    .js-reveal[data-reveal='up']    { transform: translateY(32px); }
+    .js-reveal[data-reveal='down']  { transform: translateY(-32px); }
+    .js-reveal[data-reveal='left']  { transform: translateX(-40px); }
+    .js-reveal[data-reveal='right'] { transform: translateX(40px); }
+    .js-reveal[data-reveal='scale'] { transform: scale(.9); }
+    .js-reveal[data-reveal='blur']  { filter: blur(10px); transform: translateY(16px); }
+    .js-reveal.is-visible {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+
+    /* On small screens, horizontal reveals collapse to a gentle rise — no side overflow. */
+    @media (max-width: 640px) {
+      .js-reveal[data-reveal='left'],
+      .js-reveal[data-reveal='right'] { transform: translateY(28px); }
+    }
+
+    /* Staggered hero entrance */
+    .hero-rise {
+      opacity: 0;
+      animation: heroRise 1s cubic-bezier(.16, 1, .3, 1) forwards;
+      animation-delay: var(--d, 0s);
+    }
+    @keyframes heroRise {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* Autonomous, subtle motion */
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-16px) rotate(1.5deg); }
+    }
+    @keyframes bellBob {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
+    }
+    .animate-floaty { animation: floaty 9s ease-in-out infinite; }
+    .animate-bell   { animation: bellBob 3.4s ease-in-out infinite; }
+
+    /* Proof marquee */
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .animate-marquee { animation: marquee 36s linear infinite; }
+    .marquee-mask {
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+              mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+
+    /* Spring hover curve */
+    .spring {
+      transition:
+        transform .55s cubic-bezier(.34, 1.56, .64, 1),
+        box-shadow .55s cubic-bezier(.34, 1.56, .64, 1);
+    }
+    .spring:hover { transform: translateY(-6px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js-reveal,
+      .js-reveal[data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+      .hero-rise { animation: none !important; opacity: 1 !important; }
+      .animate-floaty,
+      .animate-bell,
+      .animate-marquee { animation: none !important; }
+      .spring,
+      .spring:hover { transition: none !important; transform: none !important; }
+    }
+  </style>
+
+  <a href="#main" class="skip-link bg-brand-primary text-brand-bg font-body text-sm font-medium px-4 py-2 rounded-full">Skip to content</a>
+
+  <Nav />
+  <main id="main">
+    <Hero />
+    <ProofMarquee />
+    <Verticals />
+    <Pain />
+    <Deliver />
+    <Process />
+    <WhoFor />
+    <WhyUs />
+    <CaseStudies />
+    <Testimonials />
+    <Faq />
+    <FinalCta />
+  </main>
+
+  <script>
+    const header = document.getElementById('site-header');
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 16);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    menuBtn?.addEventListener('click', () => {
+      const open = mobileMenu?.classList.toggle('open') ?? false;
+      menuBtn.setAttribute('aria-expanded', String(open));
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+    mobileMenu?.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuBtn?.setAttribute('aria-expanded', 'false');
+      })
+    );
+
+    // Scroll reveals
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealEls = document.querySelectorAll('.js-reveal');
+    if (reduced) {
+      revealEls.forEach((el) => el.classList.add('is-visible'));
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      );
+      revealEls.forEach((el) => io.observe(el));
+    }
+
+    // Eased stat counters
+    const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+    const fmt = (v, d) =>
+      v.toLocaleString('en-US', {
+        minimumFractionDigits: d,
+        maximumFractionDigits: d,
+      });
+
+    const animateCount = (el) => {
+      const target = parseFloat(el.dataset.count || '0');
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1900;
+      let start;
+      const step = (ts) => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / duration, 1);
+        el.textContent = prefix + fmt(target * easeOutExpo(p), decimals) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const counters = document.querySelectorAll('[data-count]');
+    if (reduced) {
+      counters.forEach((el) => {
+        const target = parseFloat(el.dataset.count || '0');
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        el.textContent = (el.dataset.prefix || '') + fmt(target, decimals) + (el.dataset.suffix || '');
+      });
+    } else {
+      const cio = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              animateCount(entry.target);
+              cio.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      counters.forEach((el) => cio.observe(el));
+    }
+
+    // Quote form — front-end only
+    const form = document.getElementById('quote-form');
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const note = document.getElementById('form-note');
+      if (note) {
+        note.hidden = false;
+        note.textContent = 'Thanks — your brief is in. We reply within one business day.';
+      }
+      form.reset();
+      note?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+</Layout>

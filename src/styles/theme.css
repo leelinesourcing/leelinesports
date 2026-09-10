@@ -1,0 +1,23 @@
+/*
+  Token → Utility mapping:
+  --color-brand-*  → bg-brand-*, text-brand-*, border-brand-*, ring-brand-*
+  --font-*         → font-heading, font-body
+
+  NOTE: Using @theme (not @theme static) so direction pages can override
+  via <style is:global> on :root. Defaults from Direction 1 (Field Manual).
+  After picking a direction, switch to @theme static.
+*/
+@theme {
+  /* ── Colors (defaults from Direction 1) ────── */
+  --color-brand-primary:   #0F1B2D;
+  --color-brand-secondary: #33475C;
+  --color-brand-accent:    #F2A33C;
+  --color-brand-bg:        #F5F7FA;
+  --color-brand-surface:   #E9EEF4;
+  --color-brand-text:      #101820;
+  --color-brand-muted:     #64748B;
+
+  /* ── Typography (defaults from Direction 1) ── */
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+}

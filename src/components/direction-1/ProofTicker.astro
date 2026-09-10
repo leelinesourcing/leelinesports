@@ -1,0 +1,43 @@
+---
+const items = [
+  'AQL 2.5 major defects',
+  'AQL 4.0 minor defects',
+  'ISO 5077 shrinkage ≤3–5%',
+  'ISO 105 colorfastness grade 4+',
+  'MOQ 50–100 blanks',
+  'DDP — no surprise fees',
+  '5,000+ vetted suppliers',
+  '5–10 day sampling',
+  'FBA prep injection',
+  'Express 3–5 days',
+];
+---
+
+<div class="relative z-10 -mt-6 border-y border-brand-primary/10 bg-brand-accent sm:-mt-8">
+  <div class="mx-auto flex max-w-[1280px] items-stretch">
+    <div class="hidden shrink-0 items-center gap-2.5 border-r border-brand-primary/15 bg-brand-primary px-5 py-3.5 sm:flex">
+      <span class="blink h-1.5 w-1.5 rounded-full bg-brand-accent"></span>
+      <span class="mono text-[11px] font-semibold uppercase tracking-[0.2em] text-white">Live proof</span>
+    </div>
+    <div class="ticker-wrap relative flex-1 overflow-hidden py-3.5">
+      <div class="ticker">
+        <div class="flex items-center">
+          {items.map((i) => (
+            <span class="flex items-center gap-5 pr-5">
+              <span class="mono whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-primary">{i}</span>
+              <span aria-hidden="true" class="h-1 w-1 shrink-0 bg-brand-primary/50"></span>
+            </span>
+          ))}
+        </div>
+        <div class="flex items-center" aria-hidden="true">
+          {items.map((i) => (
+            <span class="flex items-center gap-5 pr-5">
+              <span class="mono whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-primary">{i}</span>
+              <span aria-hidden="true" class="h-1 w-1 shrink-0 bg-brand-primary/50"></span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,383 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/direction-2/Nav.astro'
+import Hero from '../components/direction-2/Hero.astro'
+import ProofBar from '../components/direction-2/ProofBar.astro'
+import Verticals from '../components/direction-2/Verticals.astro'
+import Pain from '../components/direction-2/Pain.astro'
+import Deliver from '../components/direction-2/Deliver.astro'
+import Process from '../components/direction-2/Process.astro'
+import ICPs from '../components/direction-2/ICPs.astro'
+import WhyUs from '../components/direction-2/WhyUs.astro'
+import CaseStudies from '../components/direction-2/CaseStudies.astro'
+import Testimonials from '../components/direction-2/Testimonials.astro'
+import Faq from '../components/direction-2/Faq.astro'
+import FinalCta from '../components/direction-2/FinalCta.astro'
+import Footer from '../components/direction-2/Footer.astro'
+import Pinking from '../components/direction-2/Pinking.astro'
+---
+
+<Layout title="The Atelier — LeelineSports" description="Custom sportswear, made to your spec. LeelineSports is the atelier behind private-label sportswear — sourcing, QC and DDP logistics handled end-to-end.">
+  <style is:global>
+    :root {
+      --color-brand-primary:   #1E2A24;
+      --color-brand-secondary: #8A6A3B;
+      --color-brand-accent:    #C8A24B;
+      --color-brand-bg:        #F6F1E7;
+      --color-brand-surface:   #EDE6D8;
+      --color-brand-text:      #1B1B18;
+      --color-brand-muted:     #8A857A;
+      --font-heading: 'Fraunces', Georgia, serif;
+      --font-body:    'Manrope', system-ui, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      overflow-x: clip;
+    }
+    [id] {
+      scroll-margin-top: 88px;
+    }
+    ::selection {
+      background: var(--color-brand-accent);
+      color: #1E2A24;
+    }
+    :focus-visible {
+      outline: 2px solid var(--color-brand-accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ── container ─────────────────────────── */
+    .d2-wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── typography ────────────────────────── */
+    .d2-h1 {
+      font-family: var(--font-heading);
+      font-weight: 560;
+      font-size: clamp(2.9rem, 9vw, 6.75rem);
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+      font-variation-settings: 'opsz' 120;
+    }
+    .d2-h2 {
+      font-family: var(--font-heading);
+      font-weight: 520;
+      font-size: clamp(2rem, 4.4vw, 3.5rem);
+      line-height: 1.03;
+      letter-spacing: -0.025em;
+      color: var(--color-brand-text);
+      font-variation-settings: 'opsz' 80;
+      margin: 1.1rem 0 0;
+    }
+    .d2-h2--light {
+      color: var(--color-brand-bg);
+    }
+    .d2-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--color-brand-secondary);
+    }
+    .d2-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      border-radius: 2px;
+      background: repeating-linear-gradient(90deg, var(--color-brand-accent) 0 4px, transparent 4px 8px);
+    }
+    .d2-eyebrow--light {
+      color: var(--color-brand-accent);
+    }
+    .d2-lede {
+      margin: 1.3rem 0 0;
+      font-size: 1.1rem;
+      line-height: 1.65;
+      color: var(--color-brand-muted);
+      max-width: 58ch;
+    }
+    .d2-lede--light {
+      color: rgba(246, 241, 231, 0.72);
+    }
+
+    /* ── buttons ───────────────────────────── */
+    .d2-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.95rem 1.6rem;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      text-decoration: none;
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    .d2-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+    }
+    .d2-btn:active {
+      transform: translateY(0) scale(0.99);
+    }
+    .d2-btn--brass {
+      background: var(--color-brand-accent);
+      color: #1E2A24;
+      box-shadow: 0 14px 34px -16px rgba(200, 162, 75, 0.7);
+    }
+    .d2-btn--brass:hover {
+      box-shadow: 0 22px 46px -18px rgba(200, 162, 75, 0.85);
+    }
+    .d2-btn--forest {
+      background: var(--color-brand-primary);
+      color: var(--color-brand-bg);
+    }
+    .d2-btn--forest:hover {
+      box-shadow: 0 20px 44px -20px rgba(30, 42, 36, 0.6);
+    }
+    .d2-btn--ghost {
+      background: rgba(246, 241, 231, 0.06);
+      color: var(--color-brand-bg);
+      border-color: rgba(246, 241, 231, 0.35);
+    }
+    .d2-btn--ghost:hover {
+      border-color: var(--color-brand-accent);
+      background: rgba(200, 162, 75, 0.12);
+    }
+    .d2-btn--sm {
+      padding: 0.7rem 1.2rem;
+      font-size: 0.88rem;
+    }
+    .d2-btn--block {
+      width: 100%;
+    }
+
+    /* ── grain overlay ─────────────────────── */
+    .d2-grain {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      pointer-events: none;
+      opacity: 0.05;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ── scroll reveal (animation-based) ───── */
+    [data-reveal] {
+      --rv: rv-up;
+    }
+    [data-reveal='down']   { --rv: rv-down; }
+    [data-reveal='left']   { --rv: rv-left; }
+    [data-reveal='right']  { --rv: rv-right; }
+    [data-reveal='scale']  { --rv: rv-scale; }
+    [data-reveal='mask']   { --rv: rv-mask; }
+
+    html.d2-js [data-reveal]:not(.is-in) {
+      opacity: 0;
+    }
+    [data-reveal].is-in {
+      opacity: 1;
+      animation: var(--rv) 0.9s var(--ease) both;
+      animation-delay: var(--rd, 0ms);
+    }
+    [data-reveal].is-done {
+      animation: none;
+    }
+
+    @keyframes rv-up {
+      from { opacity: 0; transform: translateY(42px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes rv-down {
+      from { opacity: 0; transform: translateY(-42px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes rv-left {
+      from { opacity: 0; transform: translateX(-48px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes rv-right {
+      from { opacity: 0; transform: translateX(48px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes rv-scale {
+      from { opacity: 0; transform: scale(0.94); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes rv-mask {
+      from { opacity: 0; clip-path: inset(0 0 100% 0); }
+      to   { opacity: 1; clip-path: inset(0 0 0% 0); }
+    }
+
+    /* ── reduced motion ────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.001s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001s !important;
+      }
+      [data-reveal],
+      html.d2-js [data-reveal]:not(.is-in) {
+        opacity: 1 !important;
+        transform: none !important;
+        clip-path: none !important;
+      }
+      .d2-hero-item {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+
+  <Nav />
+  <Hero />
+
+  <main>
+    <ProofBar />
+    <Verticals />
+    <Pain />
+    <Pinking bg="#EDE6D8" fill="#1E2A24" />
+    <Deliver />
+    <Pinking bg="#1E2A24" fill="#F6F1E7" />
+    <Process />
+    <ICPs />
+    <WhyUs />
+    <CaseStudies />
+    <Testimonials />
+    <Faq />
+    <Pinking bg="#EDE6D8" fill="#1E2A24" />
+    <FinalCta />
+  </main>
+
+  <Footer />
+  <div class="d2-grain" aria-hidden="true"></div>
+
+  <script>
+    (() => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.documentElement.classList.add('d2-js');
+
+      // reveal
+      const revealEls = Array.from(document.querySelectorAll('[data-reveal]'));
+      const done = (el) => el.classList.add('is-done');
+
+      if (reduce) {
+        revealEls.forEach((el) => { el.classList.add('is-in'); done(el); });
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target;
+              el.classList.add('is-in');
+              const finish = () => done(el);
+              el.addEventListener('animationend', finish, { once: true });
+              setTimeout(() => done(el), 1800);
+              io.unobserve(el);
+            });
+          },
+          { threshold: 0.14, rootMargin: '0px 0px -8% 0px' }
+        );
+        revealEls.forEach((el) => io.observe(el));
+      }
+
+      // hero entrance
+      const hero = document.querySelector('[data-hero]');
+      if (hero) {
+        if (reduce) {
+          hero.classList.add('is-in');
+        } else {
+          requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('is-in')));
+        }
+      }
+
+      // eased stat counters
+      const counters = Array.from(document.querySelectorAll('[data-count]'));
+      const fmt = (n, d) => (d > 0 ? n.toFixed(d) : Math.round(n).toLocaleString('en-US'));
+      const animateCount = (el) => {
+        const target = parseFloat(el.dataset.count);
+        const d = parseInt(el.dataset.decimals || '0', 10);
+        const dur = 1500;
+        const start = performance.now();
+        const step = (now) => {
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 4);
+          el.textContent = fmt(target * eased, d);
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = fmt(target, d);
+        };
+        requestAnimationFrame(step);
+      };
+      if (counters.length) {
+        if (reduce) {
+          counters.forEach((el) => { el.textContent = fmt(parseFloat(el.dataset.count), parseInt(el.dataset.decimals || '0', 10)); });
+        } else {
+          const cIO = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                animateCount(entry.target);
+                cIO.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.4 }
+          );
+          counters.forEach((el) => cIO.observe(el));
+        }
+      }
+
+      // nav scroll state
+      const nav = document.getElementById('site-nav');
+      const onScroll = () => nav && nav.classList.toggle('is-scrolled', window.scrollY > 24);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // mobile menu
+      const toggle = document.getElementById('nav-toggle');
+      const menu = document.getElementById('nav-menu');
+      if (toggle && menu) {
+        toggle.addEventListener('click', () => {
+          const open = menu.parentElement.classList.toggle('is-open');
+          toggle.setAttribute('aria-expanded', String(open));
+        });
+        menu.querySelectorAll('a').forEach((a) => {
+          a.addEventListener('click', () => {
+            menu.parentElement.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // quote form
+      const form = document.getElementById('quote-form');
+      const note = document.getElementById('form-note');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          if (note) note.hidden = false;
+          form.reset();
+        });
+      }
+    })();
+  </script>
+</Layout>

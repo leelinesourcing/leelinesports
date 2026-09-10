@@ -1,0 +1,95 @@
+---
+import Underline from './Underline.astro';
+import Divider from './Divider.astro';
+
+const verticals = [
+  {
+    img: '/images/redesign/image-06.webp',
+    alt: 'Performance wear and activewear',
+    name: 'Performance Wear',
+    tag: 'Activewear that survives the gym',
+    desc: 'Compression, yoga and training pieces with XS–3XL grading, flatlock seams, and sublimated or screen-printed branding.',
+    chips: ['XS–3XL grading', 'ISO 105 · Grade 4+', 'MOQ 200'],
+    offset: 'lg:mt-0',
+  },
+  {
+    img: '/images/redesign/image-08.avif',
+    alt: 'Team sports jerseys and uniforms',
+    name: 'Team Sports',
+    tag: 'Jerseys teams actually want to wear',
+    desc: 'Full-color sublimated jerseys and uniforms — numbered, named and matched to your exact club Pantone.',
+    chips: ['Full-color sublimation', 'Numbered & named', 'MOQ 300'],
+    offset: 'lg:mt-14',
+  },
+  {
+    img: '/images/redesign/image-12.avif',
+    alt: 'Swim and outdoor apparel',
+    name: 'Swim & Outdoor',
+    tag: 'Built for water, sun and weather',
+    desc: 'UPF-rated swimwear and waterproof jackets, with recycled fabric options for brands that care about the planet.',
+    chips: ['UPF 50+', 'ISO 5077 · ≤5%', 'Recycled options'],
+    offset: 'lg:mt-0',
+  },
+];
+---
+
+<section id="verticals" class="relative bg-brand-surface">
+  <Divider fill="var(--color-brand-surface)" />
+  <div class="mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-28">
+    <div class="max-w-3xl">
+      <span class="js-reveal inline-flex items-center gap-2 rounded-full border border-brand-primary/15 bg-white/60 px-4 py-2 font-body text-[13px] font-medium text-brand-primary" data-reveal="up">
+        What we make
+      </span>
+      <h2 class="js-reveal mt-5 font-heading font-semibold leading-[1.02] tracking-[-0.025em] text-brand-text text-[clamp(2rem,4.5vw,3.4rem)]" data-reveal="up" style="--d:.08s">
+        Three verticals.
+        <span class="relative inline-block whitespace-nowrap">
+          One partner.
+          <Underline class="absolute -bottom-2 left-0 h-[0.28em] w-full" />
+        </span>
+      </h2>
+      <p class="js-reveal mt-5 max-w-xl font-body text-lg text-brand-muted" data-reveal="up" style="--d:.16s">
+        Pick a lane. We bring the factories, the fabric libraries and the QC that already
+        make these categories for brands selling on Amazon, Shopify and team stores.
+      </p>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 gap-8 md:grid-cols-3">
+      {verticals.map((v, i) => (
+        <article
+          class={`group js-reveal flex flex-col overflow-hidden rounded-[1.75rem] border border-white/60 bg-brand-bg shadow-[0_24px_50px_-30px_rgba(20,58,53,.35)] spring ${v.offset}`}
+          data-reveal="up"
+          style={`--d:${i * 0.1}s`}
+        >
+          <div class="relative overflow-hidden">
+            <img
+              src={v.img}
+              alt={v.alt}
+              width="640"
+              height="480"
+              class="aspect-[5/4] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 font-body text-[12px] font-semibold text-brand-primary backdrop-blur">
+              {v.name}
+            </span>
+          </div>
+          <div class="flex flex-1 flex-col p-6">
+            <h3 class="font-heading text-xl font-semibold text-brand-text">{v.tag}</h3>
+            <p class="mt-3 flex-1 font-body text-[15px] leading-relaxed text-brand-muted">{v.desc}</p>
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {v.chips.map((chip) => (
+                <li class="rounded-full border border-brand-primary/12 bg-white/70 px-3 py-1 font-body text-[12px] font-medium text-brand-primary">
+                  {chip}
+                </li>
+              ))}
+            </ul>
+            <a href="#quote" class="mt-6 inline-flex items-center gap-1 font-body text-sm font-semibold text-brand-primary underline-offset-4 hover:underline">
+              Get a sample quote
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

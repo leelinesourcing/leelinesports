@@ -1,0 +1,94 @@
+---
+const cases = [
+  {
+    stat: '−22%', count: '22', prefix: '−', suffix: '%', decimals: '0',
+    statLabel: 'landed cost',
+    title: 'A 2-person Amazon brand, a yoga line, 200 units',
+    who: 'Priya R. · activewear brand, FBA',
+    before: 'Six-week lead times, zero inspection, landed cost that changed with every invoice.',
+    after: 'AQL 2.5 on every batch, 4 weeks door-to-door, one DDP number that held.',
+  },
+  {
+    stat: '50', count: '50', prefix: '', suffix: '', decimals: '0',
+    statLabel: 'reorder MOQ',
+    title: 'A CrossFit box ordered 400 sublimated tees, XS–3XL',
+    who: 'Marcus T. · gym owner, Texas',
+    before: 'Heat-pressed logos that cracked after ten washes and a factory that wouldn’t reprint under 500.',
+    after: 'Full sublimation in one dye lot, and a 50-unit reorder when the next class signed up.',
+  },
+  {
+    stat: '×17', count: '17', prefix: '×', suffix: '', decimals: '0',
+    statLabel: 'scale in 14 months',
+    title: 'A DTC swimwear brand scaled 300 to 5,000 units',
+    who: 'Dana K. · outdoor DTC, $1M+',
+    before: 'One supplier, no redundancy, no test data on the UPF claim.',
+    after: 'UPF 50+ lab-tested, DDP freight, and a redundant second line for peak season.',
+  },
+];
+---
+
+<section class="cases" id="cases">
+  <span class="sideline" aria-hidden="true"></span>
+  <div class="container">
+    <div class="cases__head">
+      <div>
+        <p class="label" data-reveal="left">Case studies</p>
+        <h2 class="h2" data-reveal="up" style="--rv-delay:80ms">Receipts, not promises</h2>
+      </div>
+    </div>
+
+    <div class="cases__list">
+      {cases.map((c, i) => (
+        <article class="case" data-reveal="up" style={`--rv-delay:${i * 110}ms`}>
+          <div class="case__statblock">
+            <div class="stat case__stat" data-count={c.count} data-decimals={c.decimals} data-prefix={c.prefix} data-suffix={c.suffix}>0</div>
+            <span class="case__statlabel muted">{c.statLabel}</span>
+          </div>
+          <div class="case__body">
+            <h3 class="h3 case__title">{c.title}</h3>
+            <span class="case__who muted">{c.who}</span>
+            <div class="case__delta">
+              <div class="case__col">
+                <span class="label case__collabel">Before</span>
+                <p class="case__before">{c.before}</p>
+              </div>
+              <div class="case__col">
+                <span class="label label--accent case__collabel">After</span>
+                <p class="case__after">{c.after}</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cases { position: relative; padding-block: clamp(5rem, 9vw, 8rem); background: var(--color-brand-bg); }
+  .cases__head .label { margin-bottom: .9rem; }
+  .cases__list { display: flex; flex-direction: column; gap: 1.2rem; margin-top: clamp(2.5rem, 5vw, 4rem); }
+
+  .case {
+    display: grid; grid-template-columns: clamp(150px, 22vw, 260px) 1fr;
+    border: 1px solid rgba(245,245,244,.08); background: var(--color-brand-surface);
+  }
+  .case__statblock {
+    display: flex; flex-direction: column; justify-content: center; gap: .3rem;
+    padding: clamp(1.5rem, 3vw, 2.4rem); border-right: 1px solid rgba(245,245,244,.08);
+  }
+  .case__stat { font-size: clamp(2.4rem, 5vw, 3.6rem); }
+  .case__statlabel { font-size: .82rem; }
+  .case__body { padding: clamp(1.5rem, 3vw, 2.4rem); display: flex; flex-direction: column; gap: .5rem; }
+  .case__who { font-size: .85rem; margin-bottom: .8rem; }
+  .case__delta { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: .6rem; }
+  .case__collabel { display: block; margin-bottom: .4rem; }
+  .case__before { color: var(--color-brand-muted); line-height: 1.55; font-size: .95rem; }
+  .case__after { color: var(--color-brand-text); line-height: 1.55; font-size: .95rem; border-left: 2px solid var(--color-brand-accent); padding-left: .9rem; }
+
+  @media (max-width: 720px) {
+    .case { grid-template-columns: 1fr; }
+    .case__statblock { border-right: 0; border-bottom: 1px solid rgba(245,245,244,.08); flex-direction: row; align-items: baseline; gap: 1rem; }
+    .case__delta { grid-template-columns: 1fr; gap: 1.2rem; }
+  }
+</style>

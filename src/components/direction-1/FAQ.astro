@@ -1,0 +1,75 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const faqs = [
+  { q: 'What is the real MOQ?', a: '50–100 pieces for stock blanks; 200–300 for fully custom private-label production. Team kits start at 50 pieces. If your order is below that, ask — we will tell you straight whether it is workable.' },
+  { q: 'How do you protect my IP?', a: 'NDA before we see a tech pack, man-in-plant supervision on every run, and no design ever shared across clients. Your samples never go to another buyer.' },
+  { q: 'What does DDP actually mean for me?', a: 'Delivered Duty Paid. Manufacturing, freight, and import duties are bundled into one landed price. No separate bill at the port, no surprise line items.' },
+  { q: 'How does your QC actually work?', a: 'AQL 2.5 sampling on major defects and 4.0 on minor, plus live video inspection and a man-in-plant supervisor. You get the count, the pull, and the verdict before anything ships.' },
+  { q: 'How fast is sampling?', a: '5–10 days for physical samples. The fee is refunded against your bulk order once you approve it.' },
+];
+---
+
+<section id="faq" class="border-t border-brand-text/10 bg-brand-bg">
+  <div class="mx-auto max-w-[1280px] px-5 py-20 sm:px-8 sm:py-28">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <div class="lg:sticky lg:top-28">
+          <SectionHead
+            num="09"
+            mark="FAQ"
+            title="Asked before the PO."
+            intro="The questions every first-time importer asks — answered in writing, because a manual is only useful if it is specific."
+          />
+          <p class="mt-8 text-[14px] leading-relaxed text-brand-muted">
+            Something not covered? Ask on WhatsApp and a sourcing lead replies within one business day.
+          </p>
+          <a href="https://wa.me/8613986152456" class="btn-spring mono mt-6 inline-block border border-brand-text/15 px-4 py-2.5 text-[11px] uppercase tracking-[0.16em] text-brand-primary hover:border-brand-accent hover:text-brand-accent">
+            WhatsApp +86 139 8615 2456
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7" data-faq>
+        <div class="border-t border-brand-text/15">
+          {faqs.map((f, i) => (
+            <details class="group border-b border-brand-text/15" data-reveal="rise">
+              <summary class="flex cursor-pointer list-none items-center gap-5 py-6 [&::-webkit-details-marker]:hidden">
+                <span class="mono shrink-0 text-[11px] uppercase tracking-[0.2em] text-brand-accent">Q.0{i + 1}</span>
+                <span class="flex-1 font-heading text-[1.05rem] font-semibold tracking-[-0.01em] text-brand-text">{f.q}</span>
+                <span class="faq-icon relative grid h-7 w-7 shrink-0 place-items-center border border-brand-text/20 text-brand-primary transition-colors group-open:border-brand-accent group-open:text-brand-accent">
+                  <span class="absolute h-px w-3 bg-current"></span>
+                  <span class="absolute h-3 w-px bg-current transition-transform duration-300 group-open:scale-y-0"></span>
+                </span>
+              </summary>
+              <div class="faq-answer pb-7 pr-10 text-[15px] leading-relaxed text-brand-muted">
+                {f.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-answer {
+    animation: faqIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes faqIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-answer {
+      animation: none;
+    }
+  }
+</style>

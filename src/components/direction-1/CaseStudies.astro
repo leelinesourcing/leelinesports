@@ -1,0 +1,97 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const cases = [
+  {
+    code: 'CS-01',
+    tag: 'Amazon FBA · Activewear',
+    title: 'From 4-week air turns to 11 days.',
+    metrics: [
+      { k: 'Turnaround', before: '4 weeks', after: { to: 11, suffix: ' days' } },
+      { k: 'Defect returns', before: '6.0%', after: { to: 0.9, suffix: '%', decimals: 1 } },
+      { k: 'Inspection', before: 'None', after: 'AQL 2.5' },
+    ],
+    note: 'Reported by QC desk · Q3 2025',
+  },
+  {
+    code: 'CS-02',
+    tag: 'CrossFit gym · Merch line',
+    title: '5,200 units, zero print returns.',
+    metrics: [
+      { k: 'Units shipped', before: '—', after: { to: 5200, suffix: '' } },
+      { k: 'Print method', before: 'Heat-press peel', after: 'Sublimated' },
+      { k: 'Size range', before: 'S–XL', after: 'XS–3XL' },
+    ],
+    note: 'Reported by account lead · Q1 2026',
+  },
+  {
+    code: 'CS-03',
+    tag: 'Swimwear label · UV line',
+    title: '8,000 units, one inspection pass.',
+    metrics: [
+      { k: 'Batches rejected', before: '3', after: '0' },
+      { k: 'Colorfastness', before: 'Grade 2', after: 'ISO 105 · Grade 4+' },
+      { k: 'Order size', before: '—', after: { to: 8000, suffix: '' } },
+    ],
+    note: 'Reported by QC desk · Q2 2026',
+  },
+];
+---
+
+<section id="cases" class="border-t border-brand-text/10 bg-brand-bg pt-24 sm:pt-28">
+  <div class="mx-auto max-w-[1280px] px-5 pb-20 sm:px-8 sm:pb-28">
+    <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <SectionHead
+        num="07"
+        mark="Field reports"
+        title="Results, logged and dated."
+        intro="Three of the orders we ran end-to-end — before and after, with the numbers a procurement lead would ask for."
+      />
+    </div>
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-3" data-stagger>
+      {cases.map((c) => (
+        <article data-reveal="rise" class="card-lift flex flex-col border border-brand-text/10 bg-white">
+          <header class="flex items-center justify-between border-b border-brand-text/10 px-5 py-3">
+            <span class="mono text-[10px] uppercase tracking-[0.22em] text-brand-muted">{c.code}</span>
+            <span class="mono text-[10px] uppercase tracking-[0.18em] text-brand-primary">{c.tag}</span>
+          </header>
+
+          <div class="flex flex-1 flex-col px-5 pb-5 pt-5">
+            <h3 class="font-heading text-[1.3rem] font-semibold leading-[1.15] tracking-[-0.02em] text-brand-text">
+              {c.title}
+            </h3>
+
+            <div class="mt-5 border-t border-brand-text/10">
+              <div class="grid grid-cols-[1.1fr_1fr_1fr] gap-3 py-2 mono text-[9px] uppercase tracking-[0.16em] text-brand-muted">
+                <span>Metric</span><span>Before</span><span>After</span>
+              </div>
+              {c.metrics.map((m) => (
+                <div class="grid grid-cols-[1.1fr_1fr_1fr] items-baseline gap-3 border-t border-brand-text/10 py-2.5">
+                  <span class="text-[13px] text-brand-muted">{m.k}</span>
+                  <span class="mono text-[12px] text-brand-muted line-through decoration-brand-muted/40">{m.before}</span>
+                  <span class="text-[14px] font-semibold text-brand-primary">
+                    {typeof m.after === 'string' ? (
+                      m.after
+                    ) : (
+                      <>
+                        <span data-count data-to={m.after.to} data-suffix={m.after.suffix || ''} data-decimals={m.after.decimals || 0}>
+                          0
+                        </span>
+                      </>
+                    )}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-auto flex items-center justify-between border-t border-brand-text/10 pt-4">
+              <span class="mono text-[10px] uppercase tracking-[0.16em] text-brand-muted">{c.note}</span>
+              <span class="mono text-[10px] uppercase tracking-[0.16em] text-brand-accent">✓ Verified</span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,157 @@
+---
+const rivals = [
+  { name: 'Direct factory', price: 'Cheap', verdict: 'One point of failure.', points: ['No QC you can trust', 'No DDP — customs is yours', 'Low MOQ? Not really'] },
+  { name: 'Trading company', price: 'Marked-up', verdict: 'A margin without teeth.', points: ['Sells whatever sells', 'No man-in-plant', 'QC reports, no consequence'] },
+  { name: 'Western agent', price: 'Expensive', verdict: 'Safe, slow, +40%.', points: ['White-glove at a premium', 'Weeks of email ping-pong', 'Same factory, extra layer'] },
+]
+const us = ['5,000+ vetted suppliers', 'AQL 2.5 on every lot', 'DDP — one number, no surprises', 'Wuhan ground presence', 'Man-in-plant + live video']
+---
+
+<section class="d2-why" id="why">
+  <div class="d2-wrap">
+    <div class="d2-why-head">
+      <p class="d2-eyebrow" data-reveal="up">Why us</p>
+      <h2 class="d2-h2" data-reveal="up" style="--rd:80ms">The three ways to buy — and the fourth.</h2>
+      <p class="d2-lede" data-reveal="up" style="--rd:160ms">
+        A factory gives you production. A trader gives you a phone call. An agent gives you a bill.
+        We give you the floor.
+      </p>
+    </div>
+
+    <div class="d2-why-grid">
+      {rivals.map((r, i) => (
+        <article class="d2-rival" data-reveal="up" style={`--rd:${i * 80}ms`}>
+          <span class="d2-rival-price">{r.price}</span>
+          <h3 class="d2-rival-name">{r.name}</h3>
+          <p class="d2-rival-verdict">{r.verdict}</p>
+          <ul class="d2-rival-points">
+            {r.points.map((p) => (
+              <li>{p}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+
+      <article class="d2-rival d2-rival--us" data-reveal="scale" style="--rd:240ms">
+        <span class="d2-rival-price d2-rival-price--us">The floor</span>
+        <h3 class="d2-rival-name d2-rival-name--us">LeelineSports</h3>
+        <p class="d2-rival-verdict d2-rival-verdict--us">Procurement, in-house. Yours.</p>
+        <ul class="d2-rival-points d2-rival-points--us">
+          {us.map((p) => (
+            <li>{p}</li>
+          ))}
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .d2-why {
+    padding: 6rem 0 7rem;
+    background: var(--color-brand-bg);
+  }
+  .d2-why-head {
+    max-width: 46rem;
+  }
+  .d2-why-grid {
+    margin-top: 3.5rem;
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .d2-rival {
+    background: var(--color-brand-surface);
+    border: 1px solid rgba(138, 106, 59, 0.16);
+    border-radius: 22px;
+    padding: 1.7rem 1.6rem;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
+  }
+  .d2-rival:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px -40px rgba(27, 27, 24, 0.4);
+  }
+  .d2-rival-price {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-brand-muted);
+    border: 1px solid rgba(138, 106, 59, 0.3);
+    border-radius: 999px;
+    padding: 0.28rem 0.7rem;
+  }
+  .d2-rival-name {
+    margin: 1rem 0 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: 1.55rem;
+    letter-spacing: -0.02em;
+    color: var(--color-brand-primary);
+    font-variation-settings: 'opsz' 40;
+  }
+  .d2-rival-verdict {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-brand-secondary);
+  }
+  .d2-rival-points {
+    list-style: none;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .d2-rival-points li {
+    font-size: 0.9rem;
+    color: var(--color-brand-muted);
+    padding-left: 1.05rem;
+    position: relative;
+  }
+  .d2-rival-points li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-brand-accent);
+    font-weight: 700;
+  }
+
+  /* us card */
+  .d2-rival--us {
+    background: var(--color-brand-primary);
+    border-color: rgba(200, 162, 75, 0.4);
+    box-shadow: 0 40px 90px -45px rgba(27, 27, 24, 0.55);
+    margin-top: 0.5rem;
+  }
+  .d2-rival-price--us {
+    color: var(--color-brand-accent);
+    border-color: rgba(200, 162, 75, 0.5);
+  }
+  .d2-rival-name--us {
+    color: var(--color-brand-bg);
+  }
+  .d2-rival-verdict--us {
+    color: rgba(246, 241, 231, 0.72);
+  }
+  .d2-rival-points--us li {
+    color: rgba(246, 241, 231, 0.82);
+  }
+  .d2-rival-points--us li::before {
+    content: '✓';
+    color: var(--color-brand-accent);
+  }
+
+  @media (min-width: 880px) {
+    .d2-why-grid {
+      grid-template-columns: repeat(4, 1fr);
+      align-items: stretch;
+    }
+    .d2-rival--us {
+      margin-top: -1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>

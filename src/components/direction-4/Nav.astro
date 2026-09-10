@@ -1,0 +1,129 @@
+---
+const links = [
+  { href: '#offerings', label: 'Verticals' },
+  { href: '#deliver', label: 'What we deliver' },
+  { href: '#process', label: 'How it works' },
+  { href: '#who', label: 'Who it’s for' },
+  { href: '#faq', label: 'FAQ' },
+];
+---
+
+<header class="nav" data-nav>
+  <!-- utility strip -->
+  <div class="util">
+    <div class="wrap util-inner">
+      <span class="mono util-item">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle><path d="M12 1v6M12 17v6M1 12h6M17 12h6"></path>
+        </svg>
+        30.5867°N · 114.3055°E — WUHAN GROUND TEAM
+      </span>
+      <span class="mono util-item util-right">
+        <span class="dot blink" aria-hidden="true"></span>
+        LIVE · AQL 2.5 INSPECTION IN PLANT
+      </span>
+    </div>
+  </div>
+
+  <!-- main bar -->
+  <div class="bar">
+    <div class="wrap bar-inner">
+      <a class="brand" href="#top" aria-label="LeelineSports home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2.5" y="2.5" width="27" height="27"></rect>
+            <path d="M16 2.5v27M2.5 16h27"></path>
+            <circle cx="16" cy="16" r="4.2" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </span>
+        <span class="brand-word">
+          <span class="brand-name">Leeline<span>Sports</span></span>
+          <span class="mono brand-sub">CUSTOM SPORTSWEAR · OEM/ODM</span>
+        </span>
+      </a>
+
+      <nav class="links" aria-label="Primary">
+        {links.map((l) => <a class="link" href={l.href}>{l.label}</a>)}
+      </nav>
+
+      <div class="actions">
+        <a class="wa mono" href="https://wa.me/8613986152456" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.2 1.1-1.7 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.8-.1 1.3Z"></path>
+          </svg>
+          +86 139 8615 2456
+        </a>
+        <a class="cta" href="#quote">Request a quote</a>
+        <button class="menu-btn" data-menu-btn aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- mobile menu -->
+  <div class="menu" data-menu>
+    <div class="wrap">
+      {links.map((l) => <a class="menu-link" href={l.href}>{l.label}</a>)}
+      <div class="menu-foot">
+        <a class="cta" href="#quote">Request a quote</a>
+        <a class="wa mono" href="https://wa.me/8613986152456" target="_blank" rel="noopener">WhatsApp · +86 139 8615 2456</a>
+        <a class="wa mono" href="mailto:info@leelinesports.com">info@leelinesports.com</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 60; }
+  .util { background: var(--carbon); color: rgba(255,255,255,0.82); }
+  .util-inner { display: flex; justify-content: space-between; align-items: center; height: 30px; }
+  .util-item { display: inline-flex; align-items: center; gap: 7px; color: rgba(255,255,255,0.72); }
+  .util-right { display: none; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #7C93E8; }
+  @media (min-width: 640px) { .util-right { display: inline-flex; } }
+
+  .bar { border-bottom: 1px solid var(--hair); background: rgba(251,251,249,0.86); backdrop-filter: blur(12px); transition: box-shadow .3s var(--ease-out), background .3s; }
+  .nav.is-scrolled .bar { box-shadow: 0 1px 0 rgba(22,22,22,0.04), 0 10px 30px -18px rgba(22,22,22,0.35); background: rgba(251,251,249,0.96); }
+  .bar-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; gap: 16px; }
+
+  .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
+  .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; color: var(--blue); }
+  .brand-word { display: flex; flex-direction: column; line-height: 1; }
+  .brand-name { font-family: var(--font-heading); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
+  .brand-name span { color: var(--blue); }
+  .brand-sub { margin-top: 4px; color: var(--muted); font-size: 0.56rem; }
+
+  .links { display: none; gap: 26px; }
+  .link { font-size: 0.9rem; font-weight: 500; color: var(--ink); text-decoration: none; position: relative; padding: 6px 0; }
+  .link::after { content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1.5px; background: var(--blue); transition: right .28s var(--ease-out); }
+  .link:hover::after { right: 0; }
+  @media (min-width: 1024px) { .links { display: flex; } }
+
+  .actions { display: flex; align-items: center; gap: 14px; }
+  @media (max-width: 639px) { .actions .cta { display: none; } }
+  @media (max-width: 639px) { .brand-sub { display: none; } }
+  .wa { display: none; align-items: center; gap: 7px; color: var(--muted); text-decoration: none; }
+  .wa:hover { color: var(--blue); }
+  @media (min-width: 1180px) { .wa { display: inline-flex; } }
+
+  .cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--red); color: #fff; text-decoration: none;
+    font-weight: 600; font-size: 0.9rem; padding: 11px 18px;
+    border-radius: 2px; white-space: nowrap;
+    transition: transform .25s var(--ease-spring), background .2s;
+  }
+  .cta:hover { background: #D33A3F; transform: translateY(-1px); }
+  .cta:active { transform: translateY(0) scale(.99); }
+
+  .menu-btn { display: grid; gap: 5px; background: none; border: 1px solid var(--hair); border-radius: 2px; padding: 11px 10px; cursor: pointer; }
+  .menu-btn span { width: 18px; height: 1.5px; background: var(--ink); transition: transform .25s var(--ease-out); }
+  @media (min-width: 1024px) { .menu-btn { display: none; } }
+
+  .menu { display: none; border-bottom: 1px solid var(--hair); background: var(--paper); }
+  .menu.is-open { display: block; }
+  .menu-link { display: block; padding: 15px 0; border-bottom: 1px solid var(--hair); font-size: 1.05rem; font-weight: 500; color: var(--ink); text-decoration: none; }
+  .menu-foot { display: flex; flex-direction: column; gap: 12px; padding: 18px 0 22px; align-items: flex-start; }
+  .menu-foot .wa { display: inline-flex; }
+</style>

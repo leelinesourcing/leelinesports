@@ -1,0 +1,113 @@
+---
+const quotes = [
+  {
+    q: 'I stopped lying awake about customs. The DDP quote is the number I pay — no surprise line items at the dock.',
+    n: 'Priya Raman',
+    c: 'Amazon FBA seller, yoga accessories',
+  },
+  {
+    q: 'They flagged a seam-tolerance issue in the sample that our old factory would have shipped. That’s the whole difference.',
+    n: 'Marcus Tran',
+    c: 'Founder, compression-wear label',
+  },
+  {
+    q: 'Sublimated logos that don’t crack after a season. My members actually buy the merch now.',
+    n: 'Dana Kowalski',
+    c: 'CrossFit box owner, four locations',
+  },
+]
+---
+
+<section class="d2-quotes" id="quotes">
+  <div class="d2-wrap">
+    <div class="d2-quotes-head">
+      <p class="d2-eyebrow" data-reveal="up">In their words</p>
+      <h2 class="d2-h2" data-reveal="up" style="--rd:80ms">The brands that sleep better.</h2>
+    </div>
+
+    <div class="d2-quotes-grid">
+      {quotes.map((t, i) => (
+        <figure class="d2-quote" data-reveal={['up', 'scale', 'up'][i]} style={`--rd:${i * 90}ms`}>
+          <span class="d2-quote-mark" aria-hidden="true">“</span>
+          <blockquote class="d2-quote-text">{t.q}</blockquote>
+          <figcaption class="d2-quote-who">
+            <span class="d2-quote-name">{t.n}</span>
+            <span class="d2-quote-context">{t.c}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .d2-quotes {
+    padding: 6rem 0 6rem;
+    background: var(--color-brand-bg);
+  }
+  .d2-quotes-head {
+    max-width: 42rem;
+  }
+  .d2-quotes-grid {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .d2-quote {
+    margin: 0;
+    position: relative;
+    background: var(--color-brand-bg);
+    border: 1px solid rgba(138, 106, 59, 0.16);
+    border-radius: 22px;
+    padding: 2.2rem 1.8rem 1.8rem;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
+  }
+  .d2-quote:hover {
+    transform: translateY(-6px) rotate(-0.3deg);
+    box-shadow: 0 34px 70px -45px rgba(27, 27, 24, 0.4);
+  }
+  .d2-quote-mark {
+    position: absolute;
+    top: 0.4rem;
+    left: 1.4rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--color-brand-accent);
+    opacity: 0.5;
+  }
+  .d2-quote-text {
+    margin: 0;
+    position: relative;
+    font-family: var(--font-heading);
+    font-weight: 460;
+    font-size: 1.28rem;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--color-brand-primary);
+    font-variation-settings: 'opsz' 28;
+  }
+  .d2-quote-who {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .d2-quote-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-brand-text);
+  }
+  .d2-quote-context {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-brand-muted);
+  }
+
+  @media (min-width: 880px) {
+    .d2-quotes-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

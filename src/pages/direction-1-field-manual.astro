@@ -1,0 +1,384 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/direction-1/Nav.astro';
+import Hero from '../components/direction-1/Hero.astro';
+import ProofTicker from '../components/direction-1/ProofTicker.astro';
+import Verticals from '../components/direction-1/Verticals.astro';
+import Pain from '../components/direction-1/Pain.astro';
+import Deliver from '../components/direction-1/Deliver.astro';
+import Process from '../components/direction-1/Process.astro';
+import ICPs from '../components/direction-1/ICPs.astro';
+import WhyUs from '../components/direction-1/WhyUs.astro';
+import CaseStudies from '../components/direction-1/CaseStudies.astro';
+import Testimonials from '../components/direction-1/Testimonials.astro';
+import FAQ from '../components/direction-1/FAQ.astro';
+import FinalCTA from '../components/direction-1/FinalCTA.astro';
+import Footer from '../components/direction-1/Footer.astro';
+---
+
+<Layout
+  title="Field Manual — LeelineSports"
+  description="Custom sportswear manufacturing and supply-chain partner — OEM/ODM, AQL 2.5 QC, and DDP logistics from Wuhan. We handle the mess, you handle the sales."
+>
+  <style is:global>
+    :root {
+      --color-brand-primary:   #0F1B2D;
+      --color-brand-secondary: #33475C;
+      --color-brand-accent:    #F2A33C;
+      --color-brand-bg:        #F5F7FA;
+      --color-brand-surface:   #E9EEF4;
+      --color-brand-text:      #101820;
+      --color-brand-muted:     #64748B;
+      --font-heading: 'Space Grotesk', system-ui, sans-serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+      --spec-line: color-mix(in srgb, var(--color-brand-text) 12%, transparent);
+      --spec-k: var(--color-brand-muted);
+      --spec-v: var(--color-brand-text);
+    }
+
+    html,
+    body {
+      overflow-x: clip;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ── Motif helpers ─────────────────────────────── */
+    .mono {
+      font-family: var(--font-mono);
+    }
+
+    .on-dark {
+      --spec-line: rgba(255, 255, 255, 0.16);
+      --spec-k: rgba(255, 255, 255, 0.5);
+      --spec-v: #fff;
+    }
+
+    .spec {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.62rem 0;
+      border-top: 1px solid var(--spec-line);
+    }
+    .spec > .k {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--spec-k);
+      white-space: nowrap;
+    }
+    .spec > .lead {
+      flex: 1 1 auto;
+      min-width: 0.75rem;
+      border-bottom: 1px dotted var(--spec-k);
+      opacity: 0.45;
+      transform: translateY(-0.3em);
+    }
+    .spec > .v {
+      font-weight: 650;
+      text-align: right;
+      color: var(--spec-v);
+      line-height: 1.4;
+    }
+
+    .crop {
+      position: relative;
+    }
+    .crop::before,
+    .crop::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-repeat: no-repeat;
+      z-index: 1;
+    }
+    .crop::before {
+      background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor),
+        linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+      background-position: 0 0, 0 0, 100% 0, 100% 0;
+      background-size: 15px 1px, 1px 15px, 15px 1px, 1px 15px;
+    }
+    .crop::after {
+      background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor),
+        linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+      background-position: 0 100%, 0 100%, 100% 100%, 100% 100%;
+      background-size: 15px 1px, 1px 15px, 15px 1px, 1px 15px;
+    }
+
+    .hatch {
+      background-image: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 11px);
+    }
+    .grid-tex {
+      background-image: linear-gradient(rgba(16, 24, 32, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 24, 32, 0.045) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+
+    /* ── Motion ────────────────────────────────────── */
+    .btn-spring {
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.22s ease, color 0.22s ease,
+        border-color 0.22s ease;
+    }
+    .btn-spring:hover {
+      transform: translateY(-2px);
+    }
+    .btn-spring:active {
+      transform: translateY(0) scale(0.985);
+    }
+
+    .media {
+      overflow: hidden;
+    }
+    .media img {
+      transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .card-lift {
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease;
+    }
+    .card-lift:hover {
+      transform: translateY(-5px);
+    }
+    .card-lift:hover .media img {
+      transform: scale(1.05);
+    }
+
+    .ha {
+      opacity: 0;
+      animation: heroIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes heroIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .blink {
+      animation: blink 2.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.25;
+      }
+    }
+
+    .ticker {
+      display: flex;
+      width: max-content;
+      animation: tick 40s linear infinite;
+    }
+    @keyframes tick {
+      to {
+        transform: translateX(-50%);
+      }
+    }
+    .ticker-wrap:hover .ticker {
+      animation-play-state: paused;
+    }
+
+    /* ── Scroll reveal ─────────────────────────────── */
+    .js [data-reveal] {
+      opacity: 0;
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        clip-path 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .js [data-reveal='rise'] {
+      transform: translateY(30px);
+    }
+    .js [data-reveal='slide-left'] {
+      transform: translateX(-40px);
+    }
+    .js [data-reveal='slide-right'] {
+      transform: translateX(40px);
+    }
+    .js [data-reveal='clip'] {
+      clip-path: inset(0 0 100% 0);
+      opacity: 1;
+    }
+    .js [data-reveal].is-in {
+      opacity: 1;
+      transform: none;
+      clip-path: inset(0 0 0 0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ha {
+        animation: none;
+        opacity: 1;
+      }
+      .blink,
+      .ticker {
+        animation: none;
+      }
+      .js [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+        clip-path: none !important;
+        transition: none !important;
+      }
+      .btn-spring,
+      .card-lift,
+      .media img {
+        transition: none;
+      }
+    }
+  </style>
+
+  <script is:inline>document.documentElement.classList.add('js');</script>
+
+  <Nav />
+
+  <main>
+    <Hero />
+    <ProofTicker />
+    <Verticals />
+    <Pain />
+    <Deliver />
+    <Process />
+    <ICPs />
+    <WhyUs />
+    <CaseStudies />
+    <Testimonials />
+    <FAQ />
+    <FinalCTA />
+  </main>
+
+  <Footer />
+
+  <script>
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Nav scroll state + progress bar
+    const nav = document.querySelector('[data-nav]');
+    const progress = document.querySelector('[data-progress]');
+    function onScroll() {
+      const y = window.scrollY;
+      if (nav) nav.classList.toggle('is-scrolled', y > 12);
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const p = h > 0 ? Math.min(y / h, 1) : 0;
+      if (progress) progress.style.transform = `scaleX(${p})`;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Scroll reveal
+    const reveals = Array.from(document.querySelectorAll('[data-reveal]'));
+    if (reduced || !('IntersectionObserver' in window)) {
+      reveals.forEach((el) => el.classList.add('is-in'));
+    } else {
+      document.querySelectorAll('[data-stagger]').forEach((group) => {
+        group.querySelectorAll('[data-reveal]').forEach((el, i) => {
+          el.style.transitionDelay = `${Math.min(i * 75, 420)}ms`;
+        });
+      });
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      );
+      reveals.forEach((el) => io.observe(el));
+    }
+
+    // Counters
+    const fmt = (n, dec) =>
+      n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    const counters = Array.from(document.querySelectorAll('[data-count]'));
+    const setFinal = (el) => {
+      const to = parseFloat(el.dataset.to);
+      const dec = parseInt(el.dataset.decimals || '0');
+      el.textContent = (el.dataset.prefix || '') + fmt(to, dec) + (el.dataset.suffix || '');
+    };
+    if (reduced || !('IntersectionObserver' in window)) {
+      counters.forEach(setFinal);
+    } else {
+      const cio = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((en) => {
+            if (!en.isIntersecting) return;
+            const el = en.target;
+            cio.unobserve(el);
+            const to = parseFloat(el.dataset.to);
+            const dec = parseInt(el.dataset.decimals || '0');
+            const dur = parseInt(el.dataset.duration || '1400');
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const start = performance.now();
+            const ease = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+            const tick = (now) => {
+              const t = Math.min((now - start) / dur, 1);
+              el.textContent = prefix + fmt(to * ease(t), dec) + suffix;
+              if (t < 1) requestAnimationFrame(tick);
+              else el.textContent = prefix + fmt(to, dec) + suffix;
+            };
+            requestAnimationFrame(tick);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      counters.forEach((el) => cio.observe(el));
+    }
+
+    // FAQ exclusive accordion
+    const faqRoot = document.querySelector('[data-faq]');
+    if (faqRoot) {
+      faqRoot.querySelectorAll('details').forEach((d) => {
+        d.addEventListener('toggle', () => {
+          if (d.open) faqRoot.querySelectorAll('details').forEach((o) => o !== d && (o.open = false));
+        });
+      });
+    }
+
+    // Mobile menu
+    const menuBtn = document.querySelector('[data-menu]');
+    const menu = document.querySelector('[data-menu-panel]');
+    if (menuBtn && menu) {
+      menuBtn.addEventListener('click', () => {
+        const open = menu.classList.toggle('hidden');
+        menuBtn.setAttribute('aria-expanded', String(!open));
+      });
+      menu.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => {
+          menu.classList.add('hidden');
+          menuBtn.setAttribute('aria-expanded', 'false');
+        })
+      );
+    }
+
+    // Quote form
+    const form = document.querySelector('[data-form]');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('[data-form-btn]');
+        if (btn) {
+          btn.textContent = 'Brief received — we will reply within 1 day';
+          btn.disabled = true;
+          btn.style.opacity = '0.8';
+        }
+      });
+    }
+  </script>
+</Layout>

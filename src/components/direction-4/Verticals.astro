@@ -1,0 +1,102 @@
+---
+import SectionHead from './SectionHead.astro';
+
+const verticals = [
+  {
+    n: '01',
+    img: '/images/redesign/image-06.webp',
+    imgAlt: 'Athlete in compression wear during a yoga session',
+    title: 'Performance Wear',
+    copy: 'Yoga, compression, and training layers cut for movement — engineered with locked GSM and 4-way stretch so a sample never drifts from the bulk.',
+    specs: [
+      ['FABRIC', '160–320 gsm · nylon-spandex blends'],
+      ['FINISH', 'ISO 105 · colorfast Grade 4+'],
+      ['RANGE', 'XS–3XL · flatlock seams'],
+    ],
+  },
+  {
+    n: '02',
+    img: '/images/redesign/image-14.avif',
+    imgAlt: 'Ice hockey player in a sublimated team jersey',
+    title: 'Team Sports',
+    copy: 'Fully sublimated jerseys and uniforms — unlimited colors, no heat-pressed logos to crack, and a consistent reorder file kept on hand for next season.',
+    specs: [
+      ['PRINT', 'Full dye-sublimation · all-over'],
+      ['LOGO', 'In-garment, never peels'],
+      ['MOQ', '200–300 pcs custom private label'],
+    ],
+  },
+  {
+    n: '03',
+    img: '/images/redesign/image-12.avif',
+    imgAlt: 'Swimwear with technical UV-protective fabric',
+    title: 'Swim & Outdoor',
+    copy: 'UV-rated swimwear and waterproof shells — sealed seams and a documented water column, because outdoor gear fails visibly when it fails.',
+    specs: [
+      ['PROTECT', 'UPF 50+ · UV-rated knits'],
+      ['SHELL', '8,000 mm water column · taped seams'],
+      ['CARE', 'Chlorine + salt tested'],
+    ],
+  },
+];
+---
+
+<section id="offerings" class="vert">
+  <div class="wrap">
+    <SectionHead index="02" code="OFFERINGS" title="Three verticals. One spec book." blurb="Whatever you put your label on, it ships with the same QC discipline — AQL 2.5 on every line, DDP on every invoice." aside="3 VERTICALS" />
+
+    <div class="v-grid">
+      {verticals.map((v) => (
+        <article class="v-card" data-reveal="up" style={`--d:${Number(v.n) * 0.08}s`}>
+          <div class="v-media" data-reveal="clip">
+            <div class="ruler" aria-hidden="true"></div>
+            <img src={v.img} alt={v.imgAlt} loading="lazy" />
+            <span class="v-index mono">{v.n}<i>/03</i></span>
+            <span class="v-reg" aria-hidden="true"></span>
+          </div>
+          <div class="v-body">
+            <h3 class="v-title">{v.title}</h3>
+            <p class="v-copy">{v.copy}</p>
+            <dl class="v-specs">
+              {v.specs.map(([k, val]) => (
+                <div class="v-spec">
+                  <dt class="mono">{k}</dt>
+                  <dd>{val}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .vert { padding: 120px 0 110px; background: var(--paper); }
+  .v-grid { display: grid; grid-template-columns: 1fr; gap: 22px; margin-top: 56px; }
+  @media (min-width: 768px) { .v-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1024px) { .v-card:nth-child(2) { margin-top: 40px; } }
+
+  .v-card { background: #fff; border: 1px solid var(--hair); display: flex; flex-direction: column; transition: transform .35s var(--ease-spring), box-shadow .35s var(--ease-out); }
+  .v-card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -30px rgba(22,22,22,0.35); }
+
+  .v-media { position: relative; overflow: hidden; border-bottom: 1px solid var(--hair); background: var(--surface); }
+  .v-media img { width: 100%; height: 250px; object-fit: cover; display: block; filter: saturate(.92) contrast(1.02); transition: transform .7s var(--ease-out); }
+  .v-card:hover .v-media img { transform: scale(1.045); }
+  .ruler { position: absolute; top: 0; left: 0; right: 0; height: 12px; z-index: 2; background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.9) 0 1px, transparent 1px 9px),
+      rgba(22,22,22,0.55); }
+  .v-index { position: absolute; top: 20px; left: 14px; z-index: 2; color: #fff; background: rgba(22,22,22,0.66); padding: 3px 8px; border-radius: 2px; }
+  .v-index i { font-style: normal; opacity: 0.6; }
+  .v-reg { position: absolute; top: 20px; right: 14px; z-index: 2; width: 11px; height: 11px; border: 1px solid #fff; border-radius: 50%; opacity: 0.9; }
+
+  .v-body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+  .v-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.4rem; letter-spacing: -0.02em; margin: 0 0 12px; }
+  .v-copy { font-size: 0.95rem; line-height: 1.6; color: var(--muted); margin: 0 0 20px; }
+
+  .v-specs { margin: auto 0 0; }
+  .v-spec { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--hair); }
+  .v-spec dt { color: var(--blue); white-space: nowrap; }
+  .v-spec dd { margin: 0; font-size: 0.82rem; color: var(--ink); text-align: right; line-height: 1.35; }
+</style>

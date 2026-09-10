@@ -1,0 +1,74 @@
+---
+import Underline from './Underline.astro';
+import Blob from './Blob.astro';
+import Check from './Check.astro';
+
+const fears = [
+  'See-through leggings in a customer photo review.',
+  'A customs bill that wasn’t in the quote.',
+  'A supplier who goes quiet the week before launch.',
+  '1,000-unit MOQs when you only need 300.',
+  'Amazon TOS flags on packaging you never approved.',
+];
+---
+
+<section class="relative overflow-hidden bg-brand-bg">
+  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-14 px-5 py-24 sm:px-8 sm:py-28 lg:grid-cols-2 lg:items-center">
+    <div>
+      <span class="js-reveal inline-flex items-center gap-2 rounded-full border border-brand-primary/15 bg-white/60 px-4 py-2 font-body text-[13px] font-medium text-brand-primary" data-reveal="up">
+        Sound familiar?
+      </span>
+      <h2 class="js-reveal mt-5 font-heading font-semibold leading-[1.04] tracking-[-0.025em] text-brand-text text-[clamp(2rem,4.5vw,3.3rem)]" data-reveal="up" style="--d:.08s">
+        Importing from China shouldn’t feel like a
+        <span class="relative inline-block whitespace-nowrap">
+          leap of faith.
+          <Underline class="absolute -bottom-2 left-0 h-[0.26em] w-full" />
+        </span>
+      </h2>
+      <p class="js-reveal mt-5 max-w-lg font-body text-lg text-brand-muted" data-reveal="up" style="--d:.16s">
+        Every one of our clients has a story about a supplier that let them down.
+        We built LeelineSports so you don’t get a sequel.
+      </p>
+
+      <ul class="mt-9 space-y-3">
+        {fears.map((fear, i) => (
+          <li
+            class="js-reveal flex items-start gap-3 rounded-2xl border border-brand-primary/10 bg-white/60 px-5 py-4 font-body text-[15px] text-brand-text/90"
+            data-reveal="left"
+            style={`--d:${i * 0.06}s`}
+          >
+            <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-accent/20 text-brand-accent">
+              <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </span>
+            {fear}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="relative">
+      <Blob class="pointer-events-none absolute -top-10 right-0 h-72 w-72 text-brand-secondary/15 animate-floaty" />
+      <div class="js-reveal relative rounded-[2rem] bg-brand-primary p-8 text-brand-bg shadow-[0_50px_90px_-45px_rgba(20,58,53,.9)] sm:p-10" data-reveal="right">
+        <p class="font-body text-[13px] font-medium uppercase tracking-[0.14em] text-brand-accent">The counter</p>
+        <p class="mt-4 font-heading text-[clamp(1.6rem,3vw,2.4rem)] font-semibold leading-tight">
+          That’s not how we work.
+        </p>
+        <p class="mt-4 font-body text-[16px] leading-relaxed text-brand-bg/80">
+          Every order ships with AQL 2.5 inspection reports, a single DDP price, and a live
+          video walkthrough of your goods before they leave Wuhan. If there’s a problem,
+          we catch it before you ever see it.
+        </p>
+        <ul class="mt-6 space-y-3">
+          {['Inspection reports on every order', 'Live video before anything ships', 'One landed price, duties included'].map((line) => (
+            <li class="flex items-center gap-3 font-body text-[15px] text-brand-bg/90">
+              <Check class="h-5 w-5 shrink-0 text-brand-accent" />
+              {line}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

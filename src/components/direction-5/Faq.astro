@@ -1,0 +1,80 @@
+---
+import Underline from './Underline.astro';
+import Bell from './Bell.astro';
+
+const faqs = [
+  {
+    q: 'What’s the minimum order?',
+    a: '50–100 pieces on stock blanks, and 200–300 on fully custom private label. Once tooling is set, reorders can dip lower.',
+  },
+  {
+    q: 'How do you protect my IP?',
+    a: 'We sign an NDA before anything is shared, work from your tech pack, and never reuse your designs, patterns or Pantones for another client.',
+  },
+  {
+    q: 'What does DDP actually include?',
+    a: 'Manufacturing, shipping and import duties in one price. No customs bill lands on your desk after the fact — that’s the point.',
+  },
+  {
+    q: 'How does quality control work?',
+    a: 'AQL 2.5 on major defects and 4.0 on minor. You receive inspection reports and a live video walkthrough of your goods before release.',
+  },
+  {
+    q: 'What if the sample isn’t right?',
+    a: 'Sampling takes 5–10 days and fees are refunded against your bulk order. We iterate until the garment is exactly what you specced.',
+  },
+  {
+    q: 'What are the shipping times?',
+    a: 'Express 3–5 days, air 7–12, sea 25–40. FBA prep — barcoding, poly-bagging and injection into Amazon FCs — is included.',
+  },
+];
+---
+
+<section id="faq" class="relative bg-brand-bg">
+  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 py-24 sm:px-8 sm:py-28 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <span class="js-reveal inline-flex items-center gap-2 rounded-full border border-brand-primary/15 bg-white/60 px-4 py-2 font-body text-[13px] font-medium text-brand-primary" data-reveal="up">
+        FAQ
+      </span>
+      <h2 class="js-reveal mt-5 font-heading font-semibold leading-[1.02] tracking-[-0.025em] text-brand-text text-[clamp(2rem,4.5vw,3.3rem)]" data-reveal="up" style="--d:.08s">
+        Asked before you
+        <span class="relative inline-block whitespace-nowrap">
+          ask.
+          <Underline class="absolute -bottom-2 left-0 h-[0.26em] w-full" />
+        </span>
+      </h2>
+      <p class="js-reveal mt-5 max-w-sm font-body text-lg text-brand-muted" data-reveal="up" style="--d:.16s">
+        Still unsure about something? We answer WhatsApp messages and email
+        within one business day.
+      </p>
+      <div class="js-reveal mt-8 flex flex-wrap gap-3" data-reveal="up" style="--d:.24s">
+        <a href="mailto:info@leelinesports.com" class="inline-flex items-center gap-2 rounded-full border border-brand-primary/20 px-4 py-2.5 font-body text-sm font-medium text-brand-primary transition-colors hover:bg-brand-surface">
+          info@leelinesports.com
+        </a>
+        <a href="https://wa.me/8613986152456" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-brand-primary/20 px-4 py-2.5 font-body text-sm font-medium text-brand-primary transition-colors hover:bg-brand-surface">
+          +86 139 8615 2456
+        </a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8">
+      <div class="space-y-3">
+        {faqs.map((f, i) => (
+          <details
+            class="js-reveal group rounded-2xl border border-brand-primary/10 bg-white/60 open:bg-white"
+            data-reveal="up"
+            style={`--d:${i * 0.05}s`}
+          >
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 font-heading text-[16px] font-semibold text-brand-text [&::-webkit-details-marker]:hidden">
+              {f.q}
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-surface text-brand-primary transition-transform duration-300 group-open:rotate-45">
+                <Bell class="h-4 w-4" />
+              </span>
+            </summary>
+            <p class="px-6 pb-5 font-body text-[15px] leading-relaxed text-brand-muted">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

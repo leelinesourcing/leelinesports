@@ -1,0 +1,79 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const directions = [
+  {
+    n: 1,
+    name: 'Field Manual',
+    slug: 'direction-1-field-manual',
+    description: 'Technical, evidence-forward. Spec sheets, AQL tables, and hairline rules make the Guardian archetype literal.',
+    accent: '#F2A33C',
+  },
+  {
+    n: 2,
+    name: 'The Atelier',
+    slug: 'direction-2-the-atelier',
+    description: 'Premium craft. Oversized serif display, bone + deep forest, brass CTAs — the Magician transformation story.',
+    accent: '#C8A24B',
+  },
+  {
+    n: 3,
+    name: 'The Arena',
+    slug: 'direction-3-the-arena',
+    description: 'Bold athletic. Dark stadium energy with expanded-grotesque headlines and one electric-lime accent.',
+    accent: '#C6F135',
+  },
+  {
+    n: 4,
+    name: 'The Blueprint',
+    slug: 'direction-4-the-blueprint',
+    description: 'Systematic Swiss grid. The 5-step process is the hero — built for procurement managers who value timelines.',
+    accent: '#2B4CC4',
+  },
+  {
+    n: 5,
+    name: 'The Concierge',
+    slug: 'direction-5-the-concierge',
+    description: 'Warm and human. Rounded, soft, protective — "we handle the mess, you handle the sales."',
+    accent: '#E09A3E',
+  },
+];
+---
+
+<Layout title="LeelineSports — Homepage Concepts">
+  <main class="min-h-screen px-6 py-16 md:py-24">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-3 text-xs font-semibold tracking-[0.2em] text-brand-muted uppercase">LeelineSports redesign</p>
+      <h1 class="text-4xl font-bold tracking-tight md:text-5xl">Your homepage concepts</h1>
+      <p class="mt-4 text-lg leading-relaxed text-brand-muted">
+        Five distinct directions for your B2B supply-chain partner homepage. Click each one and scroll
+        through fully before deciding. Take notes on what you love from each.
+      </p>
+
+      <div class="mt-12 flex flex-col gap-4">
+        {directions.map((d) => (
+          <a
+            href={`/${d.slug}`}
+            class="group relative block overflow-hidden rounded-xl border border-brand-text/10 bg-brand-surface/60 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-text/20"
+          >
+            <div
+              class="absolute inset-y-0 left-0 w-1"
+              style={`background: ${d.accent}`}
+            />
+            <div class="flex items-baseline gap-4 pl-3">
+              <span class="font-heading text-sm font-bold text-brand-muted">{String(d.n).padStart(2, '0')}</span>
+              <div>
+                <div class="font-heading text-xl font-bold tracking-tight md:text-2xl">{d.name}</div>
+                <div class="mt-1.5 text-[0.95rem] leading-relaxed text-brand-muted">{d.description}</div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <p class="mt-12 text-sm text-brand-muted">
+        Prefer to browse from the static hub? See <code class="rounded bg-brand-surface px-1.5 py-0.5">prototypes/index.html</code>.
+      </p>
+    </div>
+  </main>
+</Layout>

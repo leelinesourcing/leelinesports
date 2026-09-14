@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # heavy downloaded reference images
 .new-site/references/
+
+# R2 image staging — the bucket is the source of truth, not the repo
+_images/
+.r2-upload.json
+.r2-manifest.json
+.wrangler/

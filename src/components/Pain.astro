@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets'
-import type { ImageMetadata } from 'astro'
-import painImage from '../assets/images/image-11.avif'
+import { r2 } from '../lib/images'
 import Mark from './Mark.astro'
 
 interface Fear {
@@ -14,7 +13,7 @@ interface Props {
   heading?: string
   lede?: string
   fears?: Fear[]
-  image?: ImageMetadata
+  image?: string
   imageAlt?: string
   cardTitle?: string
   /** [code, description] pairs listed on the floating tolerance card. */
@@ -43,8 +42,8 @@ const {
       fix: 'Man-in-plant supervision and live video inspections, so you are never guessing where a PO stands. Six stages take an order from brief to boxed — 1 business day to quote, 5–10 days to sample, a duty-paid number to your door.',
     },
   ],
-  image = painImage,
-  imageAlt = 'Stack of blank t-shirts awaiting inspection',
+  image = r2('the-mess-we-handle'),
+  imageAlt = 'An order being handed over to a customer',
   cardTitle = 'The tolerances we guarantee, in writing.',
   tolerances = [
     ['AQL', '2.5 major / 4.0 minor'],

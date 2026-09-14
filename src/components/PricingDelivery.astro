@@ -3,7 +3,8 @@
 // Two columns: the three transit modes stack on the left and share that
 // column's height; the FBA handover sits beside them as a photo-backed panel.
 import { Image } from 'astro:assets'
-import fbaImage from '../assets/images/image-11.avif'
+import { r2 } from '../lib/images'
+const fbaImage = r2('fba-prep-injection')
 
 interface Mode {
   name: string

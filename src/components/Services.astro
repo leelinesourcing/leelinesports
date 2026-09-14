@@ -4,31 +4,14 @@
 // weave cards. The other four capability areas follow as their own cards, each
 // with an image and a spec list.
 import { Image } from 'astro:assets'
-import type { ImageMetadata } from 'astro'
+import { r2 } from '../lib/images'
 import SectionHead from './SectionHead.astro'
-
-// The repo holds no packaging or label close-ups, so those two areas reuse
-// garment shots from the same library as stand-ins.
-import imgSizing from '../assets/images/image-14.avif'
-import imgDecoration from '../assets/images/image-18.webp'
-import imgPackaging from '../assets/images/image-19.webp'
-import imgLabels from '../assets/images/image-03.webp'
-// Stand-ins for the fabric library. These are garment shots, not swatches — the
-// repo holds no fabric close-ups — so they are decorative thumbnails only.
-import thumbWick from '../assets/images/image-11.avif'
-import thumbStretch from '../assets/images/image-06.webp'
-import thumbUv from '../assets/images/image-12.avif'
-import thumbCompression from '../assets/images/image-02.webp'
-import thumbAntimicrobial from '../assets/images/image-16.avif'
-import thumbSeams from '../assets/images/image-13.avif'
-import thumbVentilation from '../assets/images/image-05.webp'
-import thumbAbrasion from '../assets/images/image-07.webp'
 
 interface Weave {
   name: string
   note: string
   /** Decorative thumbnail — rendered with empty alt. */
-  thumb: ImageMetadata
+  thumb: string
 }
 
 interface Fabric {
@@ -49,7 +32,7 @@ interface Area {
   body: string
   /** The spec list, set as bullets under the paragraph. */
   items: string[]
-  img: ImageMetadata
+  img: string
   alt: string
 }
 
@@ -70,14 +53,14 @@ const {
       'Fabric decides how a garment performs, prints and washes — and what it costs landed. No batch is cut until it has been tested: composition, shrinkage and colorfastness against the tolerance sheet. The standing library covers moisture-wicking knits, 4-way stretch, UV protection and compression constructions, so a prototype never waits on a mill — and anything outside it we develop to your brief, holding the same fabric for your reorders.',
     ],
     weaves: [
-      { name: 'Moisture-wicking', note: 'Pulls sweat off the skin and spreads it flat, so it dries in minutes, not hours.', thumb: thumbWick },
-      { name: '4-way stretch', note: 'Recovers in both directions — a squat or a sprint does not leave the garment bagged out.', thumb: thumbStretch },
-      { name: 'UV protection', note: 'UPF 50+ knits that hold their rating through repeated washing.', thumb: thumbUv },
-      { name: 'Compression fit', note: 'Graduated pressure built into the pattern, not faked with a tighter cut.', thumb: thumbCompression },
-      { name: 'Antimicrobial', note: 'Silver-ion treatment that stops the garment turning after a session.', thumb: thumbAntimicrobial },
-      { name: 'Flatlock seams', note: 'Flat, chafe-free joins that sit level against the skin.', thumb: thumbSeams },
-      { name: 'Laser-cut ventilation', note: 'Cut, not punched, so the edges stay clean and never fray.', thumb: thumbVentilation },
-      { name: 'Abrasion-resistant panels', note: 'Reinforced zones at the seat, knees and shoulders, where the wear actually lands.', thumb: thumbAbrasion },
+      { name: 'Moisture-wicking', note: 'Pulls sweat off the skin and spreads it flat, so it dries in minutes, not hours.', thumb: r2('moisture-wicking') },
+      { name: '4-way stretch', note: 'Recovers in both directions — a squat or a sprint does not leave the garment bagged out.', thumb: r2('4-way-stretch') },
+      { name: 'UV protection', note: 'UPF 50+ knits that hold their rating through repeated washing.', thumb: r2('uv-protection') },
+      { name: 'Compression fit', note: 'Graduated pressure built into the pattern, not faked with a tighter cut.', thumb: r2('compression-fit') },
+      { name: 'Antimicrobial', note: 'Silver-ion treatment that stops the garment turning after a session.', thumb: r2('antimicrobial') },
+      { name: 'Flatlock seams', note: 'Flat, chafe-free joins that sit level against the skin.', thumb: r2('flatlock-seams') },
+      { name: 'Laser-cut ventilation', note: 'Cut, not punched, so the edges stay clean and never fray.', thumb: r2('laser-cut-ventilation') },
+      { name: 'Abrasion-resistant panels', note: 'Reinforced zones at the seat, knees and shoulders, where the wear actually lands.', thumb: r2('abrasion-resistant-panels') },
     ],
   },
   areas = [
@@ -85,7 +68,7 @@ const {
       n: '02',
       title: 'Sleeve length & sizing',
       body: 'Sleeve and size are pattern decisions, not afterthoughts. We hold blocks from capped to long, and grade any style against your chart or ours, so the fit holds at both ends of the run — not only on the sample size.',
-      img: imgSizing,
+      img: r2('sleeve-length-sizing'),
       alt: 'Custom team apparel produced across a full size run',
       items: [
         'Cap, half and long sleeves',
@@ -100,7 +83,7 @@ const {
       n: '03',
       title: 'Embroidery & screen printing',
       body: 'Decoration is chosen for the fabric it sits on — not lifted from a standard list. Embroidery is digitised from your artwork and stitched on the frame; screen prints are matched to a Pantone you approve and cured so the colour survives the wash cycle.',
-      img: imgDecoration,
+      img: r2('embroidery-screen-printing'),
       alt: 'Custom printed apparel produced by LeelineSports',
       items: [
         'Digitised embroidery',
@@ -115,7 +98,7 @@ const {
       n: '04',
       title: 'Packaging',
       body: 'Packaging is specified like anything else on the bill of materials. Polybags, hangtags and carton marks are set to your brand and to the channel you ship into — retail shelf or marketplace — so the carton arrives intact rather than merely arriving cheap.',
-      img: imgPackaging,
+      img: r2('packaging'),
       alt: 'Custom sportswear packed for bulk shipment',
       items: [
         'Polybags and garment bags',
@@ -130,8 +113,8 @@ const {
       n: '05',
       title: 'Labels',
       body: 'Labels carry the claims your market requires, so they are set early and checked against the spec. Woven and printed main labels, care and content labels and heat-sealed neck labels are all matched to your artwork, including the compliance text your destination market asks for.',
-      img: imgLabels,
-      alt: 'Custom compression wear finished with heat-sealed labels',
+      img: r2('labels'),
+      alt: 'Woven and printed garment labels produced by LeelineSports',
       items: [
         'Woven main labels',
         'Printed neck labels',
@@ -165,9 +148,8 @@ const {
       </div>
     </article>
 
-    {/* The standing library, laid out the way the reference site does its
-        Materials & Technology cards — icon-led, since we hold no fabric
-        close-ups and a garment photo over "Flatlock seams" would be a lie. */}
+    {/* The standing library — one close-up per construction, so the card names
+        the weave it actually shows. */}
     <ul class="cw-ai-weaves">
       {fabric.weaves.map((w) => (
         <li class="cw-ai-weave" data-reveal="up">

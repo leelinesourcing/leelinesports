@@ -1,0 +1,228 @@
+---
+// FAQ — sticky heading column beside a list of native <details> items.
+import SectionHead from './SectionHead.astro';
+
+interface Faq {
+  question: string
+  answer: string
+}
+
+interface Props {
+  kicker?: string
+  note?: string
+  email?: string
+  faqs?: Faq[]
+}
+
+const {
+  kicker = 'Common Questions',
+  note = 'Straight answers. If it’s not here, ask it over WhatsApp — a real person replies within a day.',
+  email = 'info@leelinesports.com',
+  faqs = [
+    {
+      question: 'What’s your minimum order?',
+      answer: '50–100 units for stock blanks, 200–300 for custom private label. If you’re testing a market first, we can usually sample ahead of the full run and scale from there.',
+    },
+    {
+      question: 'How do you protect my designs and IP?',
+      answer: 'An NDA is signed before your tech pack leaves your inbox. We build from your brief, and your patterns are never reused for another client.',
+    },
+    {
+      question: 'What does DDP actually mean for me?',
+      answer: 'Manufacturing, shipping and duties are quoted as a flat landed figure. There’s no customs bill waiting at the dock — you pay once, it arrives.',
+    },
+    {
+      question: 'How do you actually check quality?',
+      answer: 'Each lot is inspected to 2.5 major / 4.0 minor, with a man-in-plant supervisor and live video inspections prior to shipment. Shrinkage is held to ≤3–5% and colorfastness to Grade 4+.',
+    },
+    {
+      question: 'How fast can I get a sample?',
+      answer: '5–10 days, photographed over live video before it’s couriered. The sample fee comes off your bulk invoice.',
+    },
+    {
+      question: 'What about Amazon FBA?',
+      answer: 'We barcode, poly-bag, kit and inject directly into Amazon fulfilment centres from consolidated Wuhan warehousing — no extra broker in the middle.',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-faq" id="faq">
+  <div class="cw-faq-inner">
+    <div class="cw-faq-grid">
+      <div class="cw-faq-headcol">
+        <div class="cw-faq-sticky">
+          <SectionHead kicker={kicker}>
+            <slot>Frequently Asked Questions about Custom Sportswear Manufacturers</slot>
+          </SectionHead>
+          <p class="cw-faq-note" data-reveal="up" style="--rd:80ms">{note}</p>
+          <a class="cw-faq-mail" href={`mailto:${email}`} data-reveal="up" style="--rd:160ms">
+            {email}
+          </a>
+        </div>
+      </div>
+
+      <div class="cw-faq-listcol">
+        <div class="cw-faq-list">
+          {faqs.map((f, i) => (
+            <details
+              class="cw-faq-item"
+              data-reveal="up"
+              style={`--rd:${(i % 4) * 50}ms`}
+              name="faq"
+            >
+              <summary>
+                <span class="cw-faq-item__q">{f.question}</span>
+                <span class="cw-faq-item__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="cw-faq-item__a">
+                <p>{f.answer}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-faq {
+    padding: 6rem 0 6rem;
+    background: var(--color-linen);
+  }
+  .cw-faq-inner {
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+  }
+  .cw-faq-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .cw-faq-note {
+    margin: 1.5rem 0 0;
+    max-width: 34ch;
+    font-size: 1.00rem;
+    line-height: 1.65;
+    color: var(--color-slate);
+  }
+  .cw-faq-mail {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: 1.00rem;
+    font-weight: 600;
+    color: var(--color-steel);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-berry) 60%, transparent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  .cw-faq-mail:hover {
+    color: var(--color-berry);
+  }
+
+  .cw-faq-item {
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  .cw-faq-item:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  .cw-faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    cursor: pointer;
+    list-style: none;
+    padding: 1.5rem 0;
+  }
+  .cw-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .cw-faq-item__q {
+    font-family: var(--font-heading);
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    font-weight: 570;
+    letter-spacing: -0.015em;
+    color: var(--color-charcoal);
+    transition: color 0.25s ease;
+    font-variation-settings: 'opsz' 40;
+  }
+  .cw-faq-item summary:hover .cw-faq-item__q {
+    color: var(--color-steel);
+  }
+  .cw-faq-item__icon {
+    position: relative;
+    flex: none;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 25%, transparent);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .cw-faq-item__icon::before,
+  .cw-faq-item__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--color-steel);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease;
+  }
+  .cw-faq-item__icon::before {
+    width: 12px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+  }
+  .cw-faq-item__icon::after {
+    width: 1.5px;
+    height: 12px;
+    transform: translate(-50%, -50%);
+  }
+  .cw-faq-item[open] .cw-faq-item__icon {
+    background: var(--color-berry);
+    border-color: var(--color-berry);
+    transform: rotate(135deg);
+  }
+  .cw-faq-item[open] .cw-faq-item__icon::before,
+  .cw-faq-item[open] .cw-faq-item__icon::after {
+    background: var(--color-paper);
+  }
+  .cw-faq-item__a {
+    overflow: hidden;
+    padding-bottom: 1.5rem;
+  }
+  .cw-faq-item__a p {
+    margin: 0;
+    font-size: 1.00rem;
+    line-height: 1.65;
+    color: var(--color-slate);
+    max-width: 40rem;
+  }
+
+  @media (min-width: 1024px) {
+    .cw-faq-grid {
+      grid-template-columns: repeat(12, 1fr);
+      gap: 3.5rem;
+    }
+    .cw-faq-headcol {
+      grid-column: span 5;
+    }
+    /* The head carries a long legal-ish title, so it sets smaller here than the
+       site's default section scale — at the shared size it broke over five
+       lines in this column. */
+    .cw-faq-headcol :global(.sec-title) {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      line-height: 1.06;
+    }
+    .cw-faq-sticky {
+      position: sticky;
+      top: 7rem;
+    }
+    .cw-faq-listcol {
+      grid-column: span 7;
+    }
+  }
+</style>

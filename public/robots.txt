@@ -1,0 +1,14 @@
+# LeelineSports
+User-agent: *
+Allow: /
+Disallow: /prototypes/
+Disallow: /thank-you/
+
+# Block the WordPress-era paths that no longer exist so crawlers drop them faster
+Disallow: /wp-admin/
+Disallow: /wp-content/
+Disallow: /wp-includes/
+Disallow: /*?s=
+Disallow: /*?replytocom=
+
+Sitemap: https://www.leelinesports.com/sitemap-index.xml

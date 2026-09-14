@@ -1,0 +1,280 @@
+---
+import Check from './Check.astro'
+
+interface Column {
+  /** Matches the key of the same name on every row. */
+  key: string
+  label: string
+  /** Highlights this column as LeelineSports' own. */
+  ours?: boolean
+}
+
+interface ComparisonRow {
+  label: string
+  [key: string]: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading?: string
+  lede?: string
+  columns?: Column[]
+  rows?: ComparisonRow[]
+}
+
+const {
+  eyebrow = "Why we're different",
+  heading = 'One Number, an Accountable Party.',
+  lede = 'Every other route leaves the risk on your desk. We quote it away.',
+  columns = [
+    { key: 'factory', label: 'Direct factory' },
+    { key: 'trader', label: 'Trading company' },
+    { key: 'agent', label: 'Western agent' },
+    { key: 'us', label: 'LeelineSports', ours: true },
+  ],
+  rows = [
+    { label: 'You talk to', factory: 'One line, one factory', trader: 'A middleman', agent: 'A project manager', us: 'A team in Wuhan + a spec sheet' },
+    { label: 'Minimum order', factory: '1,000+ units', trader: 'Hidden until quoted', agent: 'Depends on factory', us: '50–100 blanks · 200–300 custom' },
+    { label: 'Quality control', factory: 'Self-reported', trader: 'None', agent: 'Delegated to factory', us: 'AQL 2.5 / 4.0 · man-in-plant' },
+    { label: 'Pricing', factory: 'FOB only', trader: 'Markup + surprise fees', agent: 'Fee on top of factory', us: 'DDP — one landed number' },
+    { label: 'Who carries the risk', factory: 'You, alone', trader: 'You, minus answers', agent: 'Shared, loosely', us: 'We own it, in writing' },
+  ],
+} = Astro.props
+
+// The highlighted column takes the middle grid track. The label column plus an
+// even number of data columns is what puts it exactly in the centre, so the
+// columns array is reordered around it rather than being rendered as authored.
+const oursColumn = columns.find((c) => c.ours)
+const middle = Math.floor((columns.length - 1) / 2)
+const ordered = oursColumn
+  ? (() => {
+      const rest = columns.filter((c) => !c.ours)
+      return [...rest.slice(0, middle), oursColumn, ...rest.slice(middle)]
+    })()
+  : columns
+---
+
+<section class="cw-whyus cw-cv" id="whyus">
+  <div class="cw-wrap">
+    <div class="cw-whyus-head">
+      <p class="cw-eyebrow" data-reveal="up">{eyebrow}</p>
+      <h2 class="cw-h2" data-reveal="mask" style="--rd:80ms">{heading}</h2>
+      <p class="cw-lede" data-reveal="up" style="--rd:160ms">{lede}</p>
+    </div>
+
+    <div class="cw-whyus-table" data-reveal="up" style="--rd:120ms">
+      <div class="cw-whyus-glow" aria-hidden="true"></div>
+
+      <div class="cw-whyus-row cw-whyus-row--head">
+        <div class="cw-whyus-label"></div>
+        {ordered.map((c) => (
+          <div class={`cw-whyus-col${c.ours ? ' cw-whyus-col--ours' : ''}`}>
+            {c.ours && <Check className="cw-whyus-mark" />}
+            {c.label}
+          </div>
+        ))}
+      </div>
+
+      {rows.map((row) => (
+        <div class="cw-whyus-row">
+          <div class="cw-whyus-label">{row.label}</div>
+          {ordered.map((c) => (
+            <div class={`cw-whyus-cell${c.ours ? ' cw-whyus-cell--ours' : ''}`}>{row[c.key]}</div>
+          ))}
+        </div>
+      ))}
+    </div>
+
+    <div class="cw-whyus-mobile">
+      {rows.map((row) => (
+        <div class="cw-whyus-mrow" data-reveal="up">
+          <div class="cw-whyus-mlabel">{row.label}</div>
+          <div class="cw-whyus-mus"><Check className="cw-whyus-mmark" />{oursColumn ? row[oursColumn.key] : ''}</div>
+          <div class="cw-whyus-mother">vs. factory: {row.factory} · agent: {row.agent}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-whyus {
+    padding: 7rem 0 6.5rem;
+    background: var(--color-paper);
+  }
+  .cw-whyus-head {
+    max-width: none;
+  }
+  .cw-whyus-head .cw-lede {
+    max-width: none;
+  }
+
+  .cw-whyus-table {
+    /* Equal tracks either side of LeelineSports put it exactly on the centre
+       line, whatever width the middle track is given:
+       label · competitor · LeelineSports · competitor · competitor */
+    --whyus-cols: 1fr 1fr 1.5fr 1fr 1fr;
+    position: relative;
+    z-index: 0;
+    margin-top: 3rem;
+    display: none;
+    background: var(--color-linen);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 18%, transparent);
+    border-radius: 20px;
+  }
+  /* One element carrying the whole middle column, so the plate reads as a
+     single raised surface instead of a seam per row. It paints over the row
+     rules but under the column's own text, and its negative block margin lets
+     it sit proud of the table's top and bottom edges. */
+  .cw-whyus-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: var(--whyus-cols);
+    pointer-events: none;
+  }
+  .cw-whyus-glow::before {
+    content: '';
+    grid-column: 3;
+    margin-block: -6px;
+    /* lit from above: white holds through the upper two-thirds, then falls
+       away to linen so the plate reads as curved rather than flat */
+    background: linear-gradient(
+      180deg,
+      var(--color-paper) 0%,
+      var(--color-paper) 58%,
+      color-mix(in srgb, var(--color-paper) 42%, var(--color-linen)) 100%
+    );
+    border: 2px solid color-mix(in srgb, var(--color-berry) 34%, transparent);
+    border-radius: 14px;
+    box-shadow:
+      inset 0 -7px 12px -9px color-mix(in srgb, var(--color-steel) 30%, transparent),
+      0 3px 0 color-mix(in srgb, var(--color-berry) 20%, transparent),
+      0 24px 48px -26px color-mix(in srgb, var(--color-ink) 68%, transparent);
+  }
+
+  .cw-whyus-row {
+    display: grid;
+    grid-template-columns: var(--whyus-cols);
+  }
+  .cw-whyus-row + .cw-whyus-row {
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+
+  /* competitors recede so the middle column carries the weight */
+  .cw-whyus-label,
+  .cw-whyus-cell,
+  .cw-whyus-col {
+    padding: 1.1rem 1.2rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-charcoal) 55%, transparent);
+  }
+  .cw-whyus-label {
+    font-weight: 700;
+    color: var(--color-charcoal);
+    font-size: 0.92rem;
+    letter-spacing: 0.01em;
+  }
+  .cw-whyus-row--head .cw-whyus-col {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: 1.05rem;
+    color: color-mix(in srgb, var(--color-charcoal) 68%, transparent);
+  }
+
+  /* ── the LeelineSports column ─────────────────────────── */
+  /* Surface, border and shadow all live on .cw-whyus-glow::before, so the
+     column is one continuous plate with no seams between rows. */
+  .cw-whyus-col--ours {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .cw-whyus-row--head .cw-whyus-col--ours {
+    font-family: var(--font-heading);
+    font-weight: 620;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    color: var(--color-berry);
+  }
+  .cw-whyus-cell--ours {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-size: 1.02rem;
+    color: var(--color-steel);
+    font-weight: 700;
+  }
+  /* The row rules run through the highlighted column too, so its rows line up
+     with the neighbours instead of reading as one undivided block. */
+  .cw-whyus-col--ours,
+  .cw-whyus-cell--ours {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  .cw-whyus-row:last-child .cw-whyus-cell--ours {
+    border-bottom: none;
+  }
+  /* size comes from <Check>'s own scoped rule; only the tint is set here */
+  .cw-whyus-mark {
+    flex: none;
+    color: var(--color-berry);
+  }
+
+  /* ── mobile: each row keeps its own card ──────────────── */
+  .cw-whyus-mobile {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .cw-whyus-mrow {
+    background: var(--color-linen);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    border-radius: 16px;
+    padding: 1.2rem 1.3rem;
+  }
+  .cw-whyus-mlabel {
+    font-size: 0.80rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+  }
+  .cw-whyus-mus {
+    margin-top: 0.55rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-heading);
+    font-weight: 540;
+    font-size: 1.17rem;
+    letter-spacing: -0.01em;
+    color: var(--color-charcoal);
+  }
+  .cw-whyus-mmark {
+    width: 17px;
+    height: 17px;
+    color: var(--color-berry);
+  }
+  .cw-whyus-mother {
+    margin-top: 0.5rem;
+    font-size: 0.90rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 900px) {
+    .cw-whyus-table {
+      display: block;
+    }
+    .cw-whyus-mobile {
+      display: none;
+    }
+  }
+</style>

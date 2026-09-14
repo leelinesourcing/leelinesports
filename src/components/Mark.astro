@@ -1,0 +1,27 @@
+---
+/**
+ * Mark — the "registration crosshair" motif.
+ * A screen-print alignment mark (thin ring + cross ticks + centre dot).
+ * Recurring ornament across the whole site; tints via currentColor.
+ */
+interface Props {
+  className?: string
+}
+const { className = '' } = Astro.props
+---
+
+<svg class={`cw-mark ${className}`} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.1" opacity="0.5" />
+  <circle cx="12" cy="12" r="1.7" fill="currentColor" />
+  <path d="M12 2.1v3.4M12 18.5v3.4M2.1 12h3.4M18.5 12h3.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+</svg>
+
+<style>
+  .cw-mark {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    display: inline-block;
+    vertical-align: -0.16em;
+  }
+</style>

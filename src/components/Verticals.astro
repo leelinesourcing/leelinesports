@@ -1,0 +1,201 @@
+---
+// "What we make" — the product-category index.
+// Order and naming follow the PRODUCTS menu on leelinesports.com.
+// All 18 categories are kept, but presented as a compact uniform grid rather
+// than 18 oversized photos — this section used to run 4,082px tall.
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+import SectionHead from './SectionHead.astro'
+
+import imgGolf from '../assets/images/image-05.webp'
+import imgCycling from '../assets/images/image-10.webp'
+import imgTshirts from '../assets/images/image-11.avif'
+import imgTennis from '../assets/images/image-04.webp'
+import imgSocks from '../assets/images/image-13.avif'
+import imgTowel from '../assets/images/image-16.avif'
+import imgHunting from '../assets/images/image-07.webp'
+import imgUnderwear from '../assets/images/image-03.webp'
+import imgSwimwear from '../assets/images/image-12.avif'
+import imgWorkUniform from '../assets/images/image-17.avif'
+import imgGym from '../assets/images/image-02.webp'
+import imgHawaiian from '../assets/images/image-18.webp'
+import imgFishing from '../assets/images/image-09.webp'
+import imgBaseball from '../assets/images/image-08.avif'
+import imgBasketball from '../assets/images/image-19.webp'
+import imgYoga from '../assets/images/image-06.webp'
+import imgIceHockey from '../assets/images/image-14.avif'
+import imgSoccer from '../assets/images/image-20.avif'
+
+interface Category {
+  name: string
+  /** Two lines under the name. */
+  desc: string
+  img: ImageMetadata
+}
+
+interface Props {
+  kicker?: string
+  note?: string
+  /** Where each category tile links. */
+  href?: string
+  categories?: Category[]
+}
+
+const {
+  kicker = 'What we make',
+  note = 'Whichever category you order, the process is identical — the same quality standard, the same duty-paid delivery and no new vendor to onboard when you add another.',
+  href = '#quote',
+  categories = [
+    { name: 'Golf Apparel', desc: 'Pique and performance knits cut to your spec — polos, quarter-zips and skorts, embroidered or printed.', img: imgGolf },
+    { name: 'Cycling Apparel', desc: 'Race-fit jerseys and bib shorts with sublimated panels, silicone grippers and reflective detailing.', img: imgCycling },
+    { name: 'T-Shirts', desc: 'Ring-spun cotton or wicking poly — screen printed, embroidered, or blank for your own decoration.', img: imgTshirts },
+    { name: 'Tennis Clothing', desc: 'Stretch wovens and knits with UV-rated finishes — pleated skirts, polos and dresses through the size run.', img: imgTennis },
+    { name: 'Custom Socks', desc: 'Cushioned, compression or crew, knitted to your colourways in cotton, bamboo or technical blends.', img: imgSocks },
+    { name: 'Towel', desc: 'Cotton and microfibre in gym, beach and golf sizes, jacquard-woven or printed with your brand mark.', img: imgTowel },
+    { name: 'Hunting Clothing', desc: 'Quiet brushed shells and mid-layers in muted palettes, built for layering with reinforced wear points.', img: imgHunting },
+    { name: 'Underwear', desc: 'Modal, bamboo and cotton blends with heat-sealed labels, flat seams and no exposed elastic.', img: imgUnderwear },
+    { name: 'Swimwear', desc: 'Chlorine-resistant Lycra built to hold colour, with UPF 50+ ratings and four-way stretch.', img: imgSwimwear },
+    { name: 'Work Uniform', desc: 'Hard-wearing twill and poly-cotton, graded across the size range with reinforced seams and durable prints.', img: imgWorkUniform },
+    { name: 'Gym Clothing', desc: 'Seamless, compression or relaxed cuts in wicking knits — sports bras, leggings, shorts and tops.', img: imgGym },
+    { name: 'Custom Hawaiian Shirts', desc: 'Printed panel by panel then cut and sewn, on soft-hand rayon or cotton with your artwork placed.', img: imgHawaiian },
+    { name: 'Fishing Apparel', desc: 'UPF-rated shirts with vented backs, quick-dry weaves and ripstop panels for long days on the water.', img: imgFishing },
+    { name: 'Baseball Apparel', desc: 'Button-front jerseys in sublimation or twill appliqué, with pants, caps and full squad numbering.', img: imgBaseball },
+    { name: 'Basketball Apparel', desc: 'Mesh jerseys and shorts with sublimated numbers and names, reversible on request for scrimmage kits.', img: imgBasketball },
+    { name: 'Yoga Apparel', desc: 'Brushed knits with flatlock seams and a no-dig waistband, cut for studio wear and hold in the wash.', img: imgYoga },
+    { name: 'Ice Hockey Wear', desc: 'Heavyweight sublimated jerseys with reinforced shoulders and double-stitched hems, built for contact.', img: imgIceHockey },
+    { name: 'Soccer Apparel', desc: 'Sublimated kits with numbers, names and sponsor placement, matched across the full squad size run.', img: imgSoccer },
+  ],
+} = Astro.props
+---
+
+<section class="cw-vt" id="verticals">
+  <div class="cw-wrap">
+    <div class="cw-vt-head">
+      <SectionHead kicker={kicker}>
+        <slot>Eighteen Categories, One Supply Chain.</slot>
+      </SectionHead>
+      <p class="cw-vt-note" data-reveal="up" style="--rd:160ms">{note}</p>
+    </div>
+
+    <ul class="cw-vt-grid">
+      {categories.map((c, i) => (
+        <li class="cw-vt-item" data-reveal="up" style={`--rd:${(i % 6) * 50}ms`}>
+          <a href={href} class="cw-vt-link">
+            <figure class="cw-vt-fig">
+              <Image
+                src={c.img}
+                alt={`${c.name} manufactured by LeelineSports`}
+                width={550}
+                height={525}
+                widths={[275, 550]}
+                sizes="(min-width: 760px) 33vw, 50vw"
+                quality={80}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <span class="cw-vt-name">{c.name}</span>
+            <span class="cw-vt-desc">{c.desc}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cw-vt {
+    padding: 7rem 0 6.5rem;
+    background: var(--color-cream);
+  }
+  .cw-vt-head {
+    display: grid;
+    gap: 2.75rem;
+  }
+  /* the head block spans the same measure as the category grid below it */
+  .cw-vt-head :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-vt-head :global(.sec-title) {
+    line-height: 1.06;
+  }
+  .cw-vt-note {
+    margin: 0;
+    font-size: 1.12rem;
+    line-height: 1.66;
+    color: var(--color-slate);
+    text-wrap: pretty;
+  }
+
+  .cw-vt-grid {
+    margin: 3.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+  }
+  .cw-vt-link {
+    display: block;
+    text-decoration: none;
+  }
+  .cw-vt-fig {
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--color-linen);
+  }
+  .cw-vt-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    /* a single grade across the whole set so the grid reads as one library */
+    filter: saturate(0.88) contrast(1.04);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+  }
+  .cw-vt-link:hover .cw-vt-fig img {
+    transform: scale(1.06);
+    filter: saturate(1) contrast(1.04);
+  }
+  .cw-vt-name {
+    display: block;
+    margin-top: 1.2rem;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1.35;
+    color: var(--color-charcoal);
+    transition: color 0.25s ease;
+  }
+  .cw-vt-desc {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+    transition: color 0.25s ease;
+  }
+  .cw-vt-link:hover .cw-vt-name {
+    color: var(--color-steel);
+  }
+
+  @media (min-width: 560px) {
+    .cw-vt-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 760px) {
+    .cw-vt-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 1.5rem;
+    }
+  }
+  @media (min-width: 900px) {
+    .cw-vt-grid {
+      gap: 2.5rem 1.9rem;
+    }
+  }
+</style>

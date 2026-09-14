@@ -1,0 +1,48 @@
+---
+/**
+ * Badge — the small pill label used for service tags, ICP tags and process
+ * tags. Self-contained: its variants and metrics live here so a parent does
+ * not need to reach into the badge to restyle it.
+ */
+interface Props {
+  variant?: 'default' | 'accent' | 'onDark' | 'outline'
+  size?: 'sm' | 'md' | 'lg'
+  /** Tracked capitals — used by the process tags. */
+  uppercase?: boolean
+  class?: string
+}
+
+const { variant = 'default', size = 'md', uppercase = false, class: className = '' } = Astro.props
+---
+
+<span class:list={['cw-badge', `cw-badge--${variant}`, `cw-badge--${size}`, uppercase && 'cw-badge--upper', className]}><slot /></span>
+
+<style>
+  .cw-badge {
+    display: inline-block;
+    background: transparent;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  .cw-badge--sm { padding: 0.32rem 0.72rem; font-size: 0.82rem; }
+  .cw-badge--md { padding: 0.3rem 0.7rem; font-size: 0.84rem; }
+  .cw-badge--lg { padding: 0.35rem 0.8rem; font-size: 0.86rem; }
+  .cw-badge--upper { letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .cw-badge--default {
+    border: 1px solid color-mix(in srgb, var(--color-steel) 28%, transparent);
+    color: var(--color-steel);
+  }
+  .cw-badge--accent {
+    border: 1px solid color-mix(in srgb, var(--color-berry) 45%, transparent);
+    color: var(--color-berry);
+  }
+  .cw-badge--onDark {
+    border: 1px solid color-mix(in srgb, var(--color-mist) 34%, transparent);
+    color: color-mix(in srgb, var(--color-mist) 90%, transparent);
+  }
+  .cw-badge--outline {
+    border: 1px solid color-mix(in srgb, var(--color-berry) 40%, transparent);
+    color: var(--color-steel);
+  }
+</style>

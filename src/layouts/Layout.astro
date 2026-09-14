@@ -4,9 +4,51 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  /** Path or absolute URL to the social share image. */
+  ogImage?: string;
+  /** og:type — 'website' for most pages, 'article' for blog posts. */
+  type?: string;
+  /** Set true for thank-you / internal pages that must stay out of the index. */
+  noindex?: boolean;
+  /** Page-specific JSON-LD objects, appended after the site-wide Organization node. */
+  schema?: Record<string, unknown>[];
 }
 
-const { title, description = '' } = Astro.props;
+const {
+  title,
+  description = '',
+  ogImage = '/images/og-default.jpg',
+  type = 'website',
+  noindex = false,
+  schema = [],
+} = Astro.props;
+
+const SITE = Astro.site ?? new URL('https://www.leelinesports.com/');
+const canonical = new URL(Astro.url.pathname, SITE).href;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, SITE).href;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'LeelineSports',
+  url: SITE.origin,
+  logo: new URL('/favicon.svg', SITE).href,
+  email: 'info@leelinesports.com',
+  telephone: '+86-13986152456',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Wuhan',
+    addressRegion: 'Hubei',
+    addressCountry: 'CN',
+  },
+  sameAs: [
+    'https://www.facebook.com/profile.php?id=61565910874919',
+    'https://www.youtube.com/@LeelineSports',
+    'https://www.linkedin.com/company/leelinesports/',
+  ],
+};
+
+const graph = [organization, ...schema];
 ---
 
 <!doctype html>
@@ -14,11 +56,38 @@ const { title, description = '' } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="var(--color-denim)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="LeelineSports" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} />
   </head>
   <body>
     <slot />
+    <script>
+      import '../scripts/site.js';
+    </script>
   </body>
 </html>

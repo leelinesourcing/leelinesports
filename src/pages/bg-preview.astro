@@ -1,0 +1,78 @@
+---
+// TEMPORARY PREVIEW — not part of the site. Renders the full homepage with the
+// light grounds (cream canvas, linen bands, paper lift) nudged towards the
+// denim blue, so the tint can be judged in context. Delete once decided.
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/Nav.astro'
+import Hero from '../components/Hero.astro'
+import ProofBar from '../components/ProofBar.astro'
+import Verticals from '../components/Verticals.astro'
+import Pain from '../components/Pain.astro'
+import Services from '../components/Services.astro'
+import BeyondOrder from '../components/BeyondOrder.astro'
+import Certifications from '../components/Certifications.astro'
+import PricingDelivery from '../components/PricingDelivery.astro'
+import Process from '../components/Process.astro'
+import ICPs from '../components/ICPs.astro'
+import WhyUs from '../components/WhyUs.astro'
+import CaseStudies from '../components/CaseStudies.astro'
+import Testimonials from '../components/Testimonials.astro'
+import Showcase from '../components/Showcase.astro'
+import Faq from '../components/Faq.astro'
+import FinalCta from '../components/FinalCta.astro'
+import Footer from '../components/Footer.astro'
+---
+
+<Layout title="Background tint preview" description="Internal preview" noindex>
+  <style is:global>
+    /*
+      Preview only. Mixed towards --color-mist (the palette's own light blue)
+      rather than --color-steel: a mid blue mixed into a near-white only darkens
+      it to grey, because it cannot lift the blue channel on its own.
+      Current strength: roughly half the ground replaced by mist.
+    */
+    :root {
+      --color-cream: color-mix(in srgb, #f8f7f3 52%, var(--color-mist));
+      --color-linen: color-mix(in srgb, #eeece6 40%, var(--color-mist));
+      --color-paper: color-mix(in srgb, #ffffff 70%, var(--color-mist));
+    }
+    .bp-chip {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 999;
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      font: 600 12px/1.4 Manrope, system-ui, sans-serif;
+      letter-spacing: 0.02em;
+      color: #f8f7f3;
+      background: color-mix(in srgb, #0a182e 88%, transparent);
+      border: 1px solid color-mix(in srgb, #f8f7f3 26%, transparent);
+    }
+  </style>
+
+  <Nav />
+  <Hero />
+
+  <main>
+    <ProofBar />
+    <Verticals />
+    <Pain />
+    <Services />
+    <BeyondOrder />
+    <Certifications />
+    <PricingDelivery />
+    <Process />
+    <ICPs />
+    <WhyUs />
+    <CaseStudies />
+    <Testimonials />
+    <Showcase />
+    <Faq />
+    <FinalCta />
+  </main>
+
+  <Footer />
+  <div class="cw-grain" aria-hidden="true"></div>
+  <p class="bp-chip">Preview · cream / linen / paper mixed towards mist</p>
+</Layout>

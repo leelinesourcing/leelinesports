@@ -1,0 +1,225 @@
+---
+// "Client showcase" — a 3D ring of finished goods.
+// Items are laid out around an arc (rotateY + translateZ); the arrows advance
+// one card at a time and cards away from the front shrink and fade. Markup
+// falls back to a plain scrolling row if JS never runs.
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+import shotGolf from '../assets/images/image-05.webp'
+import shotTennis from '../assets/images/image-04.webp'
+import shotGym from '../assets/images/image-02.webp'
+import shotYoga from '../assets/images/image-06.webp'
+import shotHunting from '../assets/images/image-07.webp'
+import shotBaseball from '../assets/images/image-08.avif'
+import shotSwim from '../assets/images/image-12.avif'
+import shotSoccer from '../assets/images/image-20.avif'
+
+interface Shot {
+  img: ImageMetadata
+  alt: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading?: string
+  lede?: string
+  shots?: Shot[]
+}
+
+const {
+  eyebrow = 'Client showcase',
+  heading = 'Finished Goods, off the Wuhan Floor.',
+  lede = 'Every piece below was cut, sewn and inspected by the same team that quoted it. No stock photography, no renders.',
+  shots = [
+    { img: shotGolf, alt: 'Custom golf apparel produced for a private-label brand' },
+    { img: shotTennis, alt: 'Custom tennis clothing produced for a private-label brand' },
+    { img: shotGym, alt: 'Custom gym clothing produced for a private-label brand' },
+    { img: shotYoga, alt: 'Custom yoga apparel produced for a private-label brand' },
+    { img: shotHunting, alt: 'Custom hunting clothing produced for a private-label brand' },
+    { img: shotBaseball, alt: 'Custom baseball apparel produced for a private-label brand' },
+    { img: shotSwim, alt: 'Custom swimwear produced for a private-label brand' },
+    { img: shotSoccer, alt: 'Custom soccer apparel produced for a private-label brand' },
+  ],
+} = Astro.props
+---
+
+<section class="cw-showcase" id="showcase">
+  <div class="cw-wrap">
+    <div class="cw-showcase-head">
+      <div class="cw-showcase-intro">
+        <p class="cw-eyebrow" data-reveal="up">{eyebrow}</p>
+        <h2 class="cw-h2" data-reveal="up" style="--rd:80ms">{heading}</h2>
+        <p class="cw-lede" data-reveal="up" style="--rd:160ms">{lede}</p>
+      </div>
+    </div>
+
+    <div class="cw-showcase-stage" data-showcase-stage data-reveal="up" style="--rd:120ms">
+      <ul class="cw-showcase-ring" data-showcase-ring aria-label="Finished goods gallery">
+        {shots.map((s) => (
+          <li class="cw-showcase-item">
+            <figure class="cw-showcase-fig">
+              <Image
+                src={s.img}
+                alt={s.alt}
+                width={480}
+                height={600}
+                widths={[240, 480]}
+                sizes="(min-width: 760px) 240px, 176px"
+                quality={80}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+
+      <div class="cw-showcase-nav">
+        <button type="button" class="cw-showcase-btn" data-showcase-prev aria-label="Rotate to previous pieces">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 5 8 12l7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button type="button" class="cw-showcase-btn" data-showcase-next aria-label="Rotate to next pieces">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-showcase {
+    --card-w: clamp(10rem, 20vw, 15rem);
+    padding: 7rem 0 6rem;
+    background: var(--color-cream);
+  }
+  .cw-showcase-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .cw-showcase-intro {
+    max-width: none;
+    /* the head is a wrapping flex row, so the intro has to claim the width
+       rather than shrink to its text */
+    flex: 1;
+  }
+  .cw-showcase-intro .cw-lede {
+    max-width: none;
+  }
+  /* Controls flank the rail. The cards fan away from the centre, so the left
+     and right thirds stay empty and the buttons read against that space. The
+     overlay is click-through everywhere except the buttons themselves. */
+  .cw-showcase-nav {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .cw-showcase-nav .cw-showcase-btn {
+    pointer-events: auto;
+  }
+  .cw-showcase-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 26%, transparent);
+    background: var(--color-paper);
+    color: var(--color-steel);
+    cursor: pointer;
+    transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  .cw-showcase-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .cw-showcase-btn:hover {
+    border-color: var(--color-berry);
+    color: var(--color-berry);
+  }
+  .cw-showcase-btn:active {
+    transform: scale(0.94);
+  }
+
+  .cw-showcase-stage {
+    position: relative;
+    margin-top: 2.6rem;
+  }
+
+  /* Fallback (no JS): a plain row you can scroll by hand. */
+  .cw-showcase-ring {
+    display: flex;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0 0 1.9rem;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cw-showcase-ring::-webkit-scrollbar {
+    display: none;
+  }
+  .cw-showcase-item {
+    flex: 0 0 auto;
+    width: var(--card-w);
+  }
+  .cw-showcase-fig {
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    border-radius: 20px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    background: var(--color-linen);
+    box-shadow: 0 34px 70px -44px color-mix(in srgb, var(--color-ink) 40%, transparent);
+  }
+  .cw-showcase-fig img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.88) contrast(1.04);
+  }
+
+  /* 3D ring — switched on by site.js once it has measured the cards. */
+  .cw-showcase-stage.is-3d {
+    height: calc(var(--card-w) * 1.8);
+    perspective: 3000px;
+    perspective-origin: 50% 50%;
+  }
+  .cw-showcase-stage.is-3d .cw-showcase-ring {
+    position: absolute;
+    inset: 0;
+    display: block;
+    padding: 0;
+    overflow: visible;
+    transform-style: preserve-3d;
+  }
+  .cw-showcase-stage.is-3d .cw-showcase-item {
+    position: absolute;
+    top: calc(50% - var(--card-w) * 0.625);
+    left: 50%;
+    width: var(--card-w);
+    height: calc(var(--card-w) * 1.25);
+    margin-left: calc(var(--card-w) / -2);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+  .cw-showcase-stage.is-3d .cw-showcase-fig {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+</style>

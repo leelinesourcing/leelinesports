@@ -1,0 +1,48 @@
+---
+/**
+ * Button — the pill CTA used across the site.
+ * Renders an <a> when `href` is set, otherwise a <button>. The visual styling
+ * lives in design-system.css (.cw-btn and its modifiers) so that the same
+ * class names keep working for markup that is not rendered through this atom.
+ */
+interface Props {
+  href?: string
+  variant?: 'berry' | 'indigo' | 'ghost'
+  size?: 'md' | 'sm'
+  /** Full-width button. */
+  block?: boolean
+  /** Opens the link in a new tab. */
+  external?: boolean
+  type?: 'button' | 'submit' | 'reset'
+  class?: string
+}
+
+const {
+  href,
+  variant = 'berry',
+  size = 'md',
+  block = false,
+  external = false,
+  type = 'button',
+  class: className = '',
+} = Astro.props
+
+const classes = [
+  'cw-btn',
+  `cw-btn--${variant}`,
+  size === 'sm' && 'cw-btn--sm',
+  block && 'cw-btn--block',
+  className,
+]
+---
+
+{href ? (
+  <a
+    class:list={classes}
+    href={href}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener' : undefined}
+  ><slot /></a>
+) : (
+  <button class:list={classes} type={type}><slot /></button>
+)}

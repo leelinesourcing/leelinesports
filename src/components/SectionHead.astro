@@ -1,0 +1,102 @@
+---
+import Contour from './Contour.astro';
+
+interface Props {
+  kicker?: string;
+  lead?: string;
+  tone?: 'light' | 'dark';
+  align?: 'left' | 'center';
+}
+const { kicker = '', lead = '', tone = 'light', align = 'left' } = Astro.props;
+const isDark = tone === 'dark';
+const isCenter = align === 'center';
+---
+
+<div
+  class:list={[
+    'sec-head',
+    isDark && 'sec-head--dark',
+    isCenter && 'sec-head--center',
+  ]}
+>
+  {kicker && (
+    <div class="eyebrow">
+      <Contour size={22} class="eyebrow__contour" />
+      <span class="eyebrow__text">{kicker}</span>
+      <span class="eyebrow__rule" aria-hidden="true"></span>
+    </div>
+  )}
+  <h2 class="sec-title"><slot /></h2>
+  {lead && <p class="sec-lead">{lead}</p>}
+</div>
+
+<style>
+  .sec-head {
+    max-width: 44rem;
+  }
+  .sec-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .sec-head--center .eyebrow {
+    justify-content: center;
+  }
+  .sec-head--center .eyebrow__rule {
+    display: none;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .eyebrow__contour {
+    color: var(--color-berry);
+    flex: none;
+  }
+  .eyebrow__text {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-variation-settings: 'opsz' 72, 'SOFT' 0;
+    font-size: clamp(1rem, 1.25vw, 1.08rem);
+    letter-spacing: -0.01em;
+    color: var(--color-slate);
+    white-space: nowrap;
+  }
+  .sec-head--dark .eyebrow__text {
+    color: color-mix(in srgb, var(--color-cream) 66%, transparent);
+  }
+  .eyebrow__rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-berry), transparent);
+    opacity: 0.55;
+  }
+
+  .sec-title {
+    margin-top: 1.15rem;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 120, 'SOFT' 60;
+    font-size: clamp(2rem, 4.6vw, 3.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--color-charcoal);
+    text-wrap: balance;
+  }
+  .sec-head--dark .sec-title {
+    color: var(--color-cream);
+  }
+
+  .sec-lead {
+    margin-top: 1.15rem;
+    font-family: var(--font-body);
+    font-size: clamp(1.04rem, 1.35vw, 1.14rem);
+    line-height: 1.65;
+    color: var(--color-slate);
+    text-wrap: pretty;
+  }
+  .sec-head--dark .sec-lead {
+    color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  }
+</style>

@@ -1,0 +1,228 @@
+---
+// "Who this is for" — four buyer profiles.
+// Laid out as a flat two-by-two grid of equal cards rather than one featured
+// card plus a stagger: each profile carries the same four things (what they
+// need, what we answer, how we're provisioned for them, what they search),
+// so no single one deserves to lead.
+import Badge from './Badge.astro'
+
+interface Icp {
+  /** Decorative only — rendered aria-hidden beside the name. */
+  emoji: string
+  name: string
+  role: string
+  /** What they need out of a supply chain. */
+  need: string
+  /** How we answer it. */
+  handle: string
+  tags: string[]
+  /** The phrase this buyer typically arrives on. */
+  search: string
+}
+
+interface Props {
+  eyebrow?: string
+  heading?: string
+  lede?: string
+  icps?: Icp[]
+}
+
+const {
+  eyebrow = 'Who this is for',
+  heading = 'Four Kinds of Operators.',
+  lede = 'Different problems, same brief: bring the brand, we bring the supply chain.',
+  icps = [
+    {
+      emoji: '🛒',
+      name: 'DTC & independent brands',
+      role: 'Direct-to-consumer labels and standalone-store sellers',
+      need: 'A supply chain that flexes — short runs, fast sampling, and first access to new performance fabrics.',
+      handle: 'Bulk that matches the prototype, OEKO-TEX certification on the fabric, and a named contact instead of a chain of middlemen.',
+      tags: ['Low MOQ', 'OEKO-TEX', 'Fast sampling'],
+      search: 'Custom activewear manufacturer',
+    },
+    {
+      emoji: '🏢',
+      name: 'Corporate & promotional',
+      role: 'Workwear and promotional apparel distributors',
+      need: 'Volume you can plan around — steady capacity, a sharp unit cost, and an SOP that never moves.',
+      handle: 'Dates we hold to, a defect rate you can quote to your own client, and a full inspection report on each lot.',
+      tags: ['Bulk capacity', 'AQL 2.5 / 4.0', 'Fixed lead times'],
+      search: 'B2B sportswear supplier bulk',
+    },
+    {
+      emoji: '🎒',
+      name: 'Schools & team programmes',
+      role: 'School sports and uniform buyers',
+      need: 'Kit that survives a full year — standard grades, and compliance your district will sign off on.',
+      handle: 'Fabrics tested against pilling and fading, plus the safety paperwork for youth apparel.',
+      tags: ['Durable grades', 'Youth compliance', 'Size-set runs'],
+      search: 'School PE uniform manufacturer',
+    },
+    {
+      emoji: '🏋️',
+      name: 'Gyms & studio networks',
+      role: 'Gym chains and studio groups',
+      need: 'A house range in your own name — white-label, a consistent visual standard, and reorders that simply turn up.',
+      handle: 'Private-label production, a pattern library we hold for you, and tech packs written so reorders are repeat orders.',
+      tags: ['White label', 'Tech packs', 'Repeat runs'],
+      search: 'Private label yoga wear manufacturer',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-icps cw-cv" id="icps">
+  <div class="cw-wrap">
+    <div class="cw-icps-head">
+      <p class="cw-eyebrow" data-reveal="up">{eyebrow}</p>
+      <h2 class="cw-h2" data-reveal="up" style="--rd:80ms">{heading}</h2>
+      <p class="cw-lede" data-reveal="up" style="--rd:160ms">{lede}</p>
+    </div>
+
+    <div class="cw-icps-grid">
+      {icps.map((p, i) => (
+        <article class="cw-icp" data-reveal={i % 2 === 0 ? 'left' : 'right'}>
+          <div class="cw-icp-top">
+            <span class="cw-icp-icon" aria-hidden="true">{p.emoji}</span>
+            <div class="cw-icp-titles">
+              <h3 class="cw-h3">{p.name}</h3>
+              <p class="cw-icp-role">{p.role}</p>
+            </div>
+          </div>
+
+          <div class="cw-icp-exchange">
+            <p class="cw-icp-need"><span>You need</span>{p.need}</p>
+            <p class="cw-icp-handle"><span>We handle</span>{p.handle}</p>
+          </div>
+
+          <div class="cw-icp-tags">
+            {p.tags.map((t) => <Badge>{t}</Badge>)}
+          </div>
+
+          <p class="cw-icp-search">Arrives on “{p.search}”</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-icps {
+    padding: 7rem 0 6rem;
+    background: var(--color-cream);
+  }
+  .cw-icps-head {
+    max-width: 42rem;
+  }
+  .cw-icps-grid {
+    margin-top: 3.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+  .cw-icp {
+    background: var(--color-linen);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 13%, transparent);
+    border-radius: 20px;
+    padding: 1.7rem 1.6rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.55s ease, border-color 0.35s ease;
+  }
+  .cw-icp:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 36px 70px -42px color-mix(in srgb, var(--color-ink) 50%, transparent);
+    border-color: color-mix(in srgb, var(--color-berry) 40%, transparent);
+  }
+
+  .cw-icp-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+  .cw-icp-icon {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 12%, transparent);
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+  .cw-icp-titles {
+    min-width: 0;
+  }
+  .cw-icp-role {
+    margin: 0.3rem 0 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.97rem;
+    color: var(--color-slate);
+  }
+
+  .cw-icp-exchange {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .cw-icp-need,
+  .cw-icp-handle {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+  .cw-icp-need {
+    color: var(--color-slate);
+  }
+  .cw-icp-handle {
+    color: var(--color-charcoal);
+    font-weight: 600;
+  }
+  .cw-icp-need span,
+  .cw-icp-handle span {
+    display: block;
+    font-size: 0.80rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .cw-icp-need span {
+    color: var(--color-slate);
+  }
+  .cw-icp-handle span {
+    color: var(--color-berry);
+  }
+
+  /* tags and the search line ride the bottom edge so they line up across a row */
+  .cw-icp-tags {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding-top: 0.4rem;
+  }
+  .cw-icp-search {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 760px) {
+    .cw-icps-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.6rem;
+    }
+    .cw-icp {
+      padding: 1.9rem 1.8rem 1.7rem;
+    }
+  }
+</style>

@@ -1,0 +1,243 @@
+---
+// Pricing & delivery — the DDP model and the three transit modes.
+// Two columns: the three transit modes stack on the left and share that
+// column's height; the FBA handover sits beside them as a photo-backed panel.
+import { Image } from 'astro:assets'
+import fbaImage from '../assets/images/image-11.avif'
+
+interface Mode {
+  name: string
+  /** Transit window, set as the card's headline. */
+  time: string
+  best: string
+}
+
+interface Props {
+  eyebrow?: string
+  modes?: Mode[]
+  fbaEyebrow?: string
+  fbaTitle?: string
+  fbaText?: string
+  fbaItems?: string[]
+}
+
+const {
+  eyebrow = 'Pricing & delivery',
+  modes = [
+    { name: 'Express', time: '3–5 days', best: 'Samples, and drops that cannot wait.' },
+    { name: 'Air freight', time: '7–12 days', best: 'The middle ground for mid-size runs.' },
+    { name: 'Sea freight', time: '25–40 days', best: 'Lowest cost per unit on bulk.' },
+  ],
+  fbaEyebrow = 'Included on request',
+  fbaTitle = 'FBA prep & injection.',
+  fbaText = 'Barcoded, poly-bagged and kitted from consolidated Wuhan warehousing, then injected straight into Amazon fulfilment centres. Your stock skips your garage and arrives sellable.',
+  fbaItems = [
+    'Barcoding & labelling',
+    'Poly-bagging',
+    'Multi-SKU kitting',
+    'Direct FC injection',
+  ],
+} = Astro.props
+---
+
+<section class="cw-pricing cw-cv" id="pricing">
+  <div class="cw-wrap">
+    <div class="cw-pricing-head">
+      <p class="cw-eyebrow" data-reveal="up">{eyebrow}</p>
+      <h2 class="cw-h2" data-reveal="up" style="--rd:80ms">One Landed Number.<br />Three Ways to Move It.</h2>
+      <p class="cw-lede" data-reveal="up" style="--rd:160ms">Your quote is duty-paid — manufacturing, freight and import duties arrive as an approved figure.<br />No customs invoice waiting at the dock, no demurrage you didn’t budget for.</p>
+    </div>
+
+    <div class="cw-pricing-cols">
+      <div class="cw-transit-col">
+        {modes.map((m, i) => (
+          <article class="cw-transit" data-reveal="up" style={`--rd:${i * 70}ms`}>
+            <span class="cw-transit__name">{m.name}</span>
+            <span class="cw-transit__time">{m.time}</span>
+            <span class="cw-transit__best">{m.best}</span>
+          </article>
+        ))}
+      </div>
+
+      <div class="cw-fba" data-reveal="up" style="--rd:120ms">
+        <Image
+          class="cw-fba__bg"
+          src={fbaImage}
+          alt=""
+          width={1200}
+          height={900}
+          widths={[600, 1200]}
+          sizes="(min-width: 900px) 50vw, 100vw"
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="cw-fba__copy">
+          <span class="cw-fba__eyebrow">{fbaEyebrow}</span>
+          <h3 class="cw-fba__title">{fbaTitle}</h3>
+          <p class="cw-fba__text">{fbaText}</p>
+        </div>
+        <ul class="cw-fba__list">
+          {fbaItems.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-pricing {
+    padding: 6.5rem 0 6rem;
+    background: var(--color-cream);
+  }
+  .cw-pricing-head {
+    max-width: none;
+  }
+  .cw-pricing-head .cw-lede {
+    max-width: none;
+  }
+
+  .cw-pricing-cols {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* The three modes stack and share the column height, so the left side reads
+     as one block rather than three loose cards. */
+  .cw-transit-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .cw-transit {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.5rem 1.5rem 1.6rem;
+    background: var(--color-linen);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    border-radius: 18px;
+  }
+  .cw-transit__name {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 1.00rem;
+    color: var(--color-berry);
+  }
+  .cw-transit__time {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-steel);
+    font-variation-settings: 'opsz' 72;
+  }
+  .cw-transit__best {
+    margin-top: 0.3rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+  }
+
+  .cw-fba {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 1.9rem 1.8rem;
+    background: var(--color-ink);
+    border-radius: 22px;
+    color: var(--color-cream);
+  }
+  .cw-fba__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* graded well down so the photo reads as a ground and the cream copy keeps
+       its contrast; the panel adds no colour tint of its own */
+    filter: saturate(0.78) contrast(1.06) brightness(0.42);
+  }
+  /* The veil is ink only — the neutral photographic base, not the denim step. */
+  .cw-fba::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(198deg,
+      color-mix(in srgb, var(--color-ink) 58%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 34%, transparent) 42%,
+      color-mix(in srgb, var(--color-ink) 74%, transparent) 100%);
+  }
+  .cw-fba__copy,
+  .cw-fba__list {
+    position: relative;
+    z-index: 2;
+  }
+  .cw-fba__eyebrow {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.97rem;
+    color: color-mix(in srgb, var(--color-cream) 66%, transparent);
+  }
+  .cw-fba__title {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+    letter-spacing: -0.02em;
+    color: var(--color-cream);
+    font-variation-settings: 'opsz' 48;
+  }
+  .cw-fba__text {
+    margin: 0.75rem 0 0;
+    font-size: 0.98rem;
+    line-height: 1.62;
+    color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  }
+  .cw-fba__list {
+    margin: 1.4rem 0 0;
+    padding: 1.4rem 0 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-cream) 18%, transparent);
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .cw-fba__list li {
+    position: relative;
+    padding-left: 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-cream);
+  }
+  .cw-fba__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.52em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-berry);
+  }
+
+  @media (min-width: 900px) {
+    .cw-pricing-cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+    .cw-fba {
+      padding: 2.1rem 2rem;
+    }
+  }
+</style>

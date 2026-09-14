@@ -1,0 +1,31 @@
+---
+/**
+ * Check — a single confirmation tick.
+ * Used where a column or row has to read as "we hold this" rather than carry
+ * the registration crosshair. Tints via currentColor.
+ */
+interface Props {
+  className?: string
+}
+const { className = '' } = Astro.props
+---
+
+<svg class={`cw-check ${className}`} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path
+    d="M4.6 12.6 9.5 17.6 19.4 6.4"
+    stroke="currentColor"
+    stroke-width="1.9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
+
+<style>
+  .cw-check {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    display: inline-block;
+    vertical-align: -0.16em;
+  }
+</style>

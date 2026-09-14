@@ -1,6 +1,6 @@
 @layer base {
   body {
-    @apply bg-brand-bg text-brand-text font-body;
+    @apply bg-cream text-charcoal font-body;
   }
 
   h1, h2, h3, h4, h5, h6 {

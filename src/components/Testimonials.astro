@@ -1,0 +1,209 @@
+---
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+import Mark from './Mark.astro'
+
+import reviewer1 from '../assets/images/reviewer-1.jpg'
+import reviewer2 from '../assets/images/reviewer-2.jpg'
+import reviewer3 from '../assets/images/reviewer-3.avif'
+
+interface Testimonial {
+  quote: string
+  name: string
+  role: string
+  avatar: ImageMetadata
+}
+
+interface Props {
+  eyebrow?: string
+  heading?: string
+  /** The large pull-quote card on the left. */
+  featured?: Testimonial
+  /** The two stacked cards on the right. */
+  rest?: Testimonial[]
+}
+
+const {
+  eyebrow = 'Word of mouth',
+  heading = 'Brands That Stopped Touching Shipments.',
+  featured = {
+    quote: 'We sent a napkin sketch on a Tuesday. Ten days later I was holding a sample that looked better than the render. We cut three SKUs from it, and I have never spoken to a factory floor since. The second run shipped in five weeks and arrived without me touching a single customs form.',
+    name: 'Maya R.',
+    role: 'Founder, compression-wear label',
+    avatar: reviewer2,
+  },
+  rest = [
+    {
+      quote: 'Three suppliers ghosted me in a year, so I stopped trusting anyone without a name on the floor. Their man-in-plant has been on our POs for 18 months and we have not had a single customs hold since. When a dye lot came back two shades off, I had photos of the run and a re-cut date the same afternoon.',
+      name: 'Dan K.',
+      role: 'Ops lead, outdoor swim brand',
+      avatar: reviewer1,
+    },
+    {
+      quote: 'Our defect rate dropped from 6% to 0.4% in two quarters. That is the difference between a refund wave and a reorder, and it is why we stopped shopping around. We have added two more styles since, both made to the same tolerances, and neither has needed a change.',
+      name: 'Priya S.',
+      role: 'Amazon FBA seller, activewear',
+      avatar: reviewer3,
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-testimonials cw-cv" id="testimonials">
+  <div class="cw-wrap">
+    <div class="cw-test-head">
+      <p class="cw-eyebrow" data-reveal="up">{eyebrow}</p>
+      <h2 class="cw-h2" data-reveal="up" style="--rd:80ms">{heading}</h2>
+    </div>
+
+    <div class="cw-test-grid">
+      <figure class="cw-test-featured" data-reveal="scale">
+        <Mark className="cw-test-mark" />
+        <blockquote class="cw-test-featured-quote">{featured.quote}</blockquote>
+        <figcaption class="cw-test-fig">
+          <Image class="cw-test-avatar" src={featured.avatar} alt="" width={88} height={88} quality={80} loading="lazy" decoding="async" />
+          <span class="cw-test-fig-text">
+            <span class="cw-test-name">{featured.name}</span>
+            <span class="cw-test-role">{featured.role}</span>
+          </span>
+        </figcaption>
+      </figure>
+
+      <div class="cw-test-side">
+        {rest.map((t) => (
+          <figure class="cw-test-card" data-reveal="up">
+            <blockquote class="cw-test-card-quote">{t.quote}</blockquote>
+            <figcaption class="cw-test-fig">
+              <Image class="cw-test-avatar" src={t.avatar} alt="" width={88} height={88} quality={80} loading="lazy" decoding="async" />
+              <span class="cw-test-fig-text">
+                <span class="cw-test-name">{t.name}</span>
+                <span class="cw-test-role">{t.role}</span>
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-testimonials {
+    padding: 7rem 0 6rem;
+    background: var(--color-linen);
+  }
+  .cw-test-head {
+    max-width: none;
+  }
+  .cw-test-grid {
+    margin-top: 3.5rem;
+    display: grid;
+    gap: 1.6rem;
+  }
+  .cw-test-featured {
+    margin: 0;
+    background: var(--color-denim);
+    border-radius: 26px 26px 8px 26px;
+    padding: 2.4rem 2rem;
+    color: var(--color-cream);
+    display: flex;
+    flex-direction: column;
+    /* the grid stretches this card to the height of the stack beside it, so let
+       any leftover height fall between the mark, quote and caption rather than
+       pooling at the bottom */
+    justify-content: space-between;
+    gap: 1.6rem;
+    box-shadow: 0 44px 90px -44px color-mix(in srgb, var(--color-ink) 60%, transparent);
+  }
+  .cw-test-mark {
+    width: 26px;
+    height: 26px;
+    color: var(--color-berry);
+  }
+  .cw-test-featured-quote {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 470;
+    font-size: clamp(1.25rem, 2.8vw, 1.75rem);
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    color: var(--color-cream);
+    font-variation-settings: 'opsz' 60;
+  }
+  .cw-test-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.7rem;
+  }
+  .cw-test-card {
+    margin: 0;
+    background: var(--color-cream);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    border-radius: 20px;
+    padding: 1.7rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.55s ease;
+  }
+  .cw-test-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px -36px color-mix(in srgb, var(--color-ink) 45%, transparent);
+  }
+  .cw-test-card-quote {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--color-charcoal);
+  }
+  .cw-test-fig {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .cw-test-fig-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .cw-test-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 20%, transparent);
+  }
+  .cw-test-featured .cw-test-avatar {
+    border-color: color-mix(in srgb, var(--color-cream) 30%, transparent);
+  }
+  .cw-test-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.96rem;
+    color: var(--color-charcoal);
+  }
+  .cw-test-role {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--color-slate);
+  }
+  .cw-test-featured .cw-test-role {
+    color: color-mix(in srgb, var(--color-cream) 75%, transparent);
+  }
+  /* the base .cw-test-name colour is dark ink — flip it on the dark card */
+  .cw-test-featured .cw-test-name {
+    color: var(--color-cream);
+  }
+
+  @media (min-width: 880px) {
+    .cw-test-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: stretch;
+    }
+    .cw-test-featured {
+      padding: 3rem 2.8rem;
+    }
+  }
+</style>

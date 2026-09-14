@@ -1,0 +1,282 @@
+---
+// "How it works" — the six-stage order flow, set in the sticky-head + ledger
+// format: heading and plate on the left, a numbered row list on the right.
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+import processImage from '../assets/images/image-10.webp'
+import Badge from './Badge.astro'
+
+interface Step {
+  /** Two-digit index in the list. */
+  n: string
+  /** Short discipline, set in italic above the title. */
+  name: string
+  title: string
+  description: string
+  tags: string[]
+}
+
+interface Props {
+  eyebrow?: string
+  lede?: string
+  image?: ImageMetadata
+  imageAlt?: string
+  imageCaption?: string
+  steps?: Step[]
+}
+
+const {
+  eyebrow = 'How it works',
+  lede = 'You stay in the loop at the moments that matter. Everything between the dots is our job.',
+  image = processImage,
+  imageAlt = 'Custom cycling kit manufactured to a private-label spec',
+  imageCaption = 'Spec-locked on the Wuhan floor, prior to dispatch.',
+  steps = [
+    {
+      n: '01',
+      name: 'Scoping',
+      title: 'Discovery',
+      description: 'Share a sketch, tech pack or reference. We lock MOQ, spec and a landed price in 48 hours.',
+      tags: ['48h price'],
+    },
+    {
+      n: '02',
+      name: 'Design',
+      title: 'Mock-up',
+      description: 'Artwork is digitised and a mock-up returns for your sign-off, so nothing is cut against an unapproved spec.',
+      tags: ['Mock-up sign-off'],
+    },
+    {
+      n: '03',
+      name: 'Sourcing',
+      title: 'Shortlist',
+      description: 'We pull two or three matched factories from 5,000+ vetted suppliers.',
+      tags: ['2–3 factories'],
+    },
+    {
+      n: '04',
+      name: 'Pre-production',
+      title: 'Sampling',
+      description: 'A 5–10 day pre-production prototype, refundable against your bulk order.',
+      tags: ['5–10 days'],
+    },
+    {
+      n: '05',
+      name: 'Production',
+      title: 'Bulk run',
+      description: 'Bulk runs on booked capacity, with a 15-step QC process and AQL inspection prior to packing.',
+      tags: ['15-step QC'],
+    },
+    {
+      n: '06',
+      name: 'Logistics',
+      title: 'Delivery',
+      description: 'Delivered duty-paid to your door, or injected straight into Amazon FCs.',
+      tags: ['DDP'],
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-process" id="process">
+  <div class="cw-wrap cw-process-grid">
+    <div class="cw-process-head">
+      <p class="cw-eyebrow" data-reveal="up">{eyebrow}</p>
+      <h2 class="cw-h2" data-reveal="up" style="--rd:80ms">Six Steps.<br />A Clean Hand-Off.</h2>
+      <p class="cw-lede" data-reveal="up" style="--rd:160ms">{lede}</p>
+
+      <figure class="cw-process-shot" data-reveal="up" style="--rd:240ms">
+        <Image
+          src={image}
+          alt={imageAlt}
+          width={550}
+          height={525}
+          widths={[275, 550]}
+          sizes="(min-width: 880px) 45vw, 100vw"
+          quality={80}
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>{imageCaption}</figcaption>
+      </figure>
+    </div>
+
+    <ol class="cw-process-list">
+      {steps.map((s, i) => (
+        <li
+          class="cw-process-row"
+          data-process-row
+          data-reveal={i % 2 === 0 ? 'left' : 'right'}
+          tabindex="0"
+        >
+          <div class="cw-process-num">{s.n}</div>
+          <div class="cw-process-body">
+            <div class="cw-process-name">{s.name}</div>
+            <h3 class="cw-h3">{s.title}</h3>
+            <p class="cw-process-body-text">{s.description}</p>
+            <div class="cw-process-tags">
+              {s.tags.map((t) => (
+                <Badge size="lg">{t}</Badge>
+              ))}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .cw-process {
+    padding: 7rem 0 6rem;
+    background: var(--color-linen);
+  }
+  .cw-process-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .cw-process-head {
+    max-width: 40rem;
+  }
+  .cw-process-shot {
+    margin: 2.4rem 0 0;
+    position: relative;
+    border-radius: 20px 20px 20px 6px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    box-shadow: 0 34px 70px -44px color-mix(in srgb, var(--color-ink) 40%, transparent);
+  }
+  .cw-process-shot img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+    filter: saturate(0.92) contrast(1.03);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+  }
+  .cw-process-shot:hover img {
+    transform: scale(1.04);
+    filter: saturate(1) contrast(1.03);
+  }
+  .cw-process-shot figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 2.4rem 1.15rem 0.9rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.97rem;
+    letter-spacing: -0.01em;
+    color: color-mix(in srgb, var(--color-cream) 95%, transparent);
+    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--color-ink) 72%, transparent));
+  }
+  .cw-process-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .cw-process-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.4rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.35s ease, padding-left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cw-process-row:first-child {
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  .cw-process-row:hover {
+    padding-left: 0.9rem;
+  }
+  /* On linen the featured row lifts with cream rather than the linen it sits on. */
+  .cw-process-row--accent {
+    background: var(--color-cream);
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--color-berry) 22%, transparent);
+    padding: 1.5rem 1.4rem;
+    margin: 0.6rem 0;
+  }
+  .cw-process-row--accent:first-child {
+    border-top: 1px solid color-mix(in srgb, var(--color-berry) 22%, transparent);
+  }
+  /* The row above the lifted plate drops its hairline, so no divider floats
+     in the gap beside the plate's own border. */
+  .cw-process-row:has(+ .cw-process-row--accent) {
+    border-bottom-color: transparent;
+  }
+  /* Longer travel than the shared rv-left / rv-right so the entrance reads
+     clearly on these tall rows. Scoped here because those keyframes also
+     drive the pain section, which keeps its own timing. */
+  .cw-process-row[data-reveal='left']  { --rv-x: -84px; }
+  .cw-process-row[data-reveal='right'] { --rv-x: 84px; }
+  .cw-process-row.is-in:not(.is-done) {
+    animation: rv-process 0.9s var(--ease) both;
+  }
+  @keyframes rv-process {
+    from { opacity: 0; transform: translateX(var(--rv-x)); }
+    to   { opacity: 1; transform: none; }
+  }
+  .cw-process-num {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--color-steel);
+    opacity: 0.32;
+    font-variation-settings: 'opsz' 72;
+    transition: color 0.35s ease, opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .cw-process-row:hover .cw-process-num {
+    color: var(--color-berry);
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+  .cw-process-row--accent .cw-process-num {
+    color: var(--color-berry);
+    opacity: 1;
+  }
+  .cw-process-name {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 1.00rem;
+    letter-spacing: 0.01em;
+    color: var(--color-slate);
+  }
+  .cw-process-body-text {
+    margin: 0.7rem 0 0;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+    max-width: 52ch;
+  }
+  .cw-process-tags {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 880px) {
+    .cw-process-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .cw-process-head {
+      position: sticky;
+      top: 6rem;
+    }
+    .cw-process-row {
+      gap: 2.2rem;
+    }
+  }
+</style>

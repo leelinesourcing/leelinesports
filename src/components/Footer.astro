@@ -1,0 +1,245 @@
+---
+import { Image } from 'astro:assets'
+import registeredMark from '../assets/images/image-01.png'
+
+interface FooterLink {
+  label: string
+  href: string
+  /** Opens in a new tab. */
+  external?: boolean
+}
+
+interface FooterColumn {
+  heading: string
+  links: FooterLink[]
+  /** Plain text shown under the links (the office location). */
+  note?: string
+}
+
+interface Props {
+  tagline?: string
+  blurb?: string[]
+  columns?: FooterColumn[]
+  markCaption?: string
+  legal?: string
+}
+
+const {
+  tagline = 'We handle the mess. You handle the sales.',
+  blurb = [
+    'LeelineSports is your complete one-stop sportswear manufacturing solution, offering high-quality custom gear for pro teams, fitness brands, and retailers.',
+    'We run the whole production cycle — customer-driven design innovation, premium material sourcing, expert cut-and-sew manufacturing, strict international quality control, and final delivery.',
+    'Partner with us for superior craftsmanship, certified quality, and dedicated expertise to boost your brand value in the sportswear industry.',
+  ],
+  columns = [
+    {
+      heading: 'Verticals',
+      links: [
+        { label: 'Performance wear', href: '#verticals' },
+        { label: 'Team sports', href: '#verticals' },
+        { label: 'Swim & outdoor', href: '#verticals' },
+      ],
+    },
+    {
+      heading: 'Company',
+      links: [
+        { label: 'Process', href: '#process' },
+        { label: 'Proof', href: '#proof' },
+        { label: 'FAQ', href: '#faq' },
+      ],
+    },
+    {
+      heading: 'Contact',
+      links: [
+        { label: 'info@leelinesports.com', href: 'mailto:info@leelinesports.com' },
+      ],
+      note: 'Wuhan, Hubei · China',
+    },
+  ],
+  markCaption = 'Registered mark · LeelineSports Co., Ltd.',
+  legal = '© 2026 LeelineSports · Indigo & Berry · AQL 2.5 · ISO 5077 · ISO 105 · DDP.',
+} = Astro.props
+---
+
+<footer class="cw-footer" id="footer">
+  <span class="cw-footer-initial" aria-hidden="true">L</span>
+
+  <div class="cw-wrap">
+    <div class="cw-footer-top">
+      <div class="cw-footer-brand">
+        <a href="#top" class="cw-footer-logo" aria-label="LeelineSports — home">
+          <span class="cw-footer-logo-plate">
+            <Image src={registeredMark} alt="LeelineSports" width={158} height={29} quality={80} loading="lazy" decoding="async" />
+          </span>
+        </a>
+        <p class="cw-footer-tagline">{tagline}</p>
+        <div class="cw-footer-blurb">
+          {blurb.map((para) => <p>{para}</p>)}
+        </div>
+      </div>
+
+      <div class="cw-footer-cols">
+        {columns.map((col) => (
+          <nav class="cw-footer-col" aria-label={col.heading}>
+            <span class="cw-footer-h">{col.heading}</span>
+            {col.links.map((l) => (
+              <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>
+                {l.label}
+              </a>
+            ))}
+            {col.note && <span class="cw-footer-loc">{col.note}</span>}
+          </nav>
+        ))}
+      </div>
+    </div>
+
+    <div class="cw-footer-bottom">
+      <span class="cw-footer-registered-caption">{markCaption}</span>
+      <p class="cw-footer-legal">{legal}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .cw-footer {
+    position: relative;
+    /* one step deeper than --color-denim (var(--color-denim)) — same indigo family,
+       but dark enough to read as the footer rather than merging with the
+       "Start the brief" block sitting directly above it */
+    background: var(--color-midnight);
+    padding: 5.5rem 0 2.5rem;
+    color: var(--color-cream);
+    overflow: hidden;
+  }
+  .cw-footer-initial {
+    position: absolute;
+    right: -0.04em;
+    bottom: -0.24em;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(16rem, 30vw, 26rem);
+    line-height: 0.7;
+    letter-spacing: -0.05em;
+    color: color-mix(in srgb, var(--color-cream) 4.5%, transparent);
+    user-select: none;
+    pointer-events: none;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  .cw-footer-top {
+    display: grid;
+    gap: 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .cw-footer-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1;
+  }
+  /* The logo art is opaque white-backed, so on the midnight ground it sits on
+     the same paper plate as the registered mark at the foot of the page. */
+  .cw-footer-logo-plate {
+    display: inline-flex;
+    background: var(--color-paper);
+    border-radius: 10px;
+    padding: 0.5rem 0.7rem;
+  }
+  .cw-footer-logo-plate img {
+    display: block;
+    height: 29px;
+    width: auto;
+  }
+  .cw-footer-tagline {
+    margin: 0.9rem 0 0;
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--color-cream) 68%, transparent);
+  }
+  .cw-footer-blurb {
+    margin: 0.7rem 0 0;
+    max-width: 46ch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .cw-footer-blurb p {
+    margin: 0;
+    font-size: 0.94rem;
+    font-weight: 400;
+    line-height: 1.62;
+    color: color-mix(in srgb, var(--color-cream) 58%, transparent);
+  }
+  .cw-footer-cols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .cw-footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .cw-footer-h {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.97rem;
+    color: var(--color-berry);
+    margin-bottom: 0.3rem;
+  }
+  .cw-footer-col a,
+  .cw-footer-loc {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--color-cream) 72%, transparent);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+  .cw-footer-col a:hover {
+    color: var(--color-cream);
+  }
+  .cw-footer-loc {
+    color: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  }
+  .cw-footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-cream) 12%, transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+  .cw-footer-registered-caption {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  }
+  .cw-footer-legal {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  }
+
+  @media (min-width: 720px) {
+    .cw-footer-cols {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+    .cw-footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  @media (min-width: 960px) {
+    .cw-footer-top {
+      grid-template-columns: 1.1fr 1.4fr;
+      gap: 4rem;
+    }
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+import Button from './Button.astro'
+
+interface Props {
+  eyebrow?: string
+  lede?: string
+  email?: string
+  ctaLabel?: string
+  /** Where the closing button points. Defaults to the contact address. */
+  ctaHref?: string
+}
+
+const {
+  eyebrow = 'Start the brief',
+  lede = 'Send the brief and we’ll come back within a business day with MOQ, spec and a DDP price — not a sales pitch.',
+  email = 'info@leelinesports.com',
+  ctaLabel = 'Request a quote',
+  ctaHref = `mailto:${email}`,
+} = Astro.props
+---
+
+<section class="cw-cta" id="quote">
+  <div class="cw-wrap cw-cta-grid">
+    <div class="cw-cta-copy">
+      <p class="cw-eyebrow cw-eyebrow--light" data-reveal="up">{eyebrow}</p>
+      <h2 class="cw-h2 cw-h2--light" data-reveal="mask" style="--rd:80ms">
+        <slot>Bring Us the Sketch.</slot>
+      </h2>
+      <p class="cw-lede cw-lede--light" data-reveal="up" style="--rd:160ms">{lede}</p>
+
+      <div class="cw-cta-action" data-reveal="up" style="--rd:280ms">
+        <Button href={ctaHref}>{ctaLabel}</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-cta {
+    position: relative;
+    background: var(--color-denim);
+    padding: 6.5rem 0 7rem;
+  }
+  /* The footer's midnight rises into the CTA's foot so the two dark steps meet
+     without a seam. Held to the empty band under the note. */
+  .cw-cta::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 9rem;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-midnight) 0%, transparent) 0%,
+      color-mix(in srgb, var(--color-midnight) 100%, transparent) 100%);
+  }
+  .cw-cta-grid {
+    display: grid;
+    justify-items: center;
+  }
+  .cw-cta-copy {
+    max-width: 42rem;
+    text-align: center;
+  }
+  .cw-cta-action {
+    margin-top: 2rem;
+  }
+</style>

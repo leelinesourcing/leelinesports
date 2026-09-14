@@ -1,0 +1,834 @@
+---
+/**
+ * Design System — the component and token inventory.
+ *
+ * No-index, internal only. Every entry below is imported from `src/components/`;
+ * nothing is defined inline on this page. Add any new reusable component here
+ * with its name and file path so this stays the source of truth.
+ *
+ * Full rules live in docs/brand-guide.md.
+ */
+import Layout from '../layouts/Layout.astro'
+
+// ── Atoms ────────────────────────────────────────────────
+import Badge from '../components/Badge.astro'
+import Button from '../components/Button.astro'
+import Contour from '../components/Contour.astro'
+import Mark from '../components/Mark.astro'
+import Check from '../components/Check.astro'
+import Stars from '../components/Stars.astro'
+import SectionHead from '../components/SectionHead.astro'
+
+// ── Sections ─────────────────────────────────────────────
+import Nav from '../components/Nav.astro'
+import Hero from '../components/Hero.astro'
+import ProofBar from '../components/ProofBar.astro'
+import Verticals from '../components/Verticals.astro'
+import Pain from '../components/Pain.astro'
+import Services from '../components/Services.astro'
+import BeyondOrder from '../components/BeyondOrder.astro'
+import Certifications from '../components/Certifications.astro'
+import PricingDelivery from '../components/PricingDelivery.astro'
+import Process from '../components/Process.astro'
+import ICPs from '../components/ICPs.astro'
+import WhyUs from '../components/WhyUs.astro'
+import CaseStudies from '../components/CaseStudies.astro'
+import Testimonials from '../components/Testimonials.astro'
+import Showcase from '../components/Showcase.astro'
+import Faq from '../components/Faq.astro'
+import FinalCta from '../components/FinalCta.astro'
+import Footer from '../components/Footer.astro'
+
+/** Every token in the `@theme` block, in source order. */
+const colors = [
+  { name: 'steel', hex: '#386694', use: 'Denim blue — links, rules, numerals, badges', onDark: true },
+  { name: 'navy', hex: '#0E2038', use: 'Deep navy — the secondary step', onDark: true },
+  { name: 'berry', hex: '#B2475B', use: 'Oxblood berry — CTAs, marks, accents', onDark: true },
+  { name: 'cream', hex: '#F8F7F3', use: 'Page background', onDark: false },
+  { name: 'linen', hex: '#EEECE6', use: 'Raised surfaces, alternating bands', onDark: false },
+  { name: 'charcoal', hex: '#1A1B22', use: 'Body copy', onDark: true },
+  { name: 'slate', hex: '#7A7C88', use: 'Muted copy', onDark: false },
+  { name: 'denim', hex: '#12284B', use: 'Dark panels — the closing CTA', onDark: true },
+  { name: 'midnight', hex: '#0A182E', use: 'Deepest step — the footer', onDark: true },
+  { name: 'paper', hex: '#FFFFFF', use: 'White cards and panels on linen', onDark: false },
+  { name: 'mist', hex: '#F1F2F9', use: 'Light ink on the dark featured card', onDark: false },
+  { name: 'ink', hex: '#182430', use: 'Shadow and photographic-veil base', onDark: true },
+]
+---
+
+<Layout title="Design System — LeelineSports" description="Internal component inventory and brand reference." noindex>
+  <main>
+    <!-- ── header ─────────────────────────────────────── -->
+    <div class="cw-wrap ds-head">
+      <p class="cw-eyebrow">Brand reference</p>
+      <h1 class="cw-h1 ds-title">Design System</h1>
+      <p class="cw-lede">Component inventory and brand reference</p>
+      <p class="ds-note">
+        Everything on this page is imported from <code>src/components/</code> — nothing is
+        defined inline here. Rules, rationale and image treatment live in
+        <code>docs/brand-guide.md</code>.
+      </p>
+    </div>
+
+    <!-- ── colors ─────────────────────────────────────── -->
+    <section class="cw-wrap ds-section" id="colors">
+      <h2 class="ds-section-title">Colors</h2>
+      <p class="ds-section-sub">
+        Every token in the <code>@theme</code> block. Token names map to the utilities
+        <code>bg-*</code>, <code>text-*</code>, <code>border-*</code> and <code>ring-*</code>.
+      </p>
+
+      <div class="ds-swatches">
+        {colors.map((c) => (
+          <figure class="ds-swatch">
+            <div class="ds-swatch-chip" style={`background: var(--color-${c.name})`}>
+              <span class:list={['ds-swatch-class', c.onDark ? 'text-cream' : 'text-charcoal']}>
+                bg-{c.name}
+              </span>
+            </div>
+            <figcaption class="ds-swatch-meta">
+              <span class="ds-swatch-name">{c.name}</span>
+              <span class="ds-swatch-hex">{c.hex}</span>
+              <span class="ds-swatch-use">{c.use}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── typography ─────────────────────────────────── -->
+    <section class="cw-wrap ds-section" id="typography">
+      <h2 class="ds-section-title">Typography</h2>
+      <p class="ds-section-sub">
+        Fraunces carries voice; Manrope carries information. Both are self-hosted variable
+        fonts — the fractional weights only work because of that.
+      </p>
+
+      <div class="ds-type">
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>H1</span><code>.cw-h1</code></div>
+          <div class="ds-type-sample">
+            <p class="cw-h1">Carry the risk.</p>
+            <p class="ds-type-spec">
+              Fraunces · 620 · clamp(3rem, 9vw, 6.9rem) · line-height 0.94 · tracking −0.035em ·
+              opsz 144. The hero overrides the size to clamp(2.4rem, 5.4vw, 4.6rem) at
+              line-height 1.02. Shown as a <code>&lt;p&gt;</code> so this page keeps a single h1.
+            </p>
+          </div>
+        </div>
+
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>H2</span><code>.cw-h2</code></div>
+          <div class="ds-type-sample">
+            <h2 class="cw-h2">One roof, five services.</h2>
+            <p class="ds-type-spec">
+              Fraunces · 520 · clamp(2.1rem, 4.5vw, 3.6rem) · line-height 1.02 · tracking
+              −0.025em · opsz 80.
+            </p>
+          </div>
+        </div>
+
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>H3</span><code>.cw-h3</code></div>
+          <div class="ds-type-sample">
+            <h3 class="cw-h3">Built to your tech pack.</h3>
+            <p class="ds-type-spec">
+              Fraunces · 560 · clamp(1.35rem, 2.6vw, 1.85rem) · line-height 1.12 · tracking
+              −0.015em · opsz 48.
+            </p>
+          </div>
+        </div>
+
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>H4</span><code>.ds-h4</code></div>
+          <div class="ds-type-sample">
+            <h4 class="ds-h4">Standards you can verify.</h4>
+            <p class="ds-type-spec">
+              Fraunces · 560 · 1.3rem · line-height 1.15 · tracking −0.025em · opsz 48. There is
+              no global H4 class — this is the sub-heading treatment the component styles use
+              in Certifications.
+            </p>
+          </div>
+        </div>
+
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>Kicker</span><code>.cw-eyebrow</code></div>
+          <div class="ds-type-sample">
+            <p class="cw-eyebrow">What we make</p>
+            <p class="ds-type-spec">
+              Fraunces italic · 420 · 1.05rem · tracking 0.01em · slate. Prefixed by a berry
+              ring. The dark-ground variant is <code>.cw-eyebrow--light</code>.
+            </p>
+          </div>
+        </div>
+
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>Body</span><code>body</code></div>
+          <div class="ds-type-sample">
+            <p>
+              Bring a sketch or a tech pack — we run sourcing, AQL 2.5 inspection and DDP
+              delivery under one roof, so you never touch a shipment.
+            </p>
+            <p class="ds-type-spec">
+              Manrope · 400 · 1.03rem · line-height 1.6 · <code>charcoal</code> on
+              <code>cream</code>. The default text style; no class required.
+            </p>
+          </div>
+        </div>
+
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>Lead</span><code>.cw-lede</code></div>
+          <div class="ds-type-sample">
+            <p class="cw-lede">
+              Every quote is DDP — manufacturing, freight and import duties arrive as a single
+              approved figure.
+            </p>
+            <p class="ds-type-spec">
+              Manrope · 400 · 1.10rem · line-height 1.66 · slate · measure capped at 58ch. The
+              dark-ground variant is <code>.cw-lede--light</code>.
+            </p>
+          </div>
+        </div>
+
+        <div class="ds-type-row">
+          <div class="ds-type-meta"><span>Caption</span><code>.ds-caption</code></div>
+          <div class="ds-type-sample">
+            <p class="ds-caption">AQL 2.5 major / 4.0 minor · ISO 5077 · ISO 105</p>
+            <p class="ds-type-spec">
+              Manrope · 600 · 0.92rem · tracking 0.01em · slate. The label/caption scale used by
+              stat labels (0.90rem), certificate labels (0.92rem) and footnotes (0.94rem). Nothing
+              on the site renders below 0.82rem.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── atoms ──────────────────────────────────────── -->
+    <section class="cw-wrap ds-section" id="atoms">
+      <h2 class="ds-section-title">Atoms</h2>
+      <p class="ds-section-sub">Small reusable elements. Import these instead of rebuilding them.</p>
+
+      <article class="ds-item">
+        <div class="ds-item-bar">
+          <span class="ds-item-name">Badge</span>
+          <code class="ds-item-path">src/components/Badge.astro</code>
+        </div>
+        <div class="ds-stage ds-stage--pad">
+          <div class="ds-row">
+            <Badge>Default</Badge>
+            <Badge variant="accent">Accent</Badge>
+            <Badge variant="outline">Outline</Badge>
+            <Badge size="sm">Small</Badge>
+            <Badge size="lg">Large</Badge>
+            <Badge uppercase>Tracked caps</Badge>
+          </div>
+          <div class="ds-dark-chip ds-row">
+            <Badge variant="onDark">On dark</Badge>
+            <Badge variant="onDark" uppercase>Process tag</Badge>
+          </div>
+        </div>
+      </article>
+
+      <article class="ds-item">
+        <div class="ds-item-bar">
+          <span class="ds-item-name">Button</span>
+          <code class="ds-item-path">src/components/Button.astro</code>
+        </div>
+        <div class="ds-stage ds-stage--pad">
+          <div class="ds-row">
+            <Button href="#quote">Berry</Button>
+            <Button href="#quote" variant="indigo">Indigo</Button>
+            <Button href="#quote" size="sm">Small</Button>
+          </div>
+          <div class="ds-dark-chip ds-row">
+            <Button href="#quote" variant="ghost">Ghost</Button>
+            <Button href="#quote" variant="ghost" size="sm">Ghost small</Button>
+          </div>
+          <div class="ds-row ds-row--stack">
+            <Button href="#quote" block>Block</Button>
+          </div>
+        </div>
+      </article>
+
+      <article class="ds-item">
+        <div class="ds-item-bar">
+          <span class="ds-item-name">Mark</span>
+          <code class="ds-item-path">src/components/Mark.astro</code>
+        </div>
+        <div class="ds-stage ds-stage--pad">
+          <div class="ds-row ds-row--middle">
+            <span class="text-berry"><Mark /></span>
+            <span class="text-steel"><Mark /></span>
+            <span class="text-charcoal"><Mark /></span>
+            <span class="ds-caption">registration crosshair · tints via currentColor</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="ds-item">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Check</span>
+            <code class="ds-item-path">src/components/Check.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage ds-stage--pad">
+          <div class="ds-row ds-row--middle">
+            <span class="text-berry"><Check /></span>
+            <span class="text-steel"><Check /></span>
+            <span class="text-charcoal"><Check /></span>
+            <span class="ds-caption">confirmation tick · tints via currentColor</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="ds-item">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Stars</span>
+            <code class="ds-item-path">src/components/Stars.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage ds-stage--pad">
+          <div class="ds-row ds-row--middle">
+            <span class="text-berry"><Stars /></span>
+            <span class="text-steel"><Stars /></span>
+            <span class="text-charcoal"><Stars /></span>
+            <span class="ds-caption">rating row · tints via currentColor</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="ds-item">
+        <div class="ds-item-bar">
+          <span class="ds-item-name">Contour</span>
+          <code class="ds-item-path">src/components/Contour.astro</code>
+        </div>
+        <div class="ds-stage ds-stage--pad">
+          <div class="ds-row ds-row--middle">
+            <span class="text-berry"><Contour /></span>
+            <span class="text-steel"><Contour size={22} /></span>
+            <span class="text-slate"><Contour size={64} /></span>
+            <span class="ds-caption">concentric eyebrow ornament · centre dot is always berry</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="ds-item">
+        <div class="ds-item-bar">
+          <span class="ds-item-name">SectionHead</span>
+          <code class="ds-item-path">src/components/SectionHead.astro</code>
+        </div>
+        <div class="ds-stage ds-stage--pad">
+          <SectionHead
+            kicker="What we make"
+            lead="The kicker sits above the title with a hairline rule, and the lead runs under it at a comfortable measure."
+          >
+            One roof, five services.
+          </SectionHead>
+          <div class="ds-dark-chip ds-stage--pad">
+            <SectionHead
+              kicker="Dark tone"
+              tone="dark"
+              align="center"
+              lead="tone='dark' inverts the palette; align='center' centres the block and drops the rule."
+            >
+              Centred on a dark ground.
+            </SectionHead>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ── sections ───────────────────────────────────── -->
+    <section class="ds-section" id="sections">
+      <div class="cw-wrap">
+        <h2 class="ds-section-title">Sections</h2>
+        <p class="ds-section-sub">
+          Full page sections, rendered exactly as they appear. Each one ships with the
+          placeholder content shown; pass props to override it.
+        </p>
+      </div>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Nav</span>
+            <code class="ds-item-path">src/components/Nav.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage ds-stage--fixed">
+          <Nav />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Hero</span>
+            <code class="ds-item-path">src/components/Hero.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Hero />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">ProofBar</span>
+            <code class="ds-item-path">src/components/ProofBar.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage ds-stage--lift">
+          <ProofBar />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Verticals</span>
+            <code class="ds-item-path">src/components/Verticals.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Verticals />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Pain</span>
+            <code class="ds-item-path">src/components/Pain.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Pain />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Services</span>
+            <code class="ds-item-path">src/components/Services.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Services />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">BeyondOrder</span>
+            <code class="ds-item-path">src/components/BeyondOrder.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <BeyondOrder />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Certifications</span>
+            <code class="ds-item-path">src/components/Certifications.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Certifications />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">PricingDelivery</span>
+            <code class="ds-item-path">src/components/PricingDelivery.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <PricingDelivery />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Process</span>
+            <code class="ds-item-path">src/components/Process.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Process />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">ICPs</span>
+            <code class="ds-item-path">src/components/ICPs.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <ICPs />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">WhyUs</span>
+            <code class="ds-item-path">src/components/WhyUs.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <WhyUs />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">CaseStudies</span>
+            <code class="ds-item-path">src/components/CaseStudies.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <CaseStudies />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Testimonials</span>
+            <code class="ds-item-path">src/components/Testimonials.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Testimonials />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Showcase</span>
+            <code class="ds-item-path">src/components/Showcase.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Showcase />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Faq</span>
+            <code class="ds-item-path">src/components/Faq.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Faq />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">FinalCta</span>
+            <code class="ds-item-path">src/components/FinalCta.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <FinalCta />
+        </div>
+      </article>
+
+      <article class="ds-item ds-item--full">
+        <div class="cw-wrap">
+          <div class="ds-item-bar">
+            <span class="ds-item-name">Footer</span>
+            <code class="ds-item-path">src/components/Footer.astro</code>
+          </div>
+        </div>
+        <div class="ds-stage">
+          <Footer />
+        </div>
+      </article>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  /* This page is a reference sheet, not a marketing page — it borrows the
+     tokens and the type scale, and stays deliberately plain otherwise. */
+
+  .ds-head {
+    padding-top: 5.5rem;
+    padding-bottom: 3rem;
+  }
+  .ds-title {
+    margin: 1.1rem 0 0;
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    line-height: 1;
+    max-width: 30rem;
+  }
+  .ds-note {
+    margin: 2rem 0 0;
+    padding: 1.1rem 1.3rem;
+    border-left: 2px solid var(--color-berry);
+    background: var(--color-linen);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+    max-width: 46rem;
+  }
+  code {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.94em;
+    letter-spacing: 0.01em;
+    color: var(--color-steel);
+  }
+
+  /* ── section shell ─────────────────────────────────── */
+  .ds-section {
+    padding-top: 4rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    margin-top: 3rem;
+  }
+  /* Two classes so this beats .cw-wrap's `margin` / `padding` shorthand
+     regardless of which stylesheet the bundler emits first. */
+  .cw-wrap.ds-section {
+    margin: 3rem auto 0;
+  }
+  .ds-section-title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 72;
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--color-charcoal);
+  }
+  .ds-section-sub {
+    margin: 0.85rem 0 0;
+    font-size: 1.00rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+    max-width: 52rem;
+  }
+
+  /* ── swatches ──────────────────────────────────────── */
+  .ds-swatches {
+    margin-top: 2.2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1.4rem;
+  }
+  .ds-swatch {
+    margin: 0;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-paper);
+  }
+  .ds-swatch-chip {
+    height: 7.5rem;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.85rem;
+  }
+  .ds-swatch-class {
+    font-size: 0.90rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .ds-swatch-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.9rem 0.95rem 1rem;
+  }
+  .ds-swatch-name {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48;
+    font-size: 1.08rem;
+    letter-spacing: -0.02em;
+    color: var(--color-charcoal);
+  }
+  .ds-swatch-hex {
+    color: var(--color-berry);
+    font-size: 0.92rem;
+  }
+  .ds-swatch-use {
+    margin-top: 0.25rem;
+    font-size: 0.90rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+  }
+
+  /* ── type specimens ────────────────────────────────── */
+  .ds-type {
+    margin-top: 2.4rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .ds-type-row {
+    display: grid;
+    gap: 0.9rem;
+    padding: 2rem 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 12%, transparent);
+  }
+  .ds-type-row:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+  .ds-type-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+  }
+  .ds-type-meta code {
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-size: 0.90rem;
+  }
+  .ds-type-spec {
+    margin: 1rem 0 0;
+    font-size: 0.86rem;
+    line-height: 1.65;
+    color: var(--color-slate);
+    max-width: 46rem;
+  }
+  .ds-type-sample {
+    overflow: hidden;
+  }
+
+  .ds-h4 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48;
+    font-size: 1.3rem;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--color-charcoal);
+  }
+  .ds-caption {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--color-slate);
+  }
+
+  /* ── component items ───────────────────────────────── */
+  .ds-item {
+    margin-top: 2.4rem;
+  }
+  .ds-item--full {
+    margin-top: 3.4rem;
+  }
+  .ds-item--full:first-of-type {
+    margin-top: 2.4rem;
+  }
+  .ds-item-bar {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.8rem;
+    padding: 0.7rem 0 0.9rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-berry) 35%, transparent);
+    margin-bottom: 1.4rem;
+  }
+  .ds-item-name {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48;
+    font-size: 1.08rem;
+    letter-spacing: -0.02em;
+    color: var(--color-charcoal);
+  }
+  .ds-item-path {
+    font-size: 0.86rem;
+    color: var(--color-steel);
+  }
+
+  /* ── stages ────────────────────────────────────────── */
+  /* Each component keeps its own layout. The only edits are the ones needed to
+     show it out of context: a padded panel for atoms, a containing block so the
+     fixed nav stays inside its frame, and a lift that absorbs the proof band's
+     negative margin. */
+  .ds-stage {
+    position: relative;
+  }
+  .ds-stage--pad {
+    padding: 1.6rem;
+    background: var(--color-linen);
+    border-radius: 16px;
+  }
+  /* `transform` makes this stage the containing block for the nav's
+     position: fixed, so it frames inline instead of pinning to the viewport.
+     It also scopes the nav's z-index: 60 to this stacking context. */
+  .ds-stage--fixed {
+    min-height: 96px;
+    background: var(--color-steel);
+    transform: translateZ(0);
+  }
+  /* Absorbs the proof band's own negative margin-top (-2.75rem / -3.4rem). */
+  .ds-stage--lift {
+    margin-top: 4.5rem;
+  }
+
+  .ds-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .ds-row + .ds-row {
+    margin-top: 0.8rem;
+  }
+  .ds-row--middle {
+    align-items: center;
+  }
+  .ds-row--stack {
+    display: block;
+    max-width: 22rem;
+  }
+
+  .ds-dark-chip {
+    padding: 1.1rem 1.2rem;
+    background: var(--color-denim);
+    border-radius: 14px;
+  }
+
+  @media (min-width: 760px) {
+    .ds-type-row {
+      grid-template-columns: 9rem 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

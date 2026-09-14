@@ -1,23 +1,30 @@
 /*
-  Token → Utility mapping:
-  --color-brand-*  → bg-brand-*, text-brand-*, border-brand-*, ring-brand-*
-  --font-*         → font-heading, font-body
+  LeelineSports brand tokens — one locked palette (the denim direction).
 
-  NOTE: Using @theme (not @theme static) so direction pages can override
-  via <style is:global> on :root. Defaults from Direction 1 (Field Manual).
-  After picking a direction, switch to @theme static.
+  Token → utility mapping:
+    --color-*  → bg-*, text-*, border-*, ring-*
+    --font-*   → font-heading, font-body
+
+  `@theme static` emits every token as a CSS variable unconditionally. The
+  component styles reach for these variables directly (var(--color-steel)),
+  so they must always be present — nothing is tree-shaken away.
 */
-@theme {
-  /* ── Colors (defaults from Direction 1) ────── */
-  --color-brand-primary:   #0F1B2D;
-  --color-brand-secondary: #33475C;
-  --color-brand-accent:    #F2A33C;
-  --color-brand-bg:        #F5F7FA;
-  --color-brand-surface:   #E9EEF4;
-  --color-brand-text:      #101820;
-  --color-brand-muted:     #64748B;
+@theme static {
+  /* ── Colour ───────────────────────────────────────────── */
+  --color-steel:    #386694; /* denim blue — links, rules, numerals   */
+  --color-navy:     #0E2038; /* deep navy — the secondary step        */
+  --color-berry:    #B2475B; /* oxblood berry — CTAs, marks, accents  */
+  --color-cream:    #F8F7F3; /* page background                       */
+  --color-linen:    #EEECE6; /* raised surfaces, alternating bands    */
+  --color-charcoal: #1A1B22; /* body copy                             */
+  --color-slate:    #7A7C88; /* muted copy                            */
+  --color-denim:    #12284B; /* dark panels — the closing CTA         */
+  --color-midnight: #0A182E; /* deepest step — the footer             */
+  --color-paper:    #FFFFFF; /* white cards and panels on linen       */
+  --color-mist:     #F1F2F9; /* light ink on the dark featured card   */
+  --color-ink:      #182430; /* shadow and photographic-veil base     */
 
-  /* ── Typography (defaults from Direction 1) ── */
-  --font-heading: 'Space Grotesk', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
+  /* ── Typography ───────────────────────────────────────── */
+  --font-heading: 'Fraunces Variable', Georgia, serif;
+  --font-body:    'Manrope Variable', system-ui, sans-serif;
 }

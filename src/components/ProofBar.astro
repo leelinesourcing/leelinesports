@@ -1,0 +1,105 @@
+---
+interface Stat {
+  /** Counted up by site.js on first view. */
+  value: string
+  /** Decimal places for the counter. */
+  decimals?: number
+  suffix?: string
+  label: string
+}
+
+interface Props {
+  stats?: Stat[]
+}
+
+const {
+  stats = [
+    { value: '5000', suffix: '+', label: 'vetted suppliers' },
+    { value: '2.5', decimals: 1, label: 'AQL major-defect ceiling' },
+    { value: '100', label: 'MOQ, custom private label' },
+    { value: '10', label: 'days to first sample' },
+  ],
+} = Astro.props
+---
+
+<section class="cw-proof" id="proof">
+  <div class="cw-proof-band">
+    <div class="cw-proof-stats">
+      {stats.map((s) => (
+        <div class="cw-stat" data-reveal="up">
+          <div class="cw-stat-num">
+            <span data-count={s.value} data-decimals={s.decimals ?? 0}>0</span><span class="cw-stat-suffix">{s.suffix}</span>
+          </div>
+          <div class="cw-stat-label">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-proof {
+    position: relative;
+    margin-top: -2.75rem;
+    z-index: 5;
+  }
+  .cw-proof-band {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 4vw, 2rem);
+  }
+  .cw-proof-stats {
+    background: var(--color-cream);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    border-radius: 22px;
+    box-shadow: 0 34px 80px -44px color-mix(in srgb, var(--color-ink) 55%, transparent);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow: hidden;
+  }
+  .cw-stat {
+    padding: 1.7rem 1.4rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+  }
+  .cw-stat:nth-child(odd) {
+    border-right: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+  }
+  .cw-stat-num {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(2.1rem, 4vw, 3.1rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-steel);
+    font-variation-settings: 'opsz' 72;
+  }
+  .cw-stat-suffix {
+    color: var(--color-berry);
+  }
+  .cw-stat-label {
+    margin-top: 0.5rem;
+    font-size: 0.90rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 720px) {
+    .cw-proof {
+      margin-top: -3.4rem;
+    }
+    .cw-proof-stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .cw-stat {
+      padding: 2rem 1.6rem;
+      border-bottom: none;
+    }
+    .cw-stat:nth-child(odd) {
+      border-right: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    }
+    .cw-stat:nth-child(4) {
+      border-right: none;
+    }
+  }
+</style>

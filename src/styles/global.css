@@ -1,16 +1,9 @@
-/* Self-hosted variable fonts — all direction fonts loaded for prototyping.
-   After picking a direction, unused font imports are removed. */
-@import '@fontsource-variable/space-grotesk';
-@import '@fontsource-variable/inter';
+/* Self-hosted variable fonts — only the two families this site uses.
+   Fraunces (display serif) + Manrope (UI sans). */
 @import '@fontsource-variable/fraunces';
 @import '@fontsource-variable/manrope';
-@import '@fontsource-variable/archivo';
-@import '@fontsource-variable/dm-sans';
-@import '@fontsource-variable/sora';
-@import '@fontsource-variable/source-sans-3';
-@import '@fontsource-variable/outfit';
-@import '@fontsource-variable/work-sans';
 
 @import 'tailwindcss';
 @import './theme.css';
 @import './base.css';
+@import './design-system.css';

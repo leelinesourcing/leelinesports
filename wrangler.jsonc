@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "leelinesports",
+  "compatibility_date": "2026-09-15",
+
+  // Static-assets Worker. Astro pre-renders every page and every image into
+  // `dist/` at build time, so there is no Worker script to run — Cloudflare
+  // just serves the directory. Deploying this way (rather than letting a CI
+  // build the site) is deliberate: `npm run build` downloads each remote image
+  // from R2 and re-encodes it with sharp, and that step silently degrades to
+  // Astro's on-demand `/_image` endpoint in environments without a working
+  // sharp — which a static host cannot serve.
+  "assets": {
+    "directory": "./dist"
+  }
+}

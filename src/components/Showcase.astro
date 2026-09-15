@@ -53,11 +53,11 @@ const {
               <Image
                 src={s.img}
                 alt={s.alt}
-                width={480}
-                height={600}
-                widths={[240, 480]}
-                sizes="(min-width: 760px) 240px, 176px"
-                quality={80}
+                width={720}
+                height={900}
+                widths={[360, 600, 720]}
+                sizes="(min-width: 760px) 380px, 280px"
+                quality={90}
                 loading="lazy"
                 decoding="async"
               />
@@ -84,7 +84,11 @@ const {
 
 <style>
   .cw-showcase {
-    --card-w: clamp(10rem, 20vw, 15rem);
+    /* Card width drives the whole ring: the stage height, each item's box and
+       the front card's rendered size all scale off it. The front card lands at
+       roughly 1.3x this value, so at 16rem it renders ~333px — still under half
+       the 600px the smallest source crops to, which is what keeps it sharp. */
+    --card-w: clamp(9.5rem, 19vw, 16rem);
     padding: 7rem 0 6rem;
     background: var(--color-cream);
   }

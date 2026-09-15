@@ -62,8 +62,6 @@ const {
 ---
 
 <footer class="cw-footer" id="footer">
-  <span class="cw-footer-initial" aria-hidden="true">L</span>
-
   <div class="cw-wrap">
     <div class="cw-footer-top">
       <div class="cw-footer-brand">
@@ -105,25 +103,11 @@ const {
     position: relative;
     /* one step deeper than --color-denim (var(--color-denim)) — same indigo family,
        but dark enough to read as the footer rather than merging with the
-       "Start the brief" block sitting directly above it */
+       closing CTA block sitting directly above it */
     background: var(--color-midnight);
     padding: 5.5rem 0 2.5rem;
     color: var(--color-cream);
     overflow: hidden;
-  }
-  .cw-footer-initial {
-    position: absolute;
-    right: -0.04em;
-    bottom: -0.24em;
-    font-family: var(--font-heading);
-    font-weight: 560;
-    font-size: clamp(16rem, 30vw, 26rem);
-    line-height: 0.7;
-    letter-spacing: -0.05em;
-    color: color-mix(in srgb, var(--color-cream) 4.5%, transparent);
-    user-select: none;
-    pointer-events: none;
-    font-variation-settings: 'opsz' 144, 'SOFT' 100;
   }
   .cw-footer-top {
     display: grid;

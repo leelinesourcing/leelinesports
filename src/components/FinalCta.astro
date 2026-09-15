@@ -2,7 +2,6 @@
 import Button from './Button.astro'
 
 interface Props {
-  eyebrow?: string
   lede?: string
   email?: string
   ctaLabel?: string
@@ -11,7 +10,6 @@ interface Props {
 }
 
 const {
-  eyebrow = 'Start the brief',
   lede = 'Send the brief and we’ll come back within a business day with MOQ, spec and a DDP price — not a sales pitch.',
   email = 'info@leelinesports.com',
   ctaLabel = 'Request a quote',
@@ -22,8 +20,7 @@ const {
 <section class="cw-cta" id="quote">
   <div class="cw-wrap cw-cta-grid">
     <div class="cw-cta-copy">
-      <p class="cw-eyebrow cw-eyebrow--light" data-reveal="up">{eyebrow}</p>
-      <h2 class="cw-h2 cw-h2--light" data-reveal="mask" style="--rd:80ms">
+      <h2 class="cw-h2 cw-h2--light" data-reveal="mask">
         <slot>Bring Us the Sketch.</slot>
       </h2>
       <p class="cw-lede cw-lede--light" data-reveal="up" style="--rd:160ms">{lede}</p>

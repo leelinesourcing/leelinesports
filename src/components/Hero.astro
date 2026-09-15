@@ -12,18 +12,15 @@ interface Props {
   subheading?: string
   image?: string
   imageAlt?: string
-  /** Oversized drop-initial watermark behind the image. */
-  initial?: string
   primaryLabel?: string
   primaryHref?: string
 }
 
 const {
   rating = '4.8/5 from 200+ reviews',
-  subheading = 'Send a sketch—we run sampling (7–21 days), 50–300 pc starts, AQL inspection and DDP delivery. About 40% of new apparel brands fail in two years from overstock; flexible runs can cut unsold inventory ~30%. You test small, scale what sells, and carry none of the factory risk.',
+  subheading = 'We engineer high-performance activewear, team uniforms, and seamless gym apparel tailored to your exact tech packs. Send a sketch—we deliver samples in 7 days, full AQL inspection, and door-to-door DDP shipping. Eliminate overstock risk, validate market demand with zero factory liability, and scale your winning styles seamlessly.',
   image = r2('custom-sportswear-manufacturers'),
   imageAlt = 'Cyclist wearing custom manufactured sportswear',
-  initial = 'L',
   primaryLabel = 'Request a quote',
   primaryHref = '#quote',
 } = Astro.props
@@ -36,7 +33,7 @@ const {
       alt={imageAlt}
       width={550}
       height={525}
-      widths={[720, 1440]}
+      widths={[800, 1600]}
       sizes="100vw"
       quality={80}
       loading="eager"
@@ -45,9 +42,6 @@ const {
     />
   </div>
   <div class="cw-hero-veil" aria-hidden="true"></div>
-
-  <!-- giant serif drop-initial watermark -->
-  <span class="cw-hero-initial" data-parallax="0.18" aria-hidden="true">{initial}</span>
 
   <!-- slowly rotating registration mark -->
   <Mark className="cw-hero-dial" />
@@ -61,7 +55,7 @@ const {
     </div>
 
     <h1 class="cw-h1 cw-hero-item" style="--rd:90ms">
-      <slot><span class="cw-h1-line">Custom Sportswear Manufacturers:</span><span class="cw-h1-line cw-h1-claim">Scale Your Brand with <em>Zero Risk</em> & Full Support.</span></slot>
+      <slot><span class="cw-h1-line">Custom Sportswear Manufacturers:</span><span class="cw-h1-line cw-h1-claim">Scale Your Brand with <em>99.6% QC Pass Rates</em> & Full Support.</span></slot>
     </h1>
 
     <p class="cw-hero-sub cw-hero-item" style="--rd:200ms">{subheading}</p>
@@ -106,23 +100,6 @@ const {
         color-mix(in srgb, var(--color-ink) 55%, transparent) 100%);
   }
 
-  /* ghost drop-initial */
-  .cw-hero-initial {
-    position: absolute;
-    z-index: 2;
-    left: -0.06em;
-    top: 6%;
-    font-family: var(--font-heading);
-    font-weight: 560;
-    font-size: clamp(16rem, 34vw, 30rem);
-    line-height: 0.8;
-    letter-spacing: -0.05em;
-    color: color-mix(in srgb, var(--color-cream) 5.5%, transparent);
-    user-select: none;
-    pointer-events: none;
-    font-variation-settings: 'opsz' 144, 'SOFT' 100;
-  }
-
   /* rotating registration dial */
   .cw-hero-dial {
     position: absolute;
@@ -150,21 +127,25 @@ const {
   }
   .cw-h1 {
     margin: 1.4rem auto 0;
-    color: var(--color-cream);
+    /* Heavier, larger and pure white than the shared .cw-h1 token, which the
+       design-system specimen keeps at 620 / cream. */
+    font-weight: 700;
+    color: var(--color-paper);
     /* spans the full 1280px hero column (1216px once the sides are padded) so
        the headline sets on as few lines as the copy allows */
     max-width: 76rem;
-    font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
     line-height: 1.02;
     /* The headline used to carry authored <br> breaks; it is too long for them
        now, so it balances itself against whatever the clamp resolves to. */
     text-wrap: balance;
   }
+  /* No weight override: the italic and the berry tint already carry the accent,
+     so the term stays as heavy as the headline around it. */
   .cw-h1 em {
     font-style: italic;
-    font-weight: 430;
     letter-spacing: -0.045em;
-    /* the hyphen in "zero-risk" is a legal break point; keep the term whole */
+    /* keeps the two-word term from breaking across lines */
     white-space: nowrap;
   }
   /* One block per sentence. Balancing the headline as a single block across
@@ -206,7 +187,7 @@ const {
     margin: 1.7rem auto 0;
     font-size: 1.14rem;
     line-height: 1.62;
-    color: color-mix(in srgb, var(--color-cream) 82%, transparent);
+    color: var(--color-paper);
   }
   .cw-hero-cta {
     display: flex;

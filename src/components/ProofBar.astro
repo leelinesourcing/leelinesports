@@ -1,8 +1,8 @@
 ---
 interface Stat {
-  /** Counted up by site.js on first view. */
+  /** Pre-formatted at build time — the figures render static. */
   value: string
-  /** Decimal places for the counter. */
+  /** Decimal places to format the value with. */
   decimals?: number
   suffix?: string
   label: string
@@ -17,9 +17,16 @@ const {
     { value: '5000', suffix: '+', label: 'vetted suppliers' },
     { value: '2.5', decimals: 1, label: 'AQL major-defect ceiling' },
     { value: '100', label: 'MOQ, custom private label' },
-    { value: '10', label: 'days to first sample' },
+    { value: '7', label: 'days to first sample' },
   ],
 } = Astro.props
+
+// Matches the grouping the site uses elsewhere ("5,000", not "5000").
+const fmt = (s: Stat) => {
+  const n = parseFloat(s.value)
+  const d = s.decimals ?? 0
+  return d > 0 ? n.toFixed(d) : Math.round(n).toLocaleString('en-US')
+}
 ---
 
 <section class="cw-proof" id="proof">
@@ -28,7 +35,7 @@ const {
       {stats.map((s) => (
         <div class="cw-stat" data-reveal="up">
           <div class="cw-stat-num">
-            <span data-count={s.value} data-decimals={s.decimals ?? 0}>0</span><span class="cw-stat-suffix">{s.suffix}</span>
+            <span>{fmt(s)}</span><span class="cw-stat-suffix">{s.suffix}</span>
           </div>
           <div class="cw-stat-label">{s.label}</div>
         </div>

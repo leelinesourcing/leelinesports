@@ -1,7 +1,7 @@
 /*
   LeelineSports site behaviour — shared by every page.
   Vanilla JS, no framework runtime. Handles: scroll reveal, hero entrance,
-  eased stat counters, nav scroll state, hero watermark parallax, mobile menu.
+  nav scroll state, parallax elements, mobile menu.
 */
 (() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -47,43 +47,6 @@
       requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('is-in')));
       setTimeout(release, 1500);
       heroItems[heroItems.length - 1]?.addEventListener('transitionend', release, { once: true });
-    }
-  }
-
-  // ── eased stat counters ─────────────────────────────────
-  const counters = Array.from(document.querySelectorAll('[data-count]'));
-  const fmt = (n, d) => (d > 0 ? n.toFixed(d) : Math.round(n).toLocaleString('en-US'));
-  const animateCount = (el) => {
-    const target = parseFloat(el.dataset.count);
-    const d = parseInt(el.dataset.decimals || '0', 10);
-    const dur = 1500;
-    const start = performance.now();
-    const step = (now) => {
-      const p = Math.min((now - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 4);
-      el.textContent = fmt(target * eased, d);
-      if (p < 1) requestAnimationFrame(step);
-      else el.textContent = fmt(target, d);
-    };
-    requestAnimationFrame(step);
-  };
-  if (counters.length) {
-    if (reduce) {
-      counters.forEach((el) => {
-        el.textContent = fmt(parseFloat(el.dataset.count), parseInt(el.dataset.decimals || '0', 10));
-      });
-    } else {
-      const cIO = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            animateCount(entry.target);
-            cIO.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.4 }
-      );
-      counters.forEach((el) => cIO.observe(el));
     }
   }
 

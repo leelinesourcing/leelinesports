@@ -56,8 +56,8 @@ const {
       n: '04',
       name: 'Pre-production',
       title: 'Sampling',
-      description: 'A 5–10 day pre-production prototype, refundable against your bulk order.',
-      tags: ['5–10 days'],
+      description: 'A 7-day pre-production prototype, refundable against your bulk order.',
+      tags: ['7 days'],
     },
     {
       n: '05',
@@ -90,7 +90,7 @@ const {
           alt={imageAlt}
           width={550}
           height={525}
-          widths={[275, 550]}
+          widths={[380, 760]}
           sizes="(min-width: 880px) 45vw, 100vw"
           quality={80}
           loading="lazy"
@@ -225,7 +225,7 @@ const {
   .cw-process-num {
     font-family: var(--font-heading);
     font-weight: 560;
-    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    font-size: clamp(2.1rem, 3.5vw, 3.0rem);
     line-height: 0.9;
     letter-spacing: -0.03em;
     color: var(--color-steel);
@@ -249,6 +249,12 @@ const {
     font-size: 1.00rem;
     letter-spacing: 0.01em;
     color: var(--color-slate);
+  }
+  /* The shared .cw-h3 token is sized for standalone headings. On these rows it
+     competes with the oversized step number, so it is stepped down here only —
+     ICPs and the design-system specimen keep the full token. */
+  .cw-process-body .cw-h3 {
+    font-size: clamp(1.15rem, 2.1vw, 1.55rem);
   }
   .cw-process-body-text {
     margin: 0.7rem 0 0;

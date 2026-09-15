@@ -9,61 +9,88 @@ import path from 'node:path'
 const SRC = 'C:/leelinesports/home'
 const OUT = '_images'
 
-// source filename -> staged slug
+// Source path (relative to SRC) -> staged slug. Sources are re-downloaded and
+// re-filed by hand, so both the folder and the extension drift — keep the key on
+// the current path or the entry silently reports MISSING SOURCE.
 const MAP = {
-  'Custom Sportswear Manufacturers.jpg': 'custom-sportswear-manufacturers',
-  'Client showcase1.jpg': 'client-showcase-1',
-  'Client showcase2.jpg': 'client-showcase-2',
-  'Client showcase3.jpg': 'client-showcase-3',
-  'Client showcase4.jpg': 'client-showcase-4',
-  'Client showcase5.jpg': 'client-showcase-5',
-  'Client showcase6.jpg': 'client-showcase-6',
-  'Client showcase7.jpg': 'client-showcase-7',
-  'Client showcase8.jpg': 'client-showcase-8',
-  'Golf Apparel.jpg': 'golf-apparel',
-  'Cycling Apparel.jpg': 'cycling-apparel',
-  'T-Shirts.jpg': 't-shirts',
-  'Tennis Clothing.jpg': 'tennis-clothing',
-  'Custom Socks.jpg': 'custom-socks',
-  'Towel.jpg': 'towel',
-  'Hunting Clothing.jpg': 'hunting-clothing',
-  'Underwear.jpg': 'underwear',
-  'Swimwear.jpg': 'swimwear',
-  'Work Uniform.jpg': 'work-uniform',
-  'Gym Clothing.jpg': 'gym-clothing',
-  'Custom Hawaiian Shirts.jpg': 'custom-hawaiian-shirts',
-  'Fishing Apparel.jpg': 'fishing-apparel',
-  'Baseball Apparel.jpg': 'baseball-apparel',
-  'Basketball Apparel.jpg': 'basketball-apparel',
-  'Yoga Apparel.jpg': 'yoga-apparel',
-  'Ice Hockey Wear.jpg': 'ice-hockey-wear',
-  'Soccer Apparel.jpg': 'soccer-apparel',
-  'The mess we handle.jpg': 'the-mess-we-handle',
-  'Moisture-wicking.jpg': 'moisture-wicking',
-  '4-way stretch.jpg': '4-way-stretch',
-  'UV protection.jpg': 'uv-protection',
-  'Compression fit.jpg': 'compression-fit',
-  'Antimicrobial.jpg': 'antimicrobial',
-  'Flatlock seams.jpg': 'flatlock-seams',
-  'Laser-cut ventilation.jpg': 'laser-cut-ventilation',
-  'Abrasion-resistant panels.jpg': 'abrasion-resistant-panels',
-  'Sleeve length & sizing.png': 'sleeve-length-sizing',
-  'Embroidery & screen printing.jpg': 'embroidery-screen-printing',
-  'Packaging.jpg': 'packaging',
-  'Labels.jpg': 'labels',
-  'Cost control.jpg': 'cost-control',
-  'Sustainable production.jpg': 'sustainable-production',
-  'After-sales support.jpg': 'after-sales-support',
-  'FBA prep & injection..jpg': 'fba-prep-injection',
-  'How it works.jpg': 'how-it-works',
-  'Compression wear · Amazon.jpg': 'compression-wear-amazon',
-  'Team apparel · CrossFit network.jpg': 'team-apparel-crossfit-network',
-  'Swim & outdoor · UPF line.jpg': 'swim-outdoor-upf-line',
+  // hero/
+  'hero/Custom Sportswear Manufacturers.jpg': 'custom-sportswear-manufacturers',
+
+  // What we make/
+  'What we make/Golf Apparel.webp': 'golf-apparel',
+  'What we make/Cycling Apparel.jpg': 'cycling-apparel',
+  'What we make/T-Shirts.jpg': 't-shirts',
+  'What we make/Tennis Clothing.jpg': 'tennis-clothing',
+  'What we make/Custom Socks.avif': 'custom-socks',
+  'What we make/Towel.jpg': 'towel',
+  'What we make/Hunting Clothing.jpg': 'hunting-clothing',
+  'What we make/Underwear.jpg': 'underwear',
+  'What we make/Swimwear.jpg': 'swimwear',
+  'What we make/Work Uniform.jpg': 'work-uniform',
+  'What we make/Gym Clothing.webp': 'gym-clothing',
+  'What we make/Custom Hawaiian Shirts.jpg': 'custom-hawaiian-shirts',
+  'What we make/Fishing Apparel.webp': 'fishing-apparel',
+  'What we make/Baseball Apparel.avif': 'baseball-apparel',
+  'What we make/Basketball Apparel.jpg': 'basketball-apparel',
+  'What we make/Yoga Apparel.webp': 'yoga-apparel',
+  'What we make/Ice Hockey Wear.jpg': 'ice-hockey-wear',
+  'What we make/Soccer Apparel.jpg': 'soccer-apparel',
+
+  // What we customise/
+  'What we customise/Moisture-wicking.jpg': 'moisture-wicking',
+  'What we customise/4-way stretch.jpg': '4-way-stretch',
+  'What we customise/UV protection.jpg': 'uv-protection',
+  'What we customise/Compression fit.jpg': 'compression-fit',
+  'What we customise/Antimicrobial.jpg': 'antimicrobial',
+  'What we customise/Flatlock seams.jpg': 'flatlock-seams',
+  'What we customise/Laser-cut ventilation.jpg': 'laser-cut-ventilation',
+  'What we customise/Abrasion-resistant panels.jpg': 'abrasion-resistant-panels',
+  'What we customise/Sleeve length & sizing.jpg': 'sleeve-length-sizing',
+  'What we customise/Embroidery & screen printing.jpg': 'embroidery-screen-printing',
+  'What we customise/Packaging.jpg': 'packaging',
+  'What we customise/Labels.png': 'labels',
+
+  // Client showcase/
+  'Client showcase/Client showcase1.avif': 'client-showcase-1',
+  'Client showcase/Client showcase2.webp': 'client-showcase-2',
+  'Client showcase/Client showcase3.webp': 'client-showcase-3',
+  'Client showcase/Client showcase4.jpg': 'client-showcase-4',
+  'Client showcase/Client showcase5.webp': 'client-showcase-5',
+  'Client showcase/Client showcase6.avif': 'client-showcase-6',
+  'Client showcase/Client showcase7.jpg': 'client-showcase-7',
+  'Client showcase/Client showcase8.webp': 'client-showcase-8',
+
+  // Other/ (the three portrait files here are testimonial avatars, which live in
+  // src/assets/images/ rather than R2 — see Testimonials.astro)
+  'Other/The mess we handle.webp': 'the-mess-we-handle',
+  'Other/Cost control.jpg': 'cost-control',
+  'Other/Sustainable production.jpg': 'sustainable-production',
+  'Other/After-sales support.jpg': 'after-sales-support',
+  'Other/FBA prep & injection..jpg': 'fba-prep-injection',
+  'Other/How it works.jpg': 'how-it-works',
+  'Other/Compression wear · Amazon.jpg': 'compression-wear-amazon',
+  'Other/Team apparel · CrossFit network.jpg': 'team-apparel-crossfit-network',
+  'Other/Swim & outdoor · UPF line.jpg': 'swim-outdoor-upf-line',
+
+  // Certifications/ — certificate scans (linked full-size from the thumbnail)
+  // and the four standards marks beside them.
+  'Certifications/certificate-1.webp': 'certificate-1',
+  'Certifications/certificate-2.webp': 'certificate-2',
+  'Certifications/certificate-3.webp': 'certificate-3',
+  'Certifications/mark-gots.webp': 'mark-gots',
+  'Certifications/mark-ISO.webp': 'mark-iso',
+  'Certifications/mark-ISO-alt.webp': 'mark-iso-alt',
+  'Certifications/mark-bsci.webp': 'mark-bsci',
 }
 
 fs.mkdirSync(OUT, { recursive: true })
 
-const missing = fs.readdirSync(SRC).filter((f) => /\.(jpe?g|png)$/i.test(f) && !MAP[f])
+// Recursive so files filed into subfolders still surface when unmapped; paths are
+// normalised to forward slashes to match the MAP keys on every platform.
+const missing = fs
+  .readdirSync(SRC, { recursive: true })
+  .map((f) => f.replaceAll('\\', '/'))
+  .filter((f) => /\.(jpe?g|png|avif|webp)$/i.test(f) && !MAP[f])
 if (missing.length) console.log('UNMAPPED, skipping:', missing.join(', '))
 
 let done = 0

@@ -3,7 +3,6 @@
 // Order and naming follow the PRODUCTS menu on leelinesports.com.
 // All 18 categories are kept, but presented as a compact uniform grid rather
 // than 18 oversized photos — this section used to run 4,082px tall.
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 import SectionHead from './SectionHead.astro'
 
@@ -63,14 +62,11 @@ const {
         <li class="cw-vt-item" data-reveal="up" style={`--rd:${(i % 6) * 50}ms`}>
           <a href={href} class="cw-vt-link">
             <figure class="cw-vt-fig">
-              <Image
+              <img
                 src={c.img}
                 alt={`${c.name} manufactured by LeelineSports`}
                 width={550}
                 height={525}
-                widths={[380, 760]}
-                sizes="(min-width: 760px) 33vw, 50vw"
-                quality={80}
                 loading="lazy"
                 decoding="async"
               />

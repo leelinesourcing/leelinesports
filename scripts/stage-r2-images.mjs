@@ -81,6 +81,12 @@ const MAP = {
   'Certifications/mark-ISO.webp': 'mark-iso',
   'Certifications/mark-ISO-alt.webp': 'mark-iso-alt',
   'Certifications/mark-bsci.webp': 'mark-bsci',
+
+  // Brand/ — the footer wordmark and the testimonial avatars.
+  'Brand/logo.png': 'registered-mark',
+  'Brand/reviewer-1.webp': 'reviewer-1',
+  'Brand/reviewer-2.webp': 'reviewer-2',
+  'Brand/reviewer-3.webp': 'reviewer-3',
 }
 
 fs.mkdirSync(OUT, { recursive: true })

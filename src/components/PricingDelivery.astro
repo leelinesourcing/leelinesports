@@ -2,7 +2,6 @@
 // Pricing & delivery — the DDP model and the three transit modes.
 // Two columns: the three transit modes stack on the left and share that
 // column's height; the FBA handover sits beside them as a photo-backed panel.
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 const fbaImage = r2('fba-prep-injection')
 
@@ -61,15 +60,12 @@ const {
       </div>
 
       <div class="cw-fba" data-reveal="up" style="--rd:120ms">
-        <Image
+        <img
           class="cw-fba__bg"
           src={fbaImage}
           alt=""
           width={1200}
           height={900}
-          widths={[600, 1200]}
-          sizes="(min-width: 900px) 50vw, 100vw"
-          quality={80}
           loading="lazy"
           decoding="async"
         />

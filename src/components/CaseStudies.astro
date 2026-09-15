@@ -2,7 +2,6 @@
 // Case studies — results-first.
 // The previous layout ran 2,252px as three full-width image+ledger rows.
 // Rebuilt so the number leads and the story supports it.
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 
 interface CaseStudy {
@@ -85,14 +84,11 @@ const {
       {cases.map((c, i) => (
         <article class="cw-case" data-reveal="up" style={`--rd:${i * 80}ms`}>
           <figure class="cw-case-fig">
-            <Image
+            <img
               src={c.img}
               alt={c.alt}
               width={550}
               height={525}
-              widths={[275, 550]}
-              sizes="(min-width: 760px) 33vw, 100vw"
-              quality={80}
               loading="lazy"
               decoding="async"
             />

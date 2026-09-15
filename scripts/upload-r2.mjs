@@ -15,6 +15,14 @@ try {
   console.log('manifest missing or invalid — starting from {}')
 }
 
+// Objects sit behind Cloudflare's CDN on img.leelinesports.com. Left unset, R2 hands
+// them a four-hour cache, so replacing a picture under an unchanged key would stay
+// invisible for hours. A short TTL keeps swap-to-live down to minutes.
+//
+// No space after the comma: the put below runs through a shell, which would split a
+// spaced value into two arguments and make wrangler reject the command.
+const CACHE_CONTROL = 'public,max-age=300'
+
 const MIME = { '.webp': 'image/webp', '.avif': 'image/avif', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.gif': 'image/gif', '.ico': 'image/x-icon' }
 
 // Skip underscore-prefixed files — those are local review sheets, not content.
@@ -40,7 +48,8 @@ for (const f of files.sort()) {
     execFileSync(
       'npx',
       ['wrangler', 'r2', 'object', 'put', `${bucket}/${key}`,
-       '--file', local, '--content-type', MIME[path.extname(f).toLowerCase()], '--remote'],
+       '--file', local, '--content-type', MIME[path.extname(f).toLowerCase()],
+       '--cache-control', CACHE_CONTROL, '--remote'],
       { stdio: 'pipe', env: process.env, shell: true }
     )
     manifest[key] = { hash, url: `${publicUrl}/${key}`, uploadedAt: new Date().toISOString() }

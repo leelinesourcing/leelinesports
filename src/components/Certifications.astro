@@ -3,7 +3,6 @@
 // Layout: certificate image above the copy. Rebuilt text-first from the original
 // three full-height scans, then the image was sized back up to 184px so the
 // document is legible without burying the claim below it.
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 
 interface Certificate {
@@ -77,12 +76,11 @@ const {
       {certs.map((c, i) => (
         <div class="cw-cert" data-reveal="up" style={`--rd:${i * 70}ms`}>
           <figure class="cw-cert__thumb">
-            <Image
+            <img
               src={c.img}
               alt={`${c.code} certificate`}
               width={800}
               height={1000}
-              quality={80}
               loading="lazy"
               decoding="async"
             />
@@ -101,13 +99,12 @@ const {
       <ul>
         {standards.map((s) => (
           <li>
-            <Image
+            <img
               class="cw-std-mark"
               src={s.mark}
               alt=""
               width={92}
               height={92}
-              quality={80}
               loading="lazy"
               decoding="async"
             />

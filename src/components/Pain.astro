@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 import Mark from './Mark.astro'
 
@@ -76,14 +75,11 @@ const {
       <div class="cw-pain-figure" data-reveal="right">
         <figure class="cw-pain-fig">
           <div class="cw-pain-img">
-            <Image
+            <img
               src={image}
               alt={imageAlt}
               width={550}
               height={525}
-              widths={[380, 760]}
-              sizes="(min-width: 880px) 45vw, 100vw"
-              quality={80}
               loading="lazy"
               decoding="async"
             />

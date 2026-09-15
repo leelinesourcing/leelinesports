@@ -3,7 +3,6 @@
 // Items are laid out around an arc (rotateY + translateZ); the arrows advance
 // one card at a time and cards away from the front shrink and fade. Markup
 // falls back to a plain scrolling row if JS never runs.
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 
 interface Shot {
@@ -50,14 +49,11 @@ const {
         {shots.map((s) => (
           <li class="cw-showcase-item">
             <figure class="cw-showcase-fig">
-              <Image
+              <img
                 src={s.img}
                 alt={s.alt}
                 width={720}
                 height={900}
-                widths={[360, 600, 720]}
-                sizes="(min-width: 760px) 380px, 280px"
-                quality={90}
                 loading="lazy"
                 decoding="async"
               />

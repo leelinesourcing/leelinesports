@@ -3,7 +3,6 @@
 // Fabric leads: a framing rule, a full-width statement, then its own library of
 // weave cards. The other four capability areas follow as their own cards, each
 // with an image and a spec list.
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 import SectionHead from './SectionHead.astro'
 
@@ -154,14 +153,11 @@ const {
       {fabric.weaves.map((w) => (
         <li class="cw-ai-weave" data-reveal="up">
           <span class="cw-ai-weave-thumb">
-            <Image
+            <img
               src={w.thumb}
               alt=""
               width={480}
               height={320}
-              widths={[240, 480]}
-              sizes="(min-width: 920px) 240px, 50vw"
-              quality={80}
               loading="lazy"
               decoding="async"
             />
@@ -191,14 +187,11 @@ const {
           </div>
 
           <figure class="cw-ai-fig">
-            <Image
+            <img
               src={g.img}
               alt={g.alt}
               width={550}
               height={525}
-              widths={[380, 760]}
-              sizes="(min-width: 920px) 380px, 100vw"
-              quality={80}
               loading="lazy"
               decoding="async"
             />

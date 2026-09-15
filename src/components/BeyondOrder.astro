@@ -2,7 +2,6 @@
 // Three areas that carry past the order — cost control, sustainable production
 // and after-sales. Split out of the Services section, which had run long, so
 // they read as their own band rather than as a tail on the fabric library.
-import { Image } from 'astro:assets'
 import { r2 } from '../lib/images'
 
 interface Area {
@@ -59,14 +58,11 @@ const {
       {areas.map((g) => (
         <li class="cw-beyond-tile" data-reveal="up">
           <figure class="cw-beyond-fig">
-            <Image
+            <img
               src={g.img}
               alt={g.alt}
               width={550}
               height={525}
-              widths={[380, 760]}
-              sizes="(min-width: 920px) 375px, 100vw"
-              quality={80}
               loading="lazy"
               decoding="async"
             />

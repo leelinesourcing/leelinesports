@@ -1,0 +1,148 @@
+---
+// Golf page hero — a text-forward band on the steel ground.
+//
+// It deliberately has no imagery: the headline, the credentials and the CTA
+// carry it. The four spec values that used to sit in a card over a product shot
+// now open the engineering section as its headline numbers.
+//
+// Shares only the JS contract with Hero.astro — `data-hero` on the section and
+// `.cw-hero-item` on the staggered children.
+//
+// The ground is steel, not cream: the nav renders its wordmark in cream until
+// the page scrolls past 24px, so a light hero would make it invisible.
+import Button from './Button.astro'
+
+interface Props {
+  kicker?: string
+  /** First headline line — carries the page's core keyword. */
+  title?: string
+  /** Second headline line — the outcome, set in italic. */
+  claim?: string
+  subheading?: string
+  primaryLabel?: string
+  primaryHref?: string
+}
+
+const {
+  kicker = 'Power Your Brand’s Success with High-Performance Golf Apparel',
+  title = 'Golf Apparel Manufacturer: ',
+  claim = 'Engineered for Performance and Partnership',
+  subheading = 'As an industry-leading technical golf clothing manufacturer, we specialize in high-performance fabrics featuring 4-way stretch, UPF 50+ sun protection, and breathable cooling finishes. Whether you are launching an elite tournament collection or versatile on-and-off course lifestyle wear, our end-to-end manufacturing ensures tour-level quality across every stitch.',
+  primaryLabel = 'Show us what you’re making',
+  primaryHref = '#quote',
+} = Astro.props
+---
+
+<section class="cw-gh" id="top" data-hero>
+  <div class="cw-gh-inner">
+    <p class="cw-gh-kicker cw-hero-item" style="--rd:0ms">{kicker}</p>
+
+    <h1 class="cw-gh-h1 cw-hero-item" style="--rd:90ms">
+      <span class="cw-gh-h1-lead">{title}</span>
+      <span class="cw-gh-h1-claim">{claim}</span>
+    </h1>
+
+    <p class="cw-gh-sub cw-hero-item" style="--rd:200ms">{subheading}</p>
+
+    <div class="cw-gh-actions cw-hero-item" style="--rd:300ms">
+      <Button href={primaryHref}>{primaryLabel}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-gh {
+    position: relative;
+    background: var(--color-steel);
+    padding: 9.5rem 0 6.5rem;
+    overflow: hidden;
+  }
+  .cw-gh-inner {
+    /* the wider band the nav and hero share, per the brand guide */
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .cw-gh-kicker {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-variation-settings: 'opsz' 72, 'SOFT' 0;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    /* Full cream, not a tint: on flat steel a 66% tint only reaches 3.4:1.
+       Cream clears 5.6:1 against --color-steel. */
+    color: var(--color-cream);
+  }
+  /* the berry ring the .cw-eyebrow rule uses, rebuilt for the dark ground */
+  .cw-gh-kicker::before {
+    content: '';
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border: 2px solid var(--color-berry);
+    border-radius: 50%;
+  }
+
+  .cw-gh-h1 {
+    margin: 1.35rem 0 0;
+    max-width: 76rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-size: clamp(2.35rem, 4.4vw, 4.1rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: var(--color-cream);
+  }
+  /* one block per sentence, each balancing inside itself */
+  .cw-gh-h1-lead,
+  .cw-gh-h1-claim {
+    display: block;
+    text-wrap: balance;
+  }
+  /* Two-tone, like the homepage hero — but the emphasis is weight and italic,
+     not berry. Berry only reaches 1.13:1 on steel, so a berry headline here
+     would be unreadable; the accent is spent on the CTA instead, which is the
+     single most important element in the group. */
+  .cw-gh-h1-claim {
+    color: var(--color-paper);
+    font-style: italic;
+    letter-spacing: -0.04em;
+  }
+
+  .cw-gh-sub {
+    margin: 1.7rem 0 0;
+    /* the homepage hero caps its subheading too; this one is long, and full
+       container width would run to ~140 characters a line */
+    max-width: 58rem;
+    font-size: 1.12rem;
+    line-height: 1.66;
+    color: var(--color-cream);
+    text-wrap: pretty;
+  }
+
+  /* the CTA sits on its own under the copy */
+  .cw-gh-actions {
+    margin-top: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* entrance — will-change is applied by site.js for the duration only */
+  .cw-hero-item {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    transition-delay: var(--rd, 0ms);
+  }
+  .cw-gh.is-in .cw-hero-item {
+    opacity: 1;
+    transform: none;
+  }
+</style>

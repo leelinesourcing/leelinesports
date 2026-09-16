@@ -1,0 +1,225 @@
+---
+// Golf product categories — a photo-and-caption board modelled on the
+// "Art of Custom Golf Apparel" block on the legacy leelinesports.com page.
+// That block is nine tiles in the original: six in one grid (jackets through
+// skirts) and three more directly beneath it (polos, visors, socks).
+//
+// Deliberately not Verticals.astro: that one boxes each category inside a linen
+// card. Here the photo sits straight on the band with the caption below it and
+// no card chrome at all.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Category {
+  name: string
+  /** The material description under the name. */
+  note: string
+  img: string
+  alt: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  categories?: Category[]
+}
+
+const {
+  kicker = 'What we make',
+  heading = 'Nine Categories Off One Production Line.',
+  lede = 'Jackets and outerwear for shoulder season, bottoms for the round, polos for the clubhouse, and the accessories that finish the kit. Same grade rules, same tolerances, same QC sheet.',
+  categories = [
+    {
+      name: 'Custom Golf Jackets',
+      note: 'Bonded softshell with a PFAS-free DWR finish, cut to clear a full swing.',
+      img: r2('golf-type-jackets'),
+      alt: 'Custom golf jacket manufactured to a private-label brand spec',
+    },
+    {
+      name: 'Custom Golf Vests',
+      note: 'Quilted knit face over a packable fill — the layer for a cold front nine.',
+      img: r2('golf-type-vests'),
+      alt: 'Custom quilted golf vest with a private-label logo placement',
+    },
+    {
+      name: 'Custom Golf Outerwear',
+      note: 'Taped seams and YKK zips, built for rain that settles in for the round.',
+      img: r2('golf-type-outerwear'),
+      alt: 'Custom golf outerwear jacket with a logo placement area for branding',
+    },
+    {
+      name: 'Custom Golf Shorts',
+      note: 'Four-way stretch woven with a gusseted crotch and a clean, flat hem.',
+      img: r2('golf-type-shorts'),
+      alt: 'Custom golf shorts in four-way stretch woven fabric with logo placement',
+    },
+    {
+      name: 'Custom Golf Pants',
+      note: 'DWR finish and a hidden extension waistband, so the fit stays settled.',
+      img: r2('golf-type-pants'),
+      alt: 'Custom golf pants with a water-repellent finish and logo placement',
+    },
+    {
+      name: 'Custom Golf Skirts',
+      note: 'A bonded inner short under four-way stretch, so it plays like a short.',
+      img: r2('golf-type-skirts'),
+      alt: 'Custom golf skort with a bonded inner short for play',
+    },
+    {
+      name: 'Custom Golf Polo Shirts',
+      note: 'Piqué or interlock at 160–185 GSM, with UPF 50+ verified to AATCC 183.',
+      img: r2('golf-type-polos'),
+      alt: 'Custom sublimated golf polo shirt with a full-colour graphic print',
+    },
+    {
+      name: 'Custom Golf Visors',
+      note: 'Moisture-wicking sweatband with an adjustable closure at the back.',
+      img: r2('golf-type-visors'),
+      alt: 'Custom golf visor manufactured in a private-label colourway',
+    },
+    {
+      name: 'Custom Golf Socks',
+      note: 'Cushioned sole and arch support, knitted in your colours and crest.',
+      img: r2('golf-type-socks'),
+      alt: 'Custom golf socks with a knitted logo placement',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-types cw-cv" id="types">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <ul class="cw-types-grid">
+      {categories.map((c, i) => (
+        <li class="cw-types-item" data-reveal="up" style={`--rd:${(i % 3) * 70}ms`}>
+          <figure class="cw-types-fig">
+            <img
+              src={c.img}
+              alt={c.alt}
+              width={520}
+              height={520}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div class="cw-types-caption">
+            <h3 class="cw-types-name">{c.name}</h3>
+            <p class="cw-types-note">{c.note}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cw-types {
+    padding: 7rem 0 6.5rem;
+    background: var(--color-linen);
+  }
+  .cw-types :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-types :global(.sec-lead) {
+    /* full container width so the lead's right edge lines up with the heading
+       block, matching the homepage's Certifications / Why-us sections */
+    max-width: none;
+  }
+
+  .cw-types-grid {
+    margin: 3.4rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    /* three across at every width — on a phone the columns get narrow, so the
+       type below is clamped to the brand's 0.82rem floor rather than under it */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem 0.8rem;
+  }
+  .cw-types-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .cw-types-fig {
+    margin: 0;
+    overflow: hidden;
+    /* paper, not linen: the product shots are cut out on white, so the frame
+       has to match or every tile shows a seam around the garment */
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 12%, transparent);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 16px 16px 16px 5px;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.55s ease, border-color 0.35s ease;
+  }
+  .cw-types-item:hover .cw-types-fig {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--color-steel) 28%, transparent);
+    box-shadow: 0 34px 66px -46px color-mix(in srgb, var(--color-ink) 50%, transparent);
+  }
+  .cw-types-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    filter: saturate(0.88) contrast(1.03);
+    transition: transform 0.9s var(--ease), filter 0.9s var(--ease);
+  }
+  .cw-types-item:hover .cw-types-fig img {
+    transform: scale(1.05);
+    filter: saturate(1) contrast(1.03);
+  }
+
+  .cw-types-caption {
+    margin-top: 0.75rem;
+    padding-top: 0.6rem;
+    /* the hairline between photo and caption is what keeps this from reading
+       as the homepage's card grid */
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 18%, transparent);
+  }
+  .cw-types-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    font-size: clamp(0.92rem, 2.9vw, 1.3rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-charcoal);
+    text-wrap: balance;
+  }
+  /* steel rather than slate: this label is small, and slate only reaches 3.9:1
+     on the light grounds where steel clears 5:1 */
+  .cw-types-note {
+    margin: 0.3rem 0 0;
+    font-size: clamp(0.82rem, 2.4vw, 0.89rem);
+    line-height: 1.5;
+    color: var(--color-steel);
+  }
+
+  @media (min-width: 560px) {
+    .cw-types-grid {
+      gap: 2rem 1.3rem;
+    }
+    .cw-types-caption {
+      margin-top: 0.95rem;
+      padding-top: 0.75rem;
+    }
+    .cw-types-note {
+      margin-top: 0.4rem;
+    }
+  }
+  @media (min-width: 700px) {
+    .cw-types-grid {
+      gap: 2.4rem 2rem;
+    }
+    .cw-types-caption {
+      margin-top: 1.05rem;
+      padding-top: 0.85rem;
+    }
+  }
+</style>

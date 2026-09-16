@@ -1,0 +1,196 @@
+---
+// Golf certifications — one datasheet, six rows.
+//
+// Built as its own component rather than by rewriting Certifications.astro,
+// which the homepage also renders and which is locked. The set is also narrower
+// than the homepage's: CE is dropped, because apparel is not a CE-marked
+// product category (CE covers PPE, machinery, toys and the like) and a CE
+// certificate on a polo reads as padding to the procurement audience this page
+// is written for. ISO 5077 and ISO 105 stay, but they are lab test methods
+// rather than certificates, so they sit in the list without a certificate scan.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Item {
+  code: string
+  label: string
+  body: string
+  /** A certificate scan, where one is held. */
+  scan?: string
+  /** The mark shown when there is no scan. */
+  mark: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  items?: Item[]
+  note?: string
+}
+
+const {
+  kicker = 'Certified & audited',
+  heading = 'Standards You Can Verify.',
+  lede = 'Four credentials and the two lab methods behind them. Each is backed by a certificate or a test report, and the paperwork travels with the shipment.',
+  items = [
+    {
+      code: 'OEKO-TEX® Standard 100',
+      label: 'Tested for harmful substances',
+      body: 'Every fabric batch is tested for harmful substances ahead of cutting, and the report travels with the shipment.',
+      scan: r2('certificate-1'),
+      mark: r2('mark-iso'),
+    },
+    {
+      code: 'ISO 9001:2015',
+      label: 'Quality management system',
+      body: 'Certified quality management across sourcing, production and inspection — audited, not self-declared.',
+      scan: r2('certificate-2'),
+      mark: r2('mark-iso'),
+    },
+    {
+      code: 'BSCI',
+      label: 'Social compliance audit',
+      body: 'Audited labour conditions at the partner factory, renewed annually. What ESG-gated buyers ask for first.',
+      mark: r2('mark-bsci'),
+    },
+    {
+      code: 'AQL 2.5 / 4.0',
+      label: 'Pre-shipment inspection standard',
+      body: 'Inspection on every lot before it ships, with the defect log attached to the report. The figure buyers actually negotiate.',
+      mark: r2('mark-gots'),
+    },
+    {
+      code: 'ISO 5077',
+      label: 'Dimensional stability — test method',
+      body: 'Shrinkage held to ≤3–5% after repeated home laundering.',
+      mark: r2('mark-iso'),
+    },
+    {
+      code: 'ISO 105',
+      label: 'Colourfastness — test method',
+      body: 'Grade 4 minimum against washing and rubbing.',
+      mark: r2('mark-iso-alt'),
+    },
+  ],
+  note = 'Certificates and test reports are available on request before you place a bulk order.',
+} = Astro.props
+---
+
+<section class="cw-cert cw-cv" id="certifications">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <ul class="cw-cert-list">
+      {items.map((it, i) => (
+        <li class="cw-cert-row" data-reveal="up" style={`--rd:${Math.min(i, 4) * 50}ms`}>
+          <span class="cw-cert-ev">
+            {it.scan
+              ? <img src={it.scan} alt={`${it.code} certificate`} width={800} height={1000} loading="lazy" decoding="async" />
+              : <img class="cw-cert-mark" src={it.mark} alt="" width={92} height={92} loading="lazy" decoding="async" />}
+          </span>
+
+          <span class="cw-cert-body">
+            <span class="cw-cert-code">{it.code}</span>
+            <span class="cw-cert-label">{it.label}</span>
+            <span class="cw-cert-text">{it.body}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <p class="cw-cert-note" data-reveal="up">{note}</p>
+  </div>
+</section>
+
+<style>
+  .cw-cert {
+    padding: 7rem 0 6.5rem;
+    background: var(--color-linen);
+  }
+  .cw-cert :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cert :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cert-list {
+    margin: 3rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  .cw-cert-row {
+    display: grid;
+    grid-template-columns: 3.6rem 1fr;
+    gap: 1.3rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+
+  /* the evidence column: a scan where one is held, a mark where one is not —
+     which is what ranks the certificates above the lab methods without needing
+     a second structure */
+  .cw-cert-ev {
+    display: block;
+  }
+  .cw-cert-ev img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    background: var(--color-paper);
+  }
+  .cw-cert-ev img.cw-cert-mark {
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    border: none;
+    background: transparent;
+  }
+
+  .cw-cert-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+  .cw-cert-code {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    font-size: 1.14rem;
+    letter-spacing: -0.015em;
+    color: var(--color-charcoal);
+  }
+  .cw-cert-label {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.95rem;
+    color: var(--color-berry);
+  }
+  .cw-cert-text {
+    margin-top: 0.35rem;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    color: var(--color-slate);
+  }
+
+  .cw-cert-note {
+    margin: 2rem 0 0;
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 760px) {
+    .cw-cert-row {
+      grid-template-columns: 4.4rem 1fr;
+      gap: 1.8rem;
+      align-items: center;
+    }
+  }
+</style>

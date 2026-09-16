@@ -1,0 +1,208 @@
+---
+// Core customers — one block of six buyer profiles.
+//
+// This started as two bands: a grid of programme photographs and a grid of
+// customer profiles. They were then stacked in one section, which duplicated
+// the imagery — golf-case-3 is the same file the tournaments card was built
+// from, and the rest repeated the same subjects. The photograph band is gone;
+// each profile carries its own image, which is what the profiles need anyway.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Customer {
+  name: string
+  /** Who they are, in their own terms. */
+  role: string
+  body: string
+  /** The phrase this buyer typically arrives on. */
+  search: string
+  img: string
+  alt: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  customers?: Customer[]
+}
+
+const {
+  kicker = 'Core customers',
+  heading = 'Six Buyers. Real Kit on Real Courses.',
+  lede = 'Clubs, academies, corporate fourballs and tournament fields — six kinds of buyer, all off the same line and all held to the same grade rules.',
+  customers = [
+    {
+      name: 'Golf clubs & pro shops',
+      role: 'Club managers, head pros and pro-shop buyers',
+      body: 'Crested staff kit and pro-shop stock on a season calendar. Your crest and pattern library stay with us, so a reorder repeats off the approved PP sample instead of a new fit round.',
+      search: 'Private label golf apparel manufacturer',
+      img: r2('cust-golf-clubs'),
+      alt: 'Golfers on a club green wearing custom crested golf apparel',
+    },
+    {
+      name: 'Corporate outings & event planners',
+      role: 'Companies running golf days and client events',
+      body: 'One size run, one date, every shirt matching in shade when the boxes are opened together. XS–3XL on a single size set, with colour held to ΔE ≤1.5–2.0 under a D65 light booth.',
+      search: 'Wholesale golf clothing manufacturer',
+      img: r2('cust-corporate'),
+      alt: 'Corporate golf event with spectators under a marquee',
+    },
+    {
+      name: 'Women’s & sustainable lines',
+      role: 'Women’s golf labels and recycled programmes',
+      body: 'Women’s grade rules drafted separately from the men’s block, plus GRS-certified recycled polyester and OEKO-TEX Standard 100 testing on every fabric batch.',
+      search: "Women's golf apparel manufacturer",
+      img: r2('cust-womens'),
+      alt: 'Women’s custom golf polo manufactured on a separate women’s block',
+    },
+    {
+      name: 'Golf academies & coaches',
+      role: 'Academies, teaching pros and junior programmes',
+      body: 'Staff kit that survives a full day on the range. Piqué or interlock at 160–185 GSM, UPF 50+ verified to AATCC 183, and a crest that stays legible after 50 washes.',
+      search: 'Golf academy uniform manufacturer',
+      img: r2('cust-academies'),
+      alt: 'Golf coach teaching a student on the course in custom golf apparel',
+    },
+    {
+      name: 'DTC & independent brands',
+      role: 'Direct-to-consumer and club-adjacent labels',
+      body: 'A first run small enough to pre-sell: MOQ 100 in your label, a refundable sample, and a fabric spec written plainly enough to publish on your own store.',
+      search: 'Custom golf apparel manufacturer',
+      img: r2('cust-dtc'),
+      alt: 'Custom striped performance golf polo ready for a direct-to-consumer brand',
+    },
+    {
+      name: 'Tournament organisers',
+      role: 'Charity, pro-am and junior tournaments',
+      body: 'Participant kit that lands before the field does. Bulk sublimation or embroidery on a fixed deadline, inspected to AQL 2.5 / 4.0 before it leaves the line.',
+      search: 'Custom golf tournament apparel supplier',
+      img: r2('cust-tournaments'),
+      alt: 'Golf tournament field photographed outside the clubhouse',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-cust cw-cv" id="customers">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <ul class="cw-cust-grid">
+      {customers.map((c, i) => (
+        <li class="cw-cust-item" data-reveal="up" style={`--rd:${(i % 3) * 70}ms`}>
+          <figure class="cw-cust-fig">
+            <img
+              src={c.img}
+              alt={c.alt}
+              width={640}
+              height={480}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <div class="cw-cust-copy">
+            <h3 class="cw-cust-name">{c.name}</h3>
+            <p class="cw-cust-role">{c.role}</p>
+            <p class="cw-cust-body">{c.body}</p>
+            <p class="cw-cust-search">Arrives on “{c.search}”</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cw-cust {
+    padding: 7rem 0 6.5rem;
+    background: var(--color-paper);
+  }
+  .cw-cust :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cust :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cust-grid {
+    margin: 3rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .cw-cust-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .cw-cust-fig {
+    margin: 0 0 1.1rem;
+    overflow: hidden;
+    background: var(--color-linen);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 16px 16px 16px 5px;
+  }
+  .cw-cust-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: saturate(0.88) contrast(1.03);
+    transition: transform 0.9s var(--ease), filter 0.9s var(--ease);
+  }
+  .cw-cust-item:hover .cw-cust-fig img {
+    transform: scale(1.05);
+    filter: saturate(1) contrast(1.03);
+  }
+
+  .cw-cust-copy {
+    min-width: 0;
+  }
+  .cw-cust-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    font-size: clamp(1.05rem, 1.6vw, 1.24rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-charcoal);
+    text-wrap: balance;
+  }
+  /* role and body run at the same size so the card does not read big-then-small */
+  .cw-cust-role {
+    margin: 0.3rem 0 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.93rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+  }
+  .cw-cust-body {
+    margin: 0.5rem 0 0;
+    font-size: 0.93rem;
+    line-height: 1.58;
+    color: var(--color-slate);
+  }
+  /* steel rather than slate: this line is small, and steel clears 5:1 where
+     slate only reaches 3.9:1 on the light grounds */
+  .cw-cust-search {
+    margin: 0.7rem 0 0;
+    padding-top: 0.6rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    font-size: 0.83rem;
+    line-height: 1.45;
+    color: var(--color-steel);
+  }
+
+  @media (min-width: 700px) {
+    .cw-cust-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.6rem 1.5rem;
+    }
+  }
+</style>

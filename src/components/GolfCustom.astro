@@ -1,0 +1,368 @@
+---
+// Customisation — two grouped dials, then two single ones.
+//
+// Fabric and collar both carry a real taxonomy, so each gets its own numbered
+// block: 01 Fabric runs six constructions, 02 Collar runs the five builds the
+// factory can cut. Colour and decoration are single choices, so they stay as
+// individual cards at 03 and 04.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Card {
+  title: string
+  body: string
+  /** Specifics listed under the copy, for the two single-choice dials. */
+  items?: string[]
+  img: string
+  alt: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  fabrics?: Card[]
+  collars?: Card[]
+  finishes?: Card[]
+}
+
+const {
+  kicker = 'Customisation',
+  heading = 'Start With the Cloth.',
+  lede = 'Four things vary on every golf style, and the first two carry real choices. Fabric comes first — it decides what the garment can actually do. Collar comes second, because it is where a cheap polo gives itself away.',
+  fabrics = [
+    {
+      title: 'Piqué',
+      body: 'A tightly packed knit with a raised, waffle-like face. 160–185 GSM is the working sweet spot for a polo — heavy enough to hold a collar, light enough to breathe in July.',
+      img: r2('fab-pique'),
+      alt: 'Close-up of a piqué knit used in performance golf polos',
+    },
+    {
+      title: 'Interlock',
+      body: 'A smooth, dense knit with two faces. Takes print detail sharply and pills far less than a single jersey, which is why dark, saturated colourways default to it.',
+      img: r2('golf-fabric-macro'),
+      alt: 'Close-up of a smooth interlock knit used in golf polo bodies',
+    },
+    {
+      title: 'Softshell',
+      body: 'A bonded face for outerwear and shoulder-season layers — wind-resistant, with a PFAS-free DWR for dew and light rain.',
+      img: r2('fab-softshell'),
+      alt: 'Close-up of a bonded softshell fabric used in golf outerwear',
+    },
+    {
+      title: 'Stretch woven',
+      body: 'Four-way stretch woven for bottoms. Different stretch, recovery and shrinkage to any knit, so it carries its own test set on the QC sheet.',
+      img: r2('custom-fabric'),
+      alt: 'Close-up of a four-way stretch woven fabric used in golf shorts and pants',
+    },
+    {
+      title: 'Waffle knit',
+      body: 'A grid of raised cells that traps air. Warmer than a flat knit at the same weight, which is why it turns up in cold-weather polos and mid-layers.',
+      img: r2('fab-waffle'),
+      alt: 'Close-up of a waffle knit used in cold-weather golf apparel',
+    },
+    {
+      title: 'Single jersey',
+      body: 'One face, one set of loops. The lightest construction we offer, and the most economical — best for hot-weather styles where weight matters more than structure.',
+      img: r2('fab-jersey'),
+      alt: 'Close-up of a single jersey knit used in lightweight golf apparel',
+    },
+  ],
+
+  collars = [
+    {
+      title: 'Zipper collar',
+      body: 'A zip through the placket instead of buttons. Cleaner line, faster to get on, and it lies flat under a mid-layer.',
+      img: r2('collar-zipper'),
+      alt: 'Golf polo with a zipper collar and contrast tipping',
+    },
+    {
+      title: 'Contrast colour collar',
+      body: 'A second colour on the collar and cuffs. Carries club or team identity, and hides ring-around-the-collar better than a tonal finish.',
+      img: r2('collar-contrast'),
+      alt: 'Golf polo with a contrast colour collar and placket',
+    },
+    {
+      title: 'Mandarin collar',
+      body: 'A stand collar with no fold. Modern, and the one that shows a bad interlining fastest — there is no fold to hide behind.',
+      img: r2('collar-mandarin'),
+      alt: 'Golf polo with a mandarin stand collar and contrast trim',
+    },
+    {
+      title: 'Rib knit collar',
+      body: 'A knitted rib with natural recovery, so it springs back to shape instead of stretching out. The traditional polo collar.',
+      img: r2('collar-rib'),
+      alt: 'Golf shirt with a rib knit collar in a two-tone knit',
+    },
+    {
+      title: 'Self-fabric collar',
+      body: 'Cut from the same cloth as the body, so the colour match is exact. Needs the INT-01 fusing to hold its shape.',
+      img: r2('collar-self'),
+      alt: 'Golf shirt with a self-fabric collar cut from the body print',
+    },
+    {
+      title: 'Striped collar',
+      body: 'The collar cut from a yarn-dyed stripe, so the pattern runs through the collar instead of stopping at the neckline. Yarn-dyed, not printed — it will not crack or fade off in the wash.',
+      img: r2('collar-striped'),
+      alt: 'Golf polo with a yarn-dyed striped collar and three-button placket',
+    },
+  ],
+
+  finishes = [
+    {
+      title: 'Colour',
+      body: 'At least 60 colours on the shelf for each fabric, plus custom dyeing and weaving where the range runs out.',
+      items: [
+        '60+ stock shades per fabric, checked against your brand palette',
+        'Custom dyeing to a Pantone reference or a physical lab dip',
+        'Yarn-dyed and printed stripes, narrow and bold repeats',
+        'Heather and mélange blends spun to a target tone',
+        'Lot-to-lot variance held to ΔE ≤1.5–2.0 under a D65 light booth',
+      ],
+      img: r2('custom-color'),
+      alt: 'Custom golf apparel colour swatches and fabric dyeing options',
+    },
+    {
+      title: 'Decoration',
+      body: 'Ten print methods in house, plus embroidery and heat press — so the mark you designed is the mark that lands on the garment.',
+      items: [
+        'Silk screen — the workhorse for solid logos on light grounds',
+        'Water-base — softest hand, no plastic layer sitting on the cloth',
+        'DTG and digital direct injection — short runs, full-colour artwork',
+        'Sublimation — photographic detail, on light polyester only',
+        'Heat transfer, thermal print and rubber — sharp edges on dark grounds',
+        'Silver foil, flock, discharge and reflective finishes',
+        '3D puff embroidery and silicone heat press for logos',
+      ],
+      img: r2('custom-printing'),
+      alt: 'Custom golf apparel printing and embroidery options on finished garments',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-cu cw-cv" id="custom">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <div class="cw-cu-part" data-reveal="up">
+      <span class="cw-cu-part-n">01</span>
+      <span class="cw-cu-part-label">Fabric</span>
+      <span class="cw-cu-part-rule" aria-hidden="true"></span>
+    </div>
+    <ul class="cw-cu-grid">
+      {fabrics.map((f, i) => (
+        <li class="cw-cu-item" data-reveal="up" style={`--rd:${(i % 3) * 70}ms`}>
+          <figure class="cw-cu-fig">
+            <img src={f.img} alt={f.alt} width={640} height={480} loading="lazy" decoding="async" />
+          </figure>
+          <h3 class="cw-cu-title">{f.title}</h3>
+          <p class="cw-cu-body">{f.body}</p>
+        </li>
+      ))}
+    </ul>
+
+    <div class="cw-cu-part" data-reveal="up">
+      <span class="cw-cu-part-n">02</span>
+      <span class="cw-cu-part-label">Collar</span>
+      <span class="cw-cu-part-rule" aria-hidden="true"></span>
+    </div>
+    <ul class="cw-cu-grid">
+      {collars.map((c, i) => (
+        <li class="cw-cu-item" data-reveal="up" style={`--rd:${(i % 3) * 70}ms`}>
+          <figure class="cw-cu-fig">
+            <img src={c.img} alt={c.alt} width={640} height={480} loading="lazy" decoding="async" />
+          </figure>
+          <h3 class="cw-cu-title">{c.title}</h3>
+          <p class="cw-cu-body">{c.body}</p>
+        </li>
+      ))}
+    </ul>
+
+    <!-- No divider here: Colour and Decoration are single choices, so they
+         carry their own numbers inline and continue the sequence 01–04. -->
+    <ul class="cw-cu-grid cw-cu-grid--two">
+      {finishes.map((f, i) => (
+        <li class="cw-cu-item" data-reveal="up" style={`--rd:${i * 80}ms`}>
+          <figure class="cw-cu-fig">
+            <img src={f.img} alt={f.alt} width={640} height={480} loading="lazy" decoding="async" />
+          </figure>
+          <h3 class="cw-cu-title">
+            <span class="cw-cu-num">{String(i + 3).padStart(2, '0')}</span>{f.title}
+          </h3>
+          <p class="cw-cu-body">{f.body}</p>
+          {f.items && (
+            <ul class="cw-cu-items">
+              {f.items.map((it) => <li>{it}</li>)}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cw-cu {
+    padding: 7rem 0 6.5rem;
+    background: var(--color-cream);
+  }
+  .cw-cu :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cu :global(.sec-lead) {
+    max-width: none;
+  }
+
+  /* ── the numbered divider ──────────────────────────────── */
+  .cw-cu-part {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 3.2rem 0 0;
+  }
+  .cw-cu-part-n {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48, 'SOFT' 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: var(--color-berry);
+  }
+  .cw-cu-part-label {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 430;
+    font-size: clamp(1.1rem, 1.9vw, 1.35rem);
+    letter-spacing: -0.015em;
+    color: var(--color-charcoal);
+  }
+  .cw-cu-part-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--color-steel) 30%, transparent), transparent);
+  }
+
+  /* ── the cards ─────────────────────────────────────────── */
+  .cw-cu-grid {
+    margin: 1.8rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .cw-cu-item {
+    display: flex;
+    flex-direction: column;
+    /* a full line of air between the photo and the title */
+    gap: 1.6rem;
+    min-width: 0;
+  }
+
+  .cw-cu-fig {
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-linen);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 18px 18px 18px 6px;
+  }
+  .cw-cu-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center 45%;
+    filter: saturate(0.88) contrast(1.03);
+    transition: transform 0.9s var(--ease), filter 0.9s var(--ease);
+  }
+  .cw-cu-item:hover .cw-cu-fig img {
+    transform: scale(1.05);
+    filter: saturate(1) contrast(1.03);
+  }
+
+  .cw-cu-title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    font-size: clamp(1.12rem, 1.8vw, 1.34rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-charcoal);
+  }
+  /* the sequence number that stands in for a divider on the last pair */
+  .cw-cu-num {
+    margin-right: 0.5rem;
+    font-size: 0.82em;
+    font-variation-settings: 'opsz' 48, 'SOFT' 0;
+    color: var(--color-berry);
+  }
+  .cw-cu-body {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 620px) {
+    .cw-cu-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.2rem 1.8rem;
+    }
+    /* Every card image is held back to two-thirds of its column — the photo is
+       a reference swatch, not the subject, and at full column width it
+       dominated the type beside it. */
+    .cw-cu-fig {
+      max-width: 68%;
+    }
+  }
+  @media (min-width: 1000px) {
+    .cw-cu-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.4rem 1.6rem;
+    }
+    .cw-cu-grid--two {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.4rem 2.4rem;
+    }
+    .cw-cu-body {
+      font-size: 0.9rem;
+    }
+    /* The two single-choice dials are a list, not a gallery: the margin restores
+       the full image-to-title gap the rest of the cards use, since the card gap
+       is tightened here to keep the list from drifting. */
+    .cw-cu-grid--two .cw-cu-item {
+      gap: 1rem;
+    }
+    .cw-cu-grid--two .cw-cu-fig {
+      margin-bottom: 0.6rem;
+    }
+  }
+
+  .cw-cu-items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .cw-cu-items li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--color-slate);
+  }
+  .cw-cu-items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-berry);
+  }
+</style>

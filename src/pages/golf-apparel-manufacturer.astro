@@ -1,0 +1,224 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/Nav.astro'
+import GolfHero from '../components/GolfHero.astro'
+import GolfTypes from '../components/GolfTypes.astro'
+import GolfCustom from '../components/GolfCustom.astro'
+import GolfServices from '../components/GolfServices.astro'
+import GolfCertifications from '../components/GolfCertifications.astro'
+import GolfCustomers from '../components/GolfCustomers.astro'
+import GolfReviews from '../components/GolfReviews.astro'
+import WhyUs from '../components/WhyUs.astro'
+import Faq from '../components/Faq.astro'
+import FinalCta from '../components/FinalCta.astro'
+import Footer from '../components/Footer.astro'
+
+// Every outbound CTA on this page routes through here. When the contact page
+// ships, this becomes '/contact/' and nothing else needs to move.
+const QUOTE_HREF = 'mailto:info@leelinesports.com'
+
+// Nav defaults are homepage fragments, which would dead-end on this route.
+const navLinks = [
+  { label: 'Customisation', href: '#custom' },
+  { label: 'Services', href: '#services' },
+  { label: 'FAQ', href: '#faq' },
+]
+
+const faqs = [
+  {
+    question: 'What is your minimum order for golf apparel?',
+    answer:
+      '100 units per style, in your label, on your spec. That covers a full size run and a colourway you can test before committing to a season. We will not quote you a lower number we cannot actually run.',
+  },
+  {
+    question: 'How do you stop collars curling after a few washes?',
+    answer:
+      'With a fusible interlining rather than a heavier knit. A woven or tricot warp-knitted interlining (INT-01, 40–60 GSM) is fully fused to the underside of the outer collar piece before assembly, at 145–150 °C and 3.5–4.5 bar for 10–12 seconds, using a hydrolysis-resistant adhesive. The collar is then attached to the neckline on a zero-stretch feed. Collar appearance and delamination are checked at PP after five machine washes.',
+  },
+  {
+    question: 'Can you match my Pantone colour exactly?',
+    answer:
+      'We work to ΔE ≤1.5–2.0 against your approved lab dip, measured under a D65 light booth — never under office lighting, where two shades can look identical. The tolerance is written into the tech pack before lab dips are submitted, and the measured variance comes back on the report. If a shade lands outside it, you hear it from us before the bulk run, not after.',
+  },
+  {
+    question: 'Which fabrics can you source, and do you offer recycled?',
+    answer:
+      'Polyester–elastane knits at 150–190 GSM — microfibre interlock or tightly packed piqué — for polos, plus 4-way stretch wovens for bottoms and softshells for outerwear. GRS-certified recycled polyester is available, and every fabric batch is tested to OEKO-TEX Standard 100 before cutting. Water-repellent finishes are specified PFAS-free for REACH Annex XVII.',
+  },
+  {
+    question: 'Do you make women’s golf apparel?',
+    answer:
+      'Yes, and it is drafted on separate women’s grade rules rather than scaled from the men’s block — that is the difference between a fit that reads intentional and one that reads cheap at the shoulder and waist. XS through 3XL, drafted from a single pattern set.',
+  },
+  {
+    question: 'Who owns the pattern and the design?',
+    answer:
+      'You do. An NDA is signed before your tech pack leaves your inbox, and your patterns are never reused for another client. We hold them for you so a reorder repeats without a new fit round.',
+  },
+  {
+    question: 'How long does a golf order take?',
+    answer:
+      '7 days to a sample, photographed over live video before it is couriered. Then bulk production and door delivery on your chosen mode: express 3–5 days, air 7–12 days, sea 25–40 days. The DDP quote is a single landed figure, so there is no customs bill at the dock.',
+  },
+  {
+    question: 'What labelling do I need to sell into the US?',
+    answer:
+      'FTC fibre-content labelling, a care label that meets the Care Labeling Rule, and an RN number. We produce all three on the garment and hold the records with the shipment, so customs has the paperwork before it asks.',
+  },
+]
+
+// FAQPage is generated from the same array the section renders, so the rich
+// result can never drift from the visible answers.
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Golf Apparel Manufacturing',
+    serviceType: 'OEM and ODM golf apparel manufacturing',
+    description:
+      'Custom golf apparel manufacturing for private-label brands: performance polos, pants, shorts, skorts, outerwear and quarter-zips from MOQ 100, with fused collar construction, UPF 50+ fabric tested to AATCC 183, AQL inspection and DDP delivery.',
+    provider: {
+      '@type': 'Organization',
+      name: 'LeelineSports',
+      url: 'https://www.leelinesports.com/',
+    },
+    areaServed: 'Worldwide',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  },
+]
+---
+
+<Layout
+  title="Golf Apparel Manufacturer - MOQ 100, UPF 50+, ISO 9001"
+  description="Golf apparel manufacturer from MOQ 100. Collars fused at 145-150C hold their shape after 50 washes. Free tech-pack review, reply in 1 business day."
+  schema={schema}
+>
+  <Nav
+    links={navLinks}
+    ctaLabel="Request a golf quote"
+    ctaHref={QUOTE_HREF}
+  />
+
+  <GolfHero primaryHref={QUOTE_HREF} />
+
+  <main>
+    <GolfTypes />
+    <GolfCustom />
+    <GolfServices />
+
+    <WhyUs
+      eyebrow="Why we're different"
+      heading="Same Brief, Four Different Answers."
+      lede="Golf apparel is where construction corners show fastest. A collar gives out long before a seam does."
+      columns={[
+        { key: 'factory', label: 'Direct factory' },
+        { key: 'trader', label: 'Trading company' },
+        { key: 'agent', label: 'Western agent' },
+        { key: 'us', label: 'LeelineSports', ours: true },
+      ]}
+      rows={[
+        {
+          label: 'Collar construction',
+          factory: 'Whatever the block does',
+          trader: 'Not specified',
+          agent: 'Left to the factory',
+          us: 'Fused INT-01 · 145–150 °C',
+        },
+        {
+          label: 'Fabric and UV claims',
+          factory: 'A name, no test data',
+          trader: 'None',
+          agent: 'On request',
+          us: 'GSM, blend and AATCC 183 on record',
+        },
+        {
+          label: 'Colour control',
+          factory: 'Visual match',
+          trader: 'None',
+          agent: 'Delegated',
+          us: 'ΔE ≤1.5–2.0 · D65 light booth',
+        },
+        {
+          label: 'Water repellency',
+          factory: 'Standard DWR',
+          trader: 'Unspecified',
+          agent: 'Unspecified',
+          us: 'PFAS-free · REACH-ready',
+        },
+        {
+          label: 'Compliance labelling',
+          factory: 'Your problem',
+          trader: 'None',
+          agent: 'Partly',
+          us: 'FTC fibre %, care label, RN number',
+        },
+        {
+          label: 'Minimum order',
+          factory: '1,000+ units',
+          trader: 'Hidden until quoted',
+          agent: 'Depends on the factory',
+          us: '100 units per style',
+        },
+      ]}
+    />
+
+    <GolfCertifications />
+
+    <GolfReviews />
+
+    <GolfCustomers />
+
+    <Faq kicker="Golf buyer questions" faqs={faqs}>
+      Frequently Asked Questions about Golf Apparel Manufacturers
+    </Faq>
+
+    <FinalCta
+      lede="Send whatever you have — a finished tech pack, a rough sketch on a page, or a garment you want matched. Inside one business day you get MOQ, spec and a landed DDP price. No sales call in between."
+      ctaLabel="Show us what you're making"
+      ctaHref={QUOTE_HREF}
+    >
+      It Starts With a Sketch, Not a Purchase Order.
+    </FinalCta>
+  </main>
+
+  <!-- Columns overridden rather than the shared Footer edited: the defaults
+       point at homepage anchors (which dead-end on this route) and name the
+       city, and changing the component itself would alter the locked homepage. -->
+  <Footer
+    columns={[
+      {
+        heading: 'This page',
+        links: [
+          { label: 'Services', href: '#services' },
+          { label: 'Customisation', href: '#custom' },
+          { label: 'Programmes', href: '#customers' },
+          { label: 'Reviews', href: '#reviews' },
+        ],
+      },
+      {
+        heading: 'Company',
+        links: [
+          { label: 'Process', href: '/#process' },
+          { label: 'Proof', href: '/#proof' },
+          { label: 'FAQ', href: '#faq' },
+        ],
+      },
+      {
+        heading: 'Contact',
+        links: [
+          { label: 'info@leelinesports.com', href: 'mailto:info@leelinesports.com' },
+        ],
+        note: 'Hubei · China',
+      },
+    ]}
+  />
+  <div class="cw-grain" aria-hidden="true"></div>
+</Layout>

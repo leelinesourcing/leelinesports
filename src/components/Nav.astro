@@ -37,9 +37,13 @@ const {
       href: '/golf-apparel-manufacturer/',
       children: [{ label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' }],
     },
-    { label: 'Verticals', href: '#verticals' },
-    { label: 'Process', href: '#process' },
-    { label: 'Proof', href: '#proof' },
+    // The homepage's default set, kept in step with the golf page's labels.
+    // The anchors are not a one-to-one port: the homepage fuses customisation
+    // and service into one block — #services carries the kicker "What we
+    // customise" and the heading "Your All-in-One Solution." — so Customisation
+    // points there and Services points at #beyond, the post-order support block.
+    { label: 'Customisation', href: '#services' },
+    { label: 'Services', href: '#beyond' },
     { label: 'FAQ', href: '#faq' },
   ],
   ctaLabel = 'Request a quote',

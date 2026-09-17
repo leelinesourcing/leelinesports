@@ -1,79 +1,77 @@
 ---
-// Golf reviews — attributed buyer quotes, set as one repeated card.
+// Golf reviews — two buyer quotes as equal cards, side by side.
 //
-// Both cards share a single layout: the photograph at the left, the stars,
-// quote and attribution stacked to its right. The first is the longer story,
-// the second a second customer's words; the shape is identical so the pair
-// reads as a set.
-import { r2 } from '../lib/images'
+// Was a single stacked column with the copy running the full container width;
+// at that width each quote read as a wall. Two equal columns halve the measure
+// and put the two buyers on the same footing. The attribution is pinned to the
+// card's foot, so the two name lines sit level even though one quote is longer.
+//
+// The quotes themselves live in src/data/golf-reviews.ts, not in default props
+// like the page's other sections. They are rewrites of real customers' reviews
+// with a provenance caveat attached (see that file), and keeping them in one
+// place is what stops the same person appearing with two different wordings.
 import SectionHead from './SectionHead.astro'
 import Stars from './Stars.astro'
-
-interface Testimonial {
-  quote: string
-  name: string
-  role: string
-  avatar: string
-  alt?: string
-}
+import { reviews, reviewHead } from '../data/golf-reviews'
 
 interface Props {
   kicker?: string
   heading?: string
   lede?: string
-  /** The longer story. */
-  featured?: Testimonial
-  /** A second attributed quote. Real customers only — see the note above. */
-  second?: Testimonial
+  testimonials?: typeof reviews
 }
 
 const {
-  kicker = 'Reviews',
-  heading = 'What Buyers Say.',
-  lede = 'Reviews are collected from buyers who have taken delivery of a bulk order. The photographs are theirs — unretouched, ungraded, cropped only to fit the frame.',
-  featured = {
-    quote: 'Our club was preparing for its annual charity tournament and the custom polos blew us away — the embroidered crests still looked sharp after multiple washes. When we needed last-minute additions, they delivered without touching the budget. Merchandise sales were up 30% on the previous year.',
-    name: 'Sarah Thompson',
-    role: 'Club charity tournament · repeat order',
-    avatar: r2('golf-review-1'),
-    alt: 'Buyer photo submitted with a verified review',
-  },
-  // A real, already-published LeelineSports testimonial — reused verbatim, with
-  // its own name, role and avatar. Nothing here is written for this page.
-  second = {
-    quote: 'Three suppliers ghosted me in a year, so I stopped trusting anyone without a name on the floor. Their man-in-plant has been on our POs for 18 months and we have not had a single customs hold since. When a dye lot came back two shades off, I had photos of the run and a re-cut date the same afternoon.',
-    name: 'Daniel Kessler',
-    role: 'Ops lead, outdoor swim brand',
-    avatar: r2('reviewer-1'),
-  },
+  kicker = reviewHead.kicker,
+  heading = reviewHead.heading,
+  lede = reviewHead.lede,
+  testimonials = reviews,
 } = Astro.props
+
+// Paragraph breaks are single newlines; one <p> each, so every paragraph takes
+// its own first-line indent while staying gap-free.
+const paras = (q: string) => q.split('\n')
 ---
 
 <section class="cw-rev cw-cv" id="reviews">
   <div class="cw-wrap">
     <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
 
-    {[featured, second].map((t) => (
-      <figure class="cw-rev-card" data-reveal="up">
-        <img
-          class="cw-rev-photo"
-          src={t.avatar}
-          alt={t.alt ?? ''}
-          width={160}
-          height={160}
-          loading="lazy"
-          decoding="async"
-        />
-        <div class="cw-rev-copy">
-          <Stars count={5} className="cw-rev-stars" />
-          <blockquote class="cw-rev-quote">“{t.quote}”</blockquote>
-          <figcaption class="cw-rev-attr">
-            <span class="cw-rev-name">{t.name}</span>
-            <span class="cw-rev-note">{t.role}</span>
-          </figcaption>
-        </div>
-      </figure>
-    ))}
+    <div class="cw-rev-grid">
+      {
+        testimonials.map((t) => (
+          <figure class="cw-rev-card" data-reveal="up">
+            <div class="cw-rev-top">
+              <img
+                class="cw-rev-photo"
+                src={t.avatar}
+                alt={t.alt ?? ''}
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="cw-rev-id">
+                <Stars count={5} />
+                <span class="cw-rev-name">{t.name}</span>
+              </div>
+            </div>
+
+            <blockquote class="cw-rev-quote">
+              {paras(t.quote).map((p, i, all) => (
+                <p>
+                  {i === 0 ? '“' : ''}
+                  {p}
+                  {i === all.length - 1 ? '”' : ''}
+                </p>
+              ))}
+            </blockquote>
+
+            <figcaption class="cw-rev-role">{t.role}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
   </div>
 </section>
 
@@ -89,70 +87,100 @@ const {
     max-width: none;
   }
 
-  .cw-rev-card {
-    margin: 2rem 0 0;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1.4rem;
-    align-items: start;
-    padding: clamp(1.4rem, 2.6vw, 2rem) clamp(1.4rem, 2.6vw, 2.2rem);
-    background: var(--color-paper);
-    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
-    /* the house notch, mirrored so the two cards lean the same way */
-    border-radius: 22px 22px 22px 6px;
-  }
-  .cw-rev-card:first-of-type {
+  .cw-rev-grid {
     margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
   }
 
+  .cw-rev-card {
+    /* flex column so the attribution can be pushed to the foot */
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: clamp(1.35rem, 2.2vw, 1.85rem);
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    /* the house notch */
+    border-radius: 22px 22px 22px 6px;
+  }
+
+  .cw-rev-top {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
   /* the buyer's own photo, kept small so it reads as evidence rather than as a
      product shot */
   .cw-rev-photo {
     flex: none;
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3rem;
+    height: 3rem;
     object-fit: cover;
     border-radius: 10px;
     background: var(--color-linen);
     border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
   }
-
-  .cw-rev-copy {
+  .cw-rev-id {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
     min-width: 0;
   }
-  .cw-rev-stars {
-    /* decorative here; the rating is spelled out in the copy */
-    color: var(--color-berry);
-  }
-  .cw-rev-quote {
-    margin: 1rem 0 0;
-    font-family: var(--font-heading);
-    font-weight: 430;
-    font-variation-settings: 'opsz' 72, 'SOFT' 60;
-    font-size: clamp(1.08rem, 1.9vw, 1.32rem);
-    line-height: 1.45;
-    letter-spacing: -0.015em;
-    color: var(--color-charcoal);
-    text-wrap: pretty;
-  }
-  .cw-rev-attr {
-    margin-top: 1.4rem;
-    padding-top: 1.1rem;
-    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.5rem 0.9rem;
+  /* :global() so the rule reaches the row rendered by <Stars> — that SVG carries
+     Stars' own scope id, so a plain class selector here never matches. Gold, not
+     berry: berry is the palette's accent everywhere else, which is exactly why it
+     did not read as a rating. */
+  .cw-rev-id :global(.cw-stars) {
+    color: var(--color-gold);
   }
   .cw-rev-name {
     font-family: var(--font-heading);
     font-weight: 560;
-    font-size: 1.02rem;
+    font-size: 0.96rem;
     letter-spacing: -0.015em;
     color: var(--color-charcoal);
   }
-  .cw-rev-note {
-    font-size: 0.88rem;
+
+  .cw-rev-quote {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 430;
+    font-variation-settings: 'opsz' 72, 'SOFT' 60;
+    font-size: clamp(0.92rem, 1.25vw, 1rem);
+    line-height: 1.52;
+    letter-spacing: -0.01em;
+    color: var(--color-charcoal);
+    /* The only justified block on the site. `hyphens: auto` is not optional
+       here: justification without it stretches inter-word space until the gaps
+       line up into rivers down the column, which at this measure (~half the
+       container) is very visible. It works because Layout sets lang="en". */
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  .cw-rev-quote p {
+    margin: 0;
+    text-indent: 2em;
+  }
+
+  /* margin-top:auto pins both attributions to the card's foot, so the two name
+     lines sit level even when the quotes differ in length */
+  .cw-rev-role {
+    margin: auto 0 0;
+    padding-top: 1.1rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    font-size: 0.83rem;
+    line-height: 1.5;
     color: var(--color-slate);
+  }
+
+  @media (min-width: 900px) {
+    .cw-rev-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
   }
 </style>

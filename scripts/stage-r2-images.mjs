@@ -6,13 +6,17 @@ import sharp from 'sharp'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const SRC = 'C:/leelinesports/home'
 const OUT = '_images'
 
-// Source path (relative to SRC) -> staged slug. Sources are re-downloaded and
+// Source path (relative to the root) -> staged slug. Sources are re-downloaded and
 // re-filed by hand, so both the folder and the extension drift — keep the key on
 // the current path or the entry silently reports MISSING SOURCE.
-const MAP = {
+//
+// Slugs shared with another page must appear in only one map, and the entry has to
+// point at the file the *page that owns it* was built from. certificate-*, mark-*
+// and reviewer-1 belong to the homepage and are deliberately absent from GOLF_MAP
+// below, even though the golf page renders them too.
+const HOME_MAP = {
   // hero/
   'hero/Custom Sportswear Manufacturers.jpg': 'custom-sportswear-manufacturers',
 
@@ -89,31 +93,156 @@ const MAP = {
   'Brand/reviewer-3.webp': 'reviewer-3',
 }
 
+// Golf page. Flat folder, no subfolders. Every slug here is golf-only — the
+// certificate scans, standards marks and reviewer-1 avatar the golf page also
+// renders are owned by HOME_MAP and must not be re-staged from this folder, or
+// the homepage would change with it.
+//
+// Slugs are the kebab-case of the source filename, so an R2 address reads as the
+// title the image is filed under: `Custom Golf Pants.jpg` -> `custom-golf-pants`.
+// Ampersands become `and`, accents and apostrophes are dropped (`Piqué` ->
+// `pique`, `Women’s` -> `womens`). The one exception is reviewer-1: Daniel
+// Kessler's avatar is shared with the homepage, so it keeps HOME_MAP's name even
+// though the golf folder files it as `Daniel Kessler.jpg`.
+const GOLF_MAP = {
+  // Hero — the background photograph behind the golf hero copy. Landscape, so it
+  // is the one file here that is wider than it is tall.
+  //
+  // Cropped, not resized: the source carries a "Grok" generation watermark in its
+  // bottom-right corner, and `object-fit: cover` keeps that corner visible at
+  // hero widths. The mark ends at y≈1047 of 1056, so the bottom 64px come off.
+  // If a clean file is ever supplied, drop the crop and keep the slug.
+  //
+  // Graded for a sunny read: brighter and more neutral than the source, which is
+  // a warm, brown-cast frame with half its pixels near black and the top decile
+  // near white.
+  //
+  // Warmth was tried and rejected — pushing red over blue a little made the whole
+  // hero read yellow, not sunny. The fix is exposure plus a slight blue lift
+  // (red pulled, blue raised) so the cast lands near neutral, and enough slope
+  // that the light reads crisp rather than flat. An earlier attempt went the
+  // other way and flattened the tone towards the legacy site's greener hero,
+  // which only drained the life out of it.
+  'Golf Apparel Manufacturer.jpg': {
+    slug: 'golf-apparel-manufacturer',
+    crop: { left: 0, top: 0, width: 1872, height: 992 },
+    grade: {
+      slope: 1.3,
+      offset: 12,
+      recomb: [[0.94, 0, 0], [0, 1, 0], [0, 0, 1.14]],
+      saturation: 1.1,
+    },
+  },
+
+  // What we make — nine categories, filenames match the card titles exactly.
+  'Custom Golf Jackets.avif': 'custom-golf-jackets',
+  'Custom Golf Vests.jpg': 'custom-golf-vests',
+  'Custom Golf Outerwear.webp': 'custom-golf-outerwear',
+  'Custom Golf Shorts.webp': 'custom-golf-shorts',
+  'Custom Golf Pants.jpg': 'custom-golf-pants',
+  'Custom Golf Skirts.webp': 'custom-golf-skirts',
+  'Custom Golf Polo Shirts.webp': 'custom-golf-polo-shirts',
+  'Custom Golf Visors.webp': 'custom-golf-visors',
+  'Custom Golf Socks.jpg': 'custom-golf-socks',
+
+  // Customisation 01 — fabrics. One word per fabric, straight off the filename.
+  'Piqué.jpg': 'pique',
+  'Interlock.jpg': 'interlock',
+  'Softshell.jpg': 'softshell',
+  'Stretch woven.webp': 'stretch-woven',
+  'Waffle knit.jpg': 'waffle-knit',
+  'Single jersey.jpg': 'single-jersey',
+
+  // Customisation 02 — collars.
+  'Zipper collar.webp': 'zipper-collar',
+  'Contrast colour collar.webp': 'contrast-colour-collar',
+  'Mandarin collar.avif': 'mandarin-collar',
+  'Rib knit collar.webp': 'rib-knit-collar',
+  'Self-fabric collar.webp': 'self-fabric-collar',
+  'Striped collar.avif': 'striped-collar',
+
+  // Customisation 03 and 04 — the Colour and Decoration cards.
+  'Colour.jpg': 'colour',
+  'Decoration.jpg': 'decoration',
+
+  // Core customers — filenames match the profile names.
+  'Golf clubs & pro shops.avif': 'golf-clubs-and-pro-shops',
+  'Corporate outings & event planners.jpg': 'corporate-outings-and-event-planners',
+  'Women’s & sustainable lines.webp': 'womens-and-sustainable-lines',
+  'Golf academies & coaches.webp': 'golf-academies-and-coaches',
+  'DTC & independent brands.webp': 'dtc-and-independent-brands',
+  'Tournament organisers.webp': 'tournament-organisers',
+
+  // Services — filenames match the service titles.
+  'OEM & ODM production.webp': 'oem-and-odm-production',
+  'Manufacturing & quality control.webp': 'manufacturing-and-quality-control',
+  'Logistics & FBA prep.jpg': 'logistics-and-fba-prep',
+
+  // Reviews — Sarah Thompson's avatar. Daniel Kessler's is reviewer-1, owned by
+  // HOME_MAP (the same testimonial is published on the homepage).
+  'Sarah Thompson.webp': 'sarah-thompson',
+}
+
+const SOURCES = [
+  { root: 'C:/leelinesports/home', map: HOME_MAP },
+  { root: 'C:/leelinesports/Golf Apparel Manufacturer', map: GOLF_MAP },
+]
+
 fs.mkdirSync(OUT, { recursive: true })
 
-// Recursive so files filed into subfolders still surface when unmapped; paths are
-// normalised to forward slashes to match the MAP keys on every platform.
-const missing = fs
-  .readdirSync(SRC, { recursive: true })
-  .map((f) => f.replaceAll('\\', '/'))
-  .filter((f) => /\.(jpe?g|png|avif|webp)$/i.test(f) && !MAP[f])
-if (missing.length) console.log('UNMAPPED, skipping:', missing.join(', '))
+// Optional substring filter, so one page's set can be re-staged without
+// rewriting every other page's files: `node scripts/stage-r2-images.mjs golf`
+const filter = process.argv[2]
+const selected = filter
+  ? SOURCES.filter((s) => s.root.toLowerCase().includes(filter.toLowerCase()))
+  : SOURCES
+if (!selected.length) {
+  console.log(`no source root matches "${filter}"`)
+  process.exit(1)
+}
 
 let done = 0
-for (const [src, slug] of Object.entries(MAP)) {
-  const from = path.join(SRC, src)
-  if (!fs.existsSync(from)) { console.log('MISSING SOURCE:', src); continue }
-  const to = path.join(OUT, `${slug}.webp`)
-  const info = await sharp(from)
-    .resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: 80, effort: 6 })
-    .toFile(to)
-  const meta = await sharp(from).metadata()
-  console.log(
-    `${slug}.webp`.padEnd(36),
-    `${meta.width}x${meta.height}`.padEnd(11),
-    `${(fs.statSync(from).size / 1024).toFixed(0)}KB -> ${(info.size / 1024).toFixed(0)}KB`
-  )
-  done++
+for (const { root, map } of selected) {
+  // Recursive so files filed into subfolders still surface when unmapped; paths are
+  // normalised to forward slashes to match the map keys on every platform.
+  const missing = fs
+    .readdirSync(root, { recursive: true })
+    .map((f) => f.replaceAll('\\', '/'))
+    .filter((f) => /\.(jpe?g|png|avif|webp)$/i.test(f) && !map[f])
+  if (missing.length) console.log(`UNMAPPED in ${root}, skipping:`, missing.join(', '))
+
+  for (const [src, entry] of Object.entries(map)) {
+    // An entry is either the slug alone, or { slug, crop, grade } when the source
+    // needs trimming and/or a colour grade. sharp runs extract first, then the
+    // resize, then the grade, so the grade numbers are measured against the
+    // staged dimensions rather than the raw file.
+    const slug = typeof entry === 'string' ? entry : entry.slug
+    const crop = typeof entry === 'string' ? null : entry.crop
+    const grade = typeof entry === 'string' ? null : entry.grade
+
+    const from = path.join(root, src)
+    if (!fs.existsSync(from)) { console.log('MISSING SOURCE:', src); continue }
+    const to = path.join(OUT, `${slug}.webp`)
+    let pipe = sharp(from)
+    if (crop) pipe = pipe.extract(crop)
+    pipe = pipe.resize({ width: 1600, height: 1600, fit: 'inside', withoutEnlargement: true })
+    if (grade) {
+      pipe = pipe.linear(grade.slope, grade.offset)
+      if (grade.recomb) pipe = pipe.recomb(grade.recomb)
+      if (grade.saturation) pipe = pipe.modulate({ saturation: grade.saturation })
+    }
+    const info = await pipe
+      .webp({ quality: 80, effort: 6 })
+      .toFile(to)
+    const meta = crop
+      ? { width: crop.width, height: crop.height }
+      : await sharp(from).metadata()
+    console.log(
+      `${slug}.webp`.padEnd(36),
+      `${meta.width}x${meta.height}`.padEnd(11),
+      `${(fs.statSync(from).size / 1024).toFixed(0)}KB -> ${(info.size / 1024).toFixed(0)}KB`
+    )
+    done++
+  }
 }
 console.log(`\n${done} converted to ${OUT}/`)

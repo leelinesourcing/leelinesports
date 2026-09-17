@@ -13,12 +13,25 @@ import Faq from '../components/Faq.astro'
 import FinalCta from '../components/FinalCta.astro'
 import Footer from '../components/Footer.astro'
 
-// Every outbound CTA on this page routes through here. When the contact page
-// ships, this becomes '/contact/' and nothing else needs to move.
-const QUOTE_HREF = 'mailto:info@leelinesports.com'
+// In-page quote anchor, matching the homepage Nav default. The nav and the hero
+// CTA scroll down to the closing CTA section, which carries id="quote".
+//
+// FinalCta deliberately does not take this: it *is* the #quote section, so
+// pointing its own button back at the anchor would be a self-link. It keeps the
+// component default and ends on mailto instead.
+const QUOTE_HREF = '#quote'
 
 // Nav defaults are homepage fragments, which would dead-end on this route.
+//
+// Product mirrors the source site's menu, where GOLF APPAREL sits one level down.
+// Golf is the only product page this build has, so the parent points at it too
+// rather than at a dead link; it becomes a real index when the others ship.
 const navLinks = [
+  {
+    label: 'Product',
+    href: '/golf-apparel-manufacturer/',
+    children: [{ label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' }],
+  },
   { label: 'Customisation', href: '#custom' },
   { label: 'Services', href: '#services' },
   { label: 'FAQ', href: '#faq' },
@@ -97,14 +110,15 @@ const schema = [
 ---
 
 <Layout
-  title="Golf Apparel Manufacturer - MOQ 100, UPF 50+, ISO 9001"
-  description="Golf apparel manufacturer from MOQ 100. Collars fused at 145-150C hold their shape after 50 washes. Free tech-pack review, reply in 1 business day."
+  title="Golf Apparel Manufacturer: 7-Day Samples, UPF 50+, ISO 9001"
+  description="Custom golf apparel manufacturer at MOQ 100: UPF 50+ polos, pants and outerwear, collars fused to hold 50 washes, AQL 2.5 QC, duty-paid DDP, samples in 7 days."
   schema={schema}
 >
   <Nav
     links={navLinks}
     ctaLabel="Request a golf quote"
     ctaHref={QUOTE_HREF}
+    solid
   />
 
   <GolfHero primaryHref={QUOTE_HREF} />
@@ -113,6 +127,8 @@ const schema = [
     <GolfTypes />
     <GolfCustom />
     <GolfServices />
+
+    <GolfCertifications />
 
     <WhyUs
       eyebrow="Why we're different"
@@ -170,11 +186,9 @@ const schema = [
       ]}
     />
 
-    <GolfCertifications />
+    <GolfCustomers />
 
     <GolfReviews />
-
-    <GolfCustomers />
 
     <Faq kicker="Golf buyer questions" faqs={faqs}>
       Frequently Asked Questions about Golf Apparel Manufacturers
@@ -183,7 +197,6 @@ const schema = [
     <FinalCta
       lede="Send whatever you have — a finished tech pack, a rough sketch on a page, or a garment you want matched. Inside one business day you get MOQ, spec and a landed DDP price. No sales call in between."
       ctaLabel="Show us what you're making"
-      ctaHref={QUOTE_HREF}
     >
       It Starts With a Sketch, Not a Purchase Order.
     </FinalCta>

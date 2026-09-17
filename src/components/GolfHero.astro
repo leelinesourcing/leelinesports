@@ -1,15 +1,20 @@
 ---
-// Golf page hero — a text-forward band on the steel ground.
+// Golf page hero — a background photograph under a scrim, with the copy set on
+// top of it.
 //
-// It deliberately has no imagery: the headline, the credentials and the CTA
-// carry it. The four spec values that used to sit in a card over a product shot
-// now open the engineering section as its headline numbers.
+// The photograph is graded bright and neutral at the asset level (see
+// scripts/stage-r2-images.mjs) and the scrim carries the legibility: this shot
+// runs from near-black tree shadow to near-white sunlit grass, so cream copy
+// cannot hold 4.5:1 over it without one. The scrim is shaped rather than uniform
+// — heavy on the left where the copy sits, clear on the right and below the copy.
+//
+// Its colour is the `--gh-veil` custom property, defaulting to --color-ink, the
+// token documented as the photographic-veil base. A page can set the variable to
+// try another ground; `/hero-veil-preview` renders the alternatives side by side.
 //
 // Shares only the JS contract with Hero.astro — `data-hero` on the section and
 // `.cw-hero-item` on the staggered children.
-//
-// The ground is steel, not cream: the nav renders its wordmark in cream until
-// the page scrolls past 24px, so a light hero would make it invisible.
+import { r2 } from '../lib/images'
 import Button from './Button.astro'
 
 interface Props {
@@ -19,6 +24,8 @@ interface Props {
   /** Second headline line — the outcome, set in italic. */
   claim?: string
   subheading?: string
+  image?: string
+  imageAlt?: string
   primaryLabel?: string
   primaryHref?: string
 }
@@ -26,14 +33,29 @@ interface Props {
 const {
   kicker = 'Power Your Brand’s Success with High-Performance Golf Apparel',
   title = 'Golf Apparel Manufacturer: ',
-  claim = 'Engineered for Performance and Partnership',
+  claim = '10+ Yrs OEM & High-Yield Partner',
   subheading = 'As an industry-leading technical golf clothing manufacturer, we specialize in high-performance fabrics featuring 4-way stretch, UPF 50+ sun protection, and breathable cooling finishes. Whether you are launching an elite tournament collection or versatile on-and-off course lifestyle wear, our end-to-end manufacturing ensures tour-level quality across every stitch.',
+  image = r2('golf-apparel-manufacturer'),
+  imageAlt = 'Three golfers wearing custom-manufactured striped and solid polo shirts on the course',
   primaryLabel = 'Show us what you’re making',
   primaryHref = '#quote',
 } = Astro.props
 ---
 
 <section class="cw-gh" id="top" data-hero>
+  <div class="cw-gh-media">
+    <img
+      src={image}
+      alt={imageAlt}
+      width={1600}
+      height={848}
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+    />
+  </div>
+  <div class="cw-gh-veil" aria-hidden="true"></div>
+
   <div class="cw-gh-inner">
     <p class="cw-gh-kicker cw-hero-item" style="--rd:0ms">{kicker}</p>
 
@@ -57,7 +79,52 @@ const {
     padding: 9.5rem 0 6.5rem;
     overflow: hidden;
   }
+  .cw-gh-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .cw-gh-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* the players sit right of centre; holding the crop there keeps them in
+       frame once the scrim has eaten the left third where the copy lives */
+    object-position: 74% 38%;
+    /* No filter here: the grade is baked into the asset by the staging pipeline
+       (bright, neutral, see scripts/stage-r2-images.mjs), so applying anything
+       again in CSS would double it. */
+
+  }
+  /* Scrim behind the copy. Shape matters as much as colour: heavy on the left
+     where the copy sits, gone by ~90% of the width, and faded out below the copy
+     by the mask, so the right of the frame and the band under the CTA keep the
+     photograph at full brightness.
+     The colour is a CSS variable so a page can swap it — see the note above. */
+  .cw-gh-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(to bottom,
+        color-mix(in srgb, var(--gh-veil, var(--color-ink)) 32%, transparent) 0%,
+        color-mix(in srgb, var(--gh-veil, var(--color-ink)) 14%, transparent) 16%,
+        transparent 30%),
+      linear-gradient(96deg,
+        color-mix(in srgb, var(--gh-veil, var(--color-ink)) 59%, transparent) 0%,
+        color-mix(in srgb, var(--gh-veil, var(--color-ink)) 55%, transparent) 50%,
+        color-mix(in srgb, var(--gh-veil, var(--color-ink)) 45%, transparent) 70%,
+        color-mix(in srgb, var(--gh-veil, var(--color-ink)) 14%, transparent) 90%,
+        color-mix(in srgb, var(--gh-veil, var(--color-ink)) 3%, transparent) 100%);
+    /* black is a stencil here, not a brand colour — mask-image reads the alpha.
+       The fade starts at 74%, just past the last line of copy. */
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 74%, transparent 94%);
+    mask-image: linear-gradient(to bottom, black 0%, black 74%, transparent 94%);
+  }
+
   .cw-gh-inner {
+    position: relative;
+    z-index: 3;
     /* the wider band the nav and hero share, per the brand guide */
     max-width: 1280px;
     margin: 0 auto;
@@ -74,9 +141,10 @@ const {
     font-variation-settings: 'opsz' 72, 'SOFT' 0;
     font-size: 1.05rem;
     letter-spacing: -0.01em;
-    /* Full cream, not a tint: on flat steel a 66% tint only reaches 3.4:1.
-       Cream clears 5.6:1 against --color-steel. */
-    color: var(--color-cream);
+    /* Paper, not cream. Both sit on the same dark scrim, and the extra ~2 points
+       of luminance white brings is the most contrast available at this scrim
+       strength — measured over the composited pixels, not assumed. */
+    color: var(--color-paper);
   }
   /* the berry ring the .cw-eyebrow rule uses, rebuilt for the dark ground */
   .cw-gh-kicker::before {
@@ -97,7 +165,7 @@ const {
     font-size: clamp(2.35rem, 4.4vw, 4.1rem);
     line-height: 1.02;
     letter-spacing: -0.035em;
-    color: var(--color-cream);
+    color: var(--color-paper);
   }
   /* one block per sentence, each balancing inside itself */
   .cw-gh-h1-lead,
@@ -106,9 +174,8 @@ const {
     text-wrap: balance;
   }
   /* Two-tone, like the homepage hero — but the emphasis is weight and italic,
-     not berry. Berry only reaches 1.13:1 on steel, so a berry headline here
-     would be unreadable; the accent is spent on the CTA instead, which is the
-     single most important element in the group. */
+     not berry. Berry only reaches 1.13:1 on a dark ground, so a berry headline
+     here would be unreadable; the accent is spent on the CTA instead. */
   .cw-gh-h1-claim {
     color: var(--color-paper);
     font-style: italic;
@@ -117,12 +184,16 @@ const {
 
   .cw-gh-sub {
     margin: 1.7rem 0 0;
-    /* the homepage hero caps its subheading too; this one is long, and full
-       container width would run to ~140 characters a line */
-    max-width: 58rem;
+    /* Capped well short of the hero's copy column. Two reasons, and the second is
+       why it is 46 and not the 58 it started at: at 58rem the lines ran to ~110
+       characters, and they also reached far enough right to sit over the
+       photograph's brightest area — the scrim needed to keep them at 4.5:1 there
+       washed the shot out. Stopping the text sooner lets the right third stay
+       open. */
+    max-width: 46rem;
     font-size: 1.12rem;
     line-height: 1.66;
-    color: var(--color-cream);
+    color: var(--color-paper);
     text-wrap: pretty;
   }
 
@@ -144,5 +215,12 @@ const {
   .cw-gh.is-in .cw-hero-item {
     opacity: 1;
     transform: none;
+  }
+
+  /* Narrow screens crop the photograph to the players rather than the treeline. */
+  @media (max-width: 719px) {
+    .cw-gh-media img {
+      object-position: 62% 30%;
+    }
   }
 </style>

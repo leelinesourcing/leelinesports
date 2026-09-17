@@ -5,6 +5,8 @@ import Mark from './Mark.astro'
 interface NavLink {
   label: string
   href: string
+  /** Renders as a dropdown under this link. One level only. */
+  children?: { label: string; href: string }[]
 }
 
 interface Props {
@@ -17,12 +19,24 @@ interface Props {
   /** WhatsApp label used in the mobile menu. */
   phoneLabel?: string
   whatsappHref?: string
+  /**
+   * Give the nav its own opaque bar from the first paint instead of letting it
+   * sit transparently on the hero. For heroes whose top is light, where the cream
+   * wordmark and links would land on a light ground. Left off, the nav behaves
+   * exactly as before.
+   */
+  solid?: boolean
 }
 
 const {
   brandName = 'Leeline',
   brandAccent = 'Sports',
   links = [
+    {
+      label: 'Product',
+      href: '/golf-apparel-manufacturer/',
+      children: [{ label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' }],
+    },
     { label: 'Verticals', href: '#verticals' },
     { label: 'Process', href: '#process' },
     { label: 'Proof', href: '#proof' },
@@ -32,10 +46,11 @@ const {
   ctaHref = '#quote',
   phoneLabel = 'WhatsApp +86 139 8615 2456',
   whatsappHref = 'https://wa.me/8613986152456',
+  solid = false,
 } = Astro.props
 ---
 
-<header class="cw-nav" id="site-nav">
+<header class:list={['cw-nav', solid && 'cw-nav--solid']} id="site-nav">
   <div class="cw-nav-inner">
     <a href="#top" class="cw-nav-logo" aria-label={`${brandName}${brandAccent} — home`}>
       <Mark className="cw-nav-mark" />
@@ -43,7 +58,23 @@ const {
     </a>
 
     <nav class="cw-nav-links" aria-label="Primary">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      {
+        links.map((l) =>
+          l.children ? (
+            <div class="cw-nav-drop">
+              <a href={l.href} aria-haspopup="true">
+                {l.label}
+                <span class="cw-nav-caret" aria-hidden="true" />
+              </a>
+              <div class="cw-nav-drop-menu">
+                {l.children.map((c) => <a href={c.href}>{c.label}</a>)}
+              </div>
+            </div>
+          ) : (
+            <a href={l.href}>{l.label}</a>
+          )
+        )
+      }
     </nav>
 
     <div class="cw-nav-actions">
@@ -57,7 +88,16 @@ const {
 
   <div class="cw-nav-menu" id="nav-menu">
     <div class="cw-nav-menu-inner">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      {
+        links.map((l) => (
+          <>
+            <a href={l.href}>{l.label}</a>
+            {l.children?.map((c) => (
+              <a class="cw-nav-menu-sub" href={c.href}>{c.label}</a>
+            ))}
+          </>
+        ))
+      }
       <a class="cw-nav-menu-wa" href={whatsappHref} target="_blank" rel="noopener">{phoneLabel}</a>
       <Button href={ctaHref} class="cw-nav-menu-cta">{ctaLabel}</Button>
     </div>
@@ -235,6 +275,89 @@ const {
   }
   .cw-nav.is-scrolled .cw-nav-menu-inner :global(a) {
     color: var(--color-steel);
+  }
+
+  /* Opt-in solid bar (`solid` prop). Opaque and unblurred where the scrolled
+     state is translucent: the point is that the nav does not blend into the
+     photograph behind it. Kept separate from .is-scrolled so site.js's scroll
+     toggle cannot switch it back off at the top of the page. */
+  .cw-nav--solid {
+    background: var(--color-cream);
+    border-bottom-color: color-mix(in srgb, var(--color-steel) 14%, transparent);
+    box-shadow: 0 12px 40px -28px color-mix(in srgb, var(--color-ink) 50%, transparent);
+  }
+  .cw-nav--solid .cw-nav-word,
+  .cw-nav--solid .cw-nav-links a {
+    color: var(--color-steel);
+  }
+  .cw-nav--solid .cw-nav-toggle {
+    border-color: color-mix(in srgb, var(--color-ink) 25%, transparent);
+  }
+  .cw-nav--solid .cw-nav-toggle span {
+    background: var(--color-steel);
+  }
+  .cw-nav--solid .cw-nav-menu {
+    background: var(--color-cream);
+  }
+  .cw-nav--solid .cw-nav-menu-inner :global(a) {
+    color: var(--color-steel);
+  }
+
+  /* Dropdown — any link carrying `children`. Desktop only; below 880px the whole
+     .cw-nav-links block is hidden and the sub-items render flat in the mobile
+     menu instead. */
+  .cw-nav-drop {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .cw-nav-caret {
+    display: inline-block;
+    margin-left: 0.4rem;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid currentColor;
+  }
+  .cw-nav-drop-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0.5rem);
+    min-width: 14rem;
+    padding: 0.4rem 0;
+    background: var(--color-cream);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    box-shadow: 0 24px 48px -30px color-mix(in srgb, var(--color-ink) 55%, transparent);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  }
+  .cw-nav-drop:hover .cw-nav-drop-menu,
+  .cw-nav-drop:focus-within .cw-nav-drop-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+  /* Declared after the .cw-nav-links a rules so it wins the specificity tie: a
+     dropdown always sits on its own cream panel, whatever state the nav is in. */
+  .cw-nav-links .cw-nav-drop-menu a {
+    display: block;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.98rem;
+    color: var(--color-steel);
+  }
+  .cw-nav-links .cw-nav-drop-menu a::after {
+    display: none;
+  }
+  .cw-nav-links .cw-nav-drop-menu a:hover {
+    background: color-mix(in srgb, var(--color-steel) 8%, transparent);
+  }
+  /* the mobile menu indents sub-items rather than nesting them */
+  .cw-nav-menu-inner :global(.cw-nav-menu-sub) {
+    padding-left: 1.6rem;
+    font-size: 0.98rem;
   }
 
   @media (min-width: 880px) {

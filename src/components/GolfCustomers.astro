@@ -37,7 +37,7 @@ const {
       role: 'Club managers, head pros and pro-shop buyers',
       body: 'Crested staff kit and pro-shop stock on a season calendar. Your crest and pattern library stay with us, so a reorder repeats off the approved PP sample instead of a new fit round.',
       search: 'Private label golf apparel manufacturer',
-      img: r2('cust-golf-clubs'),
+      img: r2('golf-clubs-and-pro-shops'),
       alt: 'Golfers on a club green wearing custom crested golf apparel',
     },
     {
@@ -45,7 +45,7 @@ const {
       role: 'Companies running golf days and client events',
       body: 'One size run, one date, every shirt matching in shade when the boxes are opened together. XS–3XL on a single size set, with colour held to ΔE ≤1.5–2.0 under a D65 light booth.',
       search: 'Wholesale golf clothing manufacturer',
-      img: r2('cust-corporate'),
+      img: r2('corporate-outings-and-event-planners'),
       alt: 'Corporate golf event with spectators under a marquee',
     },
     {
@@ -53,15 +53,15 @@ const {
       role: 'Women’s golf labels and recycled programmes',
       body: 'Women’s grade rules drafted separately from the men’s block, plus GRS-certified recycled polyester and OEKO-TEX Standard 100 testing on every fabric batch.',
       search: "Women's golf apparel manufacturer",
-      img: r2('cust-womens'),
+      img: r2('womens-and-sustainable-lines'),
       alt: 'Women’s custom golf polo manufactured on a separate women’s block',
     },
     {
       name: 'Golf academies & coaches',
       role: 'Academies, teaching pros and junior programmes',
-      body: 'Staff kit that survives a full day on the range. Piqué or interlock at 160–185 GSM, UPF 50+ verified to AATCC 183, and a crest that stays legible after 50 washes.',
+      body: 'Staff kit that survives a full day on the range, with a crest that stays legible after 50 washes.',
       search: 'Golf academy uniform manufacturer',
-      img: r2('cust-academies'),
+      img: r2('golf-academies-and-coaches'),
       alt: 'Golf coach teaching a student on the course in custom golf apparel',
     },
     {
@@ -69,7 +69,7 @@ const {
       role: 'Direct-to-consumer and club-adjacent labels',
       body: 'A first run small enough to pre-sell: MOQ 100 in your label, a refundable sample, and a fabric spec written plainly enough to publish on your own store.',
       search: 'Custom golf apparel manufacturer',
-      img: r2('cust-dtc'),
+      img: r2('dtc-and-independent-brands'),
       alt: 'Custom striped performance golf polo ready for a direct-to-consumer brand',
     },
     {
@@ -77,7 +77,7 @@ const {
       role: 'Charity, pro-am and junior tournaments',
       body: 'Participant kit that lands before the field does. Bulk sublimation or embroidery on a fixed deadline, inspected to AQL 2.5 / 4.0 before it leaves the line.',
       search: 'Custom golf tournament apparel supplier',
-      img: r2('cust-tournaments'),
+      img: r2('tournament-organisers'),
       alt: 'Golf tournament field photographed outside the clubhouse',
     },
   ],
@@ -116,7 +116,9 @@ const {
 <style>
   .cw-cust {
     padding: 7rem 0 6.5rem;
-    background: var(--color-paper);
+    /* Linen, not paper: this section now follows WhyUs, which is paper, and
+       precedes Reviews, which is cream. Paper here would merge with WhyUs. */
+    background: var(--color-linen);
   }
   .cw-cust :global(.sec-head) {
     max-width: none;

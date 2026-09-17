@@ -1,0 +1,275 @@
+---
+// Product mosaic with a hierarchy.
+//
+// Verticals.astro is eighteen identical 1/1 tiles inside linen cards. GolfTypes
+// is nine identical tiles with the chrome stripped off. A third uniform grid
+// would just be one of those again, so this one is asymmetric on purpose:
+// jerseys and bib shorts are the two garments that actually carry a cycling
+// order, so they get large frames and a line of copy, and the eight accessories
+// sit underneath at a quarter of the weight. The layout is the size guide.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Garment {
+  name: string
+  note: string
+  img: string
+  alt: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  /** The two garments that carry the order — rendered as large frames. */
+  leads?: Garment[]
+  /** The accessories — rendered as small tiles. */
+  rest?: Garment[]
+}
+
+const {
+  kicker = 'What we make',
+  heading = 'The Whole Kit, From One Production Line.',
+  lede = 'Jerseys and bib shorts carry most cycling orders, so they get the space. The eight accessories that finish a kit come off the same line, to the same tolerance sheet and the same inspection standard.',
+  leads = [
+    {
+      name: 'Custom Cycling Jerseys',
+      note: 'Sublimated panels in your Pantone colours, flatlock-stitched and finished with a full-length YKK zip and a silicone waist gripper. Race fit or club fit on the same artwork.',
+      img: r2('cycling-jersey'),
+      alt: 'Custom cycling jersey with sublimated team graphics and a full-length zip',
+    },
+    {
+      name: 'Cycling Bib Shorts',
+      note: 'Four-way stretch Lycra at 220 GSM with a multi-density chamois, laser-cut leg openings and silicone grippers that hold without pinching.',
+      img: r2('cycling-bib-shorts'),
+      alt: 'Custom cycling bib shorts in four-way stretch Lycra with a multi-density chamois',
+    },
+  ],
+  rest = [
+    {
+      name: 'Gilets & Vests',
+      note: 'Packable wind blocking for a cold descent.',
+      img: r2('cycling-vest'),
+      alt: 'Custom cycling gilet with a mesh back panel',
+    },
+    {
+      name: 'Cycling Jackets',
+      note: 'Thermal front, breathable back, taped seams.',
+      img: r2('cycling-jacket'),
+      alt: 'Custom cycling jacket with a thermal front panel',
+    },
+    {
+      name: 'Windbreakers',
+      note: 'Featherweight shell that folds into a pocket.',
+      img: r2('cycling-windbreaker'),
+      alt: 'Custom packable cycling windbreaker',
+    },
+    {
+      name: 'Skinsuits',
+      note: 'Seamless aero panels for time trial and track.',
+      img: r2('cycling-skinsuit'),
+      alt: 'Custom cycling skinsuit with seamless aerodynamic panels',
+    },
+    {
+      name: 'Cycling Socks',
+      note: 'Compression cuff, cushioned sole, knitted crest.',
+      img: r2('cycling-socks'),
+      alt: 'Custom cycling socks with a knitted logo and compression cuff',
+    },
+    {
+      name: 'Leg Warmers',
+      note: 'Brushed back for shoulder season, gripper top.',
+      img: r2('cycling-leg-warmers'),
+      alt: 'Custom cycling leg warmers in brushed-back fabric',
+    },
+    {
+      name: 'Cycling Caps',
+      note: 'Four-panel cotton twill with a wicking band.',
+      img: r2('cycling-cap'),
+      alt: 'Custom four-panel cycling cap with a printed design',
+    },
+    {
+      name: 'Cycling Gloves',
+      note: 'Gel-padded palm, pull-off tabs, silicone print.',
+      img: r2('cycling-detail-gloves'),
+      alt: 'Rider wearing custom cycling gloves on the handlebars',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-cytypes" id="types">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <ul class="cw-cytypes-leads">
+      {leads.map((g, i) => (
+        <li class="cw-cytypes-lead" data-reveal="up" style={`--rd:${i * 90}ms`}>
+          <figure class="cw-cytypes-lead-fig">
+            <img src={g.img} alt={g.alt} width={560} height={535} loading="lazy" decoding="async" />
+          </figure>
+          <h3 class="cw-cytypes-lead-name">{g.name}</h3>
+          <p class="cw-cytypes-lead-note">{g.note}</p>
+        </li>
+      ))}
+    </ul>
+
+    <ul class="cw-cytypes-rest">
+      {rest.map((g, i) => (
+        <li class="cw-cytypes-small" data-reveal="up" style={`--rd:${(i % 4) * 60}ms`}>
+          <figure class="cw-cytypes-small-fig">
+            <img src={g.img} alt={g.alt} width={280} height={267} loading="lazy" decoding="async" />
+          </figure>
+          <h3 class="cw-cytypes-small-name">{g.name}</h3>
+          <p class="cw-cytypes-small-note">{g.note}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cw-cytypes {
+    background: var(--color-cream);
+    padding: 7rem 0 6.5rem;
+  }
+  /* The section head runs the full container width, as on every other page. */
+  .cw-cytypes :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cytypes :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cytypes-leads,
+  .cw-cytypes-rest {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+  }
+
+  .cw-cytypes-leads {
+    margin-top: 3.4rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.4rem;
+  }
+  .cw-cytypes-lead {
+    min-width: 0;
+  }
+  .cw-cytypes-lead-fig {
+    margin: 0;
+    overflow: hidden;
+    /* paper: the product shots are cut out on white and would show a seam on
+       cream */
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    border-radius: 22px 22px 22px 7px;
+    transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.55s ease, border-color 0.35s ease;
+  }
+  .cw-cytypes-lead:hover .cw-cytypes-lead-fig {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--color-steel) 30%, transparent);
+    box-shadow: 0 34px 66px -46px color-mix(in srgb, var(--color-ink) 50%, transparent);
+  }
+  .cw-cytypes-lead-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    filter: saturate(0.88) contrast(1.03);
+    transition: transform 0.9s var(--ease), filter 0.9s var(--ease);
+  }
+  .cw-cytypes-lead:hover .cw-cytypes-lead-fig img {
+    transform: scale(1.05);
+    filter: saturate(1) contrast(1.03);
+  }
+  .cw-cytypes-lead-name {
+    margin: 1.05rem 0 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 48;
+    color: var(--color-charcoal);
+  }
+  .cw-cytypes-lead-note {
+    margin: 0.6rem 0 0;
+    max-width: 52ch;
+    font-size: 1rem;
+    line-height: 1.62;
+    color: var(--color-slate);
+  }
+
+  .cw-cytypes-rest {
+    margin-top: 3rem;
+    padding-top: 2.4rem;
+    /* A single hairline across the full width separates the order-carriers from
+       the accessories. Without it the two grids just look like an accident. */
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 20%, transparent);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.9rem 1rem;
+  }
+  .cw-cytypes-small {
+    min-width: 0;
+  }
+  .cw-cytypes-small-fig {
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 12%, transparent);
+    border-radius: 14px 14px 14px 4px;
+  }
+  .cw-cytypes-small-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    filter: saturate(0.88) contrast(1.03);
+    transition: transform 0.9s var(--ease), filter 0.9s var(--ease);
+  }
+  .cw-cytypes-small:hover .cw-cytypes-small-fig img {
+    transform: scale(1.05);
+    filter: saturate(1) contrast(1.03);
+  }
+  .cw-cytypes-small-name {
+    margin: 0.7rem 0 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(0.92rem, 2.6vw, 1.12rem);
+    line-height: 1.18;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    color: var(--color-charcoal);
+    text-wrap: balance;
+  }
+  .cw-cytypes-small-note {
+    margin: 0.3rem 0 0;
+    font-size: clamp(0.82rem, 2.2vw, 0.89rem);
+    line-height: 1.5;
+    /* steel, not slate: small text on a light ground */
+    color: var(--color-steel);
+  }
+
+  @media (min-width: 620px) {
+    .cw-cytypes-rest {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.2rem 1.4rem;
+    }
+  }
+
+  @media (min-width: 720px) {
+    .cw-cytypes-leads {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.6rem 2.4rem;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .cw-cytypes-rest {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 2.4rem 1.7rem;
+    }
+  }
+</style>

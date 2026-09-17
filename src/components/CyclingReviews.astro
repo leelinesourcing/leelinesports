@@ -1,0 +1,151 @@
+---
+// Reviews as quote rows, not cards.
+//
+// Testimonials.astro is a denim pull-quote card beside two cream cards with
+// circular avatars. GolfReviews.astro is two paper cards with a gold star row
+// and a justified first line. A third card treatment would read as padding, so
+// these are bare rows: a hairline between each, the attribution held in a narrow
+// left column, and the quote given the full measure of the page in the heading
+// face. No card, no border, no shadow.
+//
+// cw-cv is safe here: nothing in the nav or the footer anchors to #reviews.
+import { reviewHead, reviews } from '../data/cycling-reviews'
+import SectionHead from './SectionHead.astro'
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+}
+
+const { kicker = reviewHead.kicker, heading = reviewHead.heading, lede = reviewHead.lede } =
+  Astro.props
+---
+
+<!-- No cw-cv here. The quote rows are data-reveal children, so the browser has to
+     have their real geometry before the observer can decide they are visible.
+     Paint-skipping the section left them stuck at opacity 0. -->
+<section class="cw-cyrev" id="reviews">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <ul class="cw-cyrev-list">
+      {reviews.map((r, i) => (
+        <li class="cw-cyrev-row" data-reveal="up" style={`--rd:${i * 80}ms`}>
+          <figure class="cw-cyrev-attrib">
+            <img
+              class="cw-cyrev-photo"
+              src={r.avatar}
+              alt={r.alt ?? ''}
+              width={120}
+              height={120}
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption class="cw-cyrev-who">
+              <span class="cw-cyrev-name">{r.name}</span>
+              <span class="cw-cyrev-role">{r.role}</span>
+            </figcaption>
+          </figure>
+
+          <blockquote class="cw-cyrev-quote">
+            {r.quote.split('\n').map((para) => <p>{para}</p>)}
+          </blockquote>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cw-cyrev {
+    background: var(--color-cream);
+    padding: 7rem 0 6.5rem;
+  }
+  .cw-cyrev :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cyrev :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cyrev-list {
+    margin: 3.2rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 22%, transparent);
+  }
+
+  .cw-cyrev-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.4rem;
+    padding: 2.4rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+
+  .cw-cyrev-attrib {
+    margin: 0;
+  }
+  .cw-cyrev-photo {
+    display: block;
+    width: 88px;
+    height: 88px;
+    object-fit: cover;
+    border-radius: 22px 22px 22px 6px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 20%, transparent);
+    filter: saturate(0.88) contrast(1.03);
+  }
+  .cw-cyrev-who {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .cw-cyrev-name {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 48;
+    color: var(--color-charcoal);
+  }
+  .cw-cyrev-role {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--color-steel);
+  }
+
+  .cw-cyrev-quote {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(1.15rem, 2.3vw, 1.42rem);
+    line-height: 1.52;
+    letter-spacing: -0.012em;
+    font-variation-settings: 'opsz' 48;
+    color: var(--color-charcoal);
+    text-wrap: pretty;
+  }
+  .cw-cyrev-quote p {
+    margin: 0;
+  }
+  .cw-cyrev-quote p + p {
+    margin-top: 0.9rem;
+  }
+
+  @media (min-width: 760px) {
+    .cw-cyrev-row {
+      /* Attribution holds a narrow column so the quote gets the full measure —
+         the reverse of the two card treatments already on the site. */
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: 3rem;
+      padding: 3rem 0;
+      align-items: start;
+    }
+  }
+</style>

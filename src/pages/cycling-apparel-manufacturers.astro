@@ -1,0 +1,183 @@
+---
+// Cycling vertical landing page.
+//
+// Built the way golf-apparel-manufacturer.astro was: vertical-specific sections
+// as their own components so the locked homepage is never touched, with the
+// shared Faq / FinalCta / Footer reused through props.
+//
+// The nav dropdown is overridden here *and* in Nav.astro's defaults, because the
+// Product menu has to list both verticals identically on every route.
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/Nav.astro'
+import CyclingHero from '../components/CyclingHero.astro'
+import CyclingSpecStrip from '../components/CyclingSpecStrip.astro'
+import CyclingTypes from '../components/CyclingTypes.astro'
+import CyclingSpecPlate from '../components/CyclingSpecPlate.astro'
+import CyclingFabricMatrix from '../components/CyclingFabricMatrix.astro'
+import CyclingDisciplines from '../components/CyclingDisciplines.astro'
+import CyclingSampleTimeline from '../components/CyclingSampleTimeline.astro'
+import CyclingClaimProof from '../components/CyclingClaimProof.astro'
+import CyclingReviews from '../components/CyclingReviews.astro'
+import Faq from '../components/Faq.astro'
+import FinalCta from '../components/FinalCta.astro'
+import Footer from '../components/Footer.astro'
+
+const QUOTE_HREF = '#quote'
+
+// FinalCta *is* #quote, so it keeps its mailto default rather than self-linking.
+const navLinks = [
+  {
+    label: 'Product',
+    href: '/cycling-apparel-manufacturers/',
+    children: [
+      { label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' },
+      { label: 'CYCLING APPAREL', href: '/cycling-apparel-manufacturers/' },
+    ],
+  },
+  { label: 'The kit', href: '#types' },
+  { label: 'Build spec', href: '#fabric' },
+  { label: 'FAQ', href: '#faq' },
+]
+
+const faqs = [
+  {
+    question: 'What is the minimum order for custom cycling apparel?',
+    answer:
+      '100 pieces per style, and that same number covers every garment on this page — jerseys, bib shorts, gilets, warmers and socks alike. You are not forced into 100 per colourway or 100 per size. If you want to see the kit before committing, order a sample first; the fee comes off your bulk invoice.',
+  },
+  {
+    question: 'How quickly can I get a cycling sample?',
+    answer:
+      'Seven days from approved artwork. It is photographed on live video before it is couriered, so you can flag anything you dislike while it is still at the factory rather than after it clears customs. Strike-off proofs at day 3–5 settle colour on fabric before a single panel is cut.',
+  },
+  {
+    question: 'Can you match our club colours and logo exactly?',
+    answer:
+      'Full-dye sublimation with Pantone matching, so the colour is in the yarn rather than printed on top of it and will not crack or peel. Send a vector file if you have one — .ai, .eps or .pdf — and we return a digital mockup in your colours for approval before anything is cut.',
+  },
+  {
+    question: 'What fabrics do you use for jerseys and bib shorts?',
+    answer:
+      'Jerseys run 130–160 GSM in single jersey or interlock; bib shorts run 200–240 GSM in a four-way stretch Lycra with a multi-density chamois. Recycled polyester to GRS and OEKO-TEX certified stock are available on every row of the specification above, and UV protection is UPF 50+ across the kit.',
+  },
+  {
+    question: 'Do you manufacture seamless cycling wear?',
+    answer:
+      'Yes, where seamless is the right construction. Base layers and gloves are knitted seamless; jersey and bib panels are joined with flatlock stitching rather than overlock, which keeps every seam flat against the skin. Skinsuits and track kit use seamless aero panels front and back.',
+  },
+  {
+    question: 'How do you check quality before the order ships?',
+    answer:
+      'Inspection is to AQL 2.5 for major defects and 4.0 for minor, with a man-in-plant on final assembly and a live video inspection prior to shipment. Shrinkage is held to ≤3% under ISO 5077, colourfastness to Grade 4 minimum under ISO 105, and wash-test panels are photographed per lot and attached to the report.',
+  },
+  {
+    question: 'Do you supply wholesale and private label, or only OEM?',
+    answer:
+      'All three. OEM means we build from your tech pack; private label means our existing blocks with your branding, woven labels, care labels and packaging; wholesale means a stocked kit range at volume pricing. We are also set up to barcode, poly-bag and inject directly into Amazon fulfilment centres.',
+  },
+  {
+    question: 'What does delivery cost, and who handles customs?',
+    answer:
+      'We quote DDP — manufacturing, freight and duties as one landed figure, so there is no customs bill waiting at the dock. Express is 3–5 days, air freight 7–12 and sea freight 25–40, and all three are quoted landed so you can compare them on real cost.',
+  },
+]
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Cycling Apparel Manufacturers',
+    serviceType: 'Custom cycling apparel manufacturing',
+    description:
+      'OEM and ODM manufacture of custom cycling apparel from MOQ 100 per style: sublimated jerseys, bib shorts, gilets, skinsuits, warmers and socks, sampled in 7 days, inspected to AQL 2.5 and delivered DDP.',
+    provider: {
+      '@type': 'Organization',
+      name: 'LeelineSports',
+      url: 'https://www.leelinesports.com/',
+    },
+    areaServed: 'Worldwide',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    // Mapped from the same array the page renders, so the rich result can never
+    // drift from the visible copy.
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  },
+]
+---
+
+<Layout
+  title="Cycling Apparel Manufacturers | MOQ 100, ISO 9001 Factory"
+  description="Cycling apparel manufacturers for private-label brands: MOQ 100 per style, 7-day samples, AQL 2.5 QC and DDP delivery. Send a sketch for a quote in 24 hours."
+  schema={schema}
+>
+  <Nav links={navLinks} ctaLabel="Request a cycling quote" ctaHref={QUOTE_HREF} solid />
+
+  <CyclingHero ctaHref={QUOTE_HREF} />
+
+  <main>
+    <CyclingSpecStrip />
+
+    <CyclingTypes heading="Custom Cycling Apparel, Off One Production Line." />
+
+    <CyclingSpecPlate />
+
+    <CyclingFabricMatrix />
+
+    <CyclingDisciplines />
+
+    <CyclingSampleTimeline />
+
+    <CyclingClaimProof />
+
+    <CyclingReviews />
+
+    <Faq kicker="Cycling buyer questions" faqs={faqs}>
+      Frequently Asked Questions about Cycling Apparel Manufacturers
+    </Faq>
+
+    <FinalCta
+      lede="Send whatever you have — a finished tech pack, a jersey you want matched, or a sketch on a page. Inside one business day you get MOQ, the fabric spec and a landed DDP price. No sales call in between."
+      ctaLabel="Show us what you're making"
+    >
+      Send the Sketch. We&rsquo;ll Send the Spec.
+    </FinalCta>
+  </main>
+
+  <!-- Columns overridden rather than the shared Footer edited: the defaults point
+       at homepage anchors, which dead-end on this route, and changing the
+       component itself would alter the locked homepage. -->
+  <Footer
+    columns={[
+      {
+        heading: 'This page',
+        links: [
+          { label: 'The kit', href: '#types' },
+          { label: 'Garment anatomy', href: '#anatomy' },
+          { label: 'Build spec', href: '#fabric' },
+          { label: 'Sample to bulk', href: '#timeline' },
+        ],
+      },
+      {
+        heading: 'Company',
+        links: [
+          { label: 'Golf apparel', href: '/golf-apparel-manufacturer/' },
+          { label: 'Process', href: '/#process' },
+          { label: 'Proof', href: '/#proof' },
+          { label: 'FAQ', href: '#faq' },
+        ],
+      },
+      {
+        heading: 'Contact',
+        links: [{ label: 'info@leelinesports.com', href: 'mailto:info@leelinesports.com' }],
+        note: 'Hubei · China',
+      },
+    ]}
+  />
+  <div class="cw-grain" aria-hidden="true"></div>
+</Layout>

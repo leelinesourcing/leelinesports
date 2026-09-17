@@ -1,0 +1,182 @@
+---
+// Cycling hero — a split, not a veil.
+//
+// Both existing heroes (Hero.astro, GolfHero.astro) are full-bleed photographs
+// under a steel→ink gradient with the copy sitting on top. Doing that a third
+// time would make this page read as the golf page in different colours, so the
+// photograph here is bright and unveiled and the copy sits on a flat denim panel
+// beside it.
+//
+// The side effect is the useful one: because no text ever sits on the
+// photograph, the contrast ceiling that forces every other hero to abandon berry
+// does not apply. Berry is still spent on exactly one thing — the CTA.
+import { r2 } from '../lib/images'
+import Button from './Button.astro'
+
+interface Props {
+  kicker?: string
+  heading?: string
+  sub?: string
+  ctaLabel?: string
+  ctaHref?: string
+  /** The risk-reversal line under the CTA. */
+  note?: string
+  image?: string
+  imageAlt?: string
+}
+
+const {
+  kicker = 'OEM & ODM · Wuhan, China',
+  // Short by design: this headline shares its row with the photograph, and the
+  // longer "for Private-Label Kit, From MOQ 100" version ran to six lines at this
+  // width and broke "Private-Label" across two of them. The keyword still leads
+  // and the private-label idea moved into the sub, where there is room for it.
+  heading = 'Cycling Apparel Manufacturers, From MOQ 100',
+  sub = 'Race-fit jerseys, bib shorts and skinsuits built to your tech pack for private-label brands — sublimated in your Pantone colours, sampled in 7 days, inspected to AQL 2.5 and delivered duty paid.',
+  ctaLabel = 'Get a cycling quote',
+  ctaHref = '#quote',
+  note = 'The sample fee comes off your bulk invoice. No cost to see the kit first.',
+  image = r2('cycling-hero'),
+  imageAlt = 'Road cyclist riding in a custom-manufactured cycling jersey and bib shorts',
+} = Astro.props
+---
+
+<section class="cw-cyhero" id="top" data-hero>
+  <div class="cw-cyhero-grid">
+    <div class="cw-cyhero-copy">
+      <p class="cw-cyhero-kicker cw-hero-item" style="--rd:0ms">{kicker}</p>
+
+      <h1 class="cw-cyhero-h1 cw-hero-item" style="--rd:90ms">{heading}</h1>
+
+      <p class="cw-cyhero-sub cw-hero-item" style="--rd:200ms">{sub}</p>
+
+      <div class="cw-cyhero-action cw-hero-item" style="--rd:300ms">
+        <Button href={ctaHref}>{ctaLabel}</Button>
+        <p class="cw-cyhero-note">{note}</p>
+      </div>
+    </div>
+
+    <figure class="cw-cyhero-fig">
+      <img
+        src={image}
+        alt={imageAlt}
+        width={2000}
+        height={1333}
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+      />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .cw-cyhero {
+    background: var(--color-denim);
+    /* Above the nav's transparent height so the solid bar has ground to sit on. */
+    padding-top: 5.5rem;
+  }
+
+  .cw-cyhero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cw-cyhero-copy {
+    /*
+      Align the copy's left edge with .cw-wrap without nesting one, because the
+      photograph in the next column has to reach the viewport edge. This
+      reproduces .cw-wrap's own maths: its gutter plus whatever margin the
+      1240px cap leaves over.
+    */
+    padding: 3.5rem calc(max(0px, (100vw - 1240px) / 2) + clamp(1.25rem, 4vw, 2rem)) 3.75rem;
+  }
+
+  .cw-cyhero-kicker {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    /* paper, not cream: the extra luminance is the most contrast available here */
+    color: var(--color-paper);
+  }
+
+  .cw-cyhero-h1 {
+    margin: 1.1rem 0 0;
+    font-family: var(--font-heading);
+    font-weight: 620;
+    /* Smaller than .cw-h1's 6.9rem ceiling: this headline shares its row with the
+       photograph instead of owning the full viewport. */
+    font-size: clamp(2.1rem, 4.3vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variation-settings: 'opsz' 120, 'SOFT' 40;
+    color: var(--color-paper);
+    text-wrap: balance;
+  }
+
+  .cw-cyhero-sub {
+    margin: 1.35rem 0 0;
+    max-width: 44ch;
+    font-size: 1.08rem;
+    line-height: 1.64;
+    color: color-mix(in srgb, var(--color-cream) 76%, transparent);
+  }
+
+  .cw-cyhero-action {
+    margin-top: 2.2rem;
+  }
+
+  .cw-cyhero-note {
+    margin: 1rem 0 0;
+    max-width: 34ch;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-cream) 62%, transparent);
+  }
+
+  .cw-cyhero-fig {
+    margin: 0;
+    overflow: hidden;
+    /* 16/11 on a phone: tall enough to read as a hero, short enough that the
+       headline is still the first thing in view below the nav. */
+    aspect-ratio: 16 / 11;
+  }
+  .cw-cyhero-fig img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The rider sits left of centre in the frame; cover-cropping from the middle
+       would push them out of the column. */
+    object-position: 35% 50%;
+    filter: saturate(0.9) contrast(1.03);
+  }
+
+  @media (min-width: 880px) {
+    .cw-cyhero {
+      padding-top: 0;
+    }
+    .cw-cyhero-grid {
+      /* 46/54 rather than an even split: the copy column has to hold a 44ch
+         measure at 4.1rem, which needs the wider half to be well under half. */
+      grid-template-columns: minmax(0, 46%) minmax(0, 54%);
+      align-items: stretch;
+      min-height: 34rem;
+    }
+    .cw-cyhero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 8.5rem;
+      padding-bottom: 5.5rem;
+      padding-inline-end: clamp(2rem, 4vw, 4.5rem);
+    }
+    .cw-cyhero-fig {
+      aspect-ratio: auto;
+      min-height: 34rem;
+    }
+  }
+</style>

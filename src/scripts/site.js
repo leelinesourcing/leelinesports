@@ -166,6 +166,57 @@
     });
   }
 
+  // ── nav dropdowns ───────────────────────────────────────
+  // Hover already opens these on a pointer; this adds the click. The parent's
+  // href repeats its first child's, so swallowing the click costs no
+  // destination, and it keeps the caret from reading as decoration.
+  //
+  // Only one is ever open, and the menu closes when focus leaves it — otherwise
+  // tabbing past the last child leaves an open panel behind the user.
+  const drops = Array.from(document.querySelectorAll('.cw-nav-drop'));
+  if (drops.length) {
+    const closeDrop = (drop) => {
+      drop.classList.remove('is-open');
+      drop.querySelector('.cw-nav-drop-trigger')?.setAttribute('aria-expanded', 'false');
+    };
+    const closeAllDrops = (except) => {
+      drops.forEach((d) => { if (d !== except) closeDrop(d); });
+    };
+
+    drops.forEach((drop) => {
+      const trigger = drop.querySelector('.cw-nav-drop-trigger');
+      if (!trigger) return;
+
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const open = !drop.classList.contains('is-open');
+        closeAllDrops(drop);
+        drop.classList.toggle('is-open', open);
+        trigger.setAttribute('aria-expanded', String(open));
+      });
+
+      drop.addEventListener('focusout', () => {
+        // A microtask later, because focusout fires before activeElement has
+        // moved on to whatever was clicked next.
+        queueMicrotask(() => {
+          if (!drop.contains(document.activeElement)) closeDrop(drop);
+        });
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target instanceof Element && !target.closest('.cw-nav-drop')) closeAllDrops();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const open = drops.find((d) => d.classList.contains('is-open'));
+      if (!open) return;
+      closeDrop(open);
+      open.querySelector('.cw-nav-drop-trigger')?.focus();
+    });
+  }
+
   // ── mobile menu ─────────────────────────────────────────
   const toggle = document.getElementById('nav-toggle');
   const menu = document.getElementById('nav-menu');

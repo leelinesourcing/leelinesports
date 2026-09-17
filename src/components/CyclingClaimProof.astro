@@ -1,0 +1,165 @@
+---
+// The proof ledger — claim, then the standard it rests on, then the artefact.
+//
+// This replaces the WhyUs comparison table. Reusing WhyUs would have made the
+// page a second golf page, and a comparison table is the one format that lets a
+// competitor's weaknesses do the arguing. A ledger does the opposite: it argues
+// from what can be checked.
+//
+// It is also where certification lives. Per the competitive scan, not one of the
+// seven reference manufacturers publishes a certification, a test standard or an
+// audit — so folding ISO 9001, AQL, ISO 5077, ISO 105, GRS and OEKO-TEX into
+// these rows is the largest information gain available, and it avoids a fourth
+// certificate-card variant on a site that already has two.
+//
+// No cw-cv: the ledger rows are data-reveal children and need their real
+// geometry before the reveal observer can place them.
+import SectionHead from './SectionHead.astro'
+
+interface Claim {
+  /** What a buyer would put in an email. */
+  claim: string
+  /** The published standard behind it. */
+  standard: string
+  /** What physically turns up to prove it. */
+  evidence: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  claims?: Claim[]
+}
+
+const {
+  kicker = 'What backs the claims',
+  heading = 'Every Number Here Has a Standard Behind It.',
+  lede = 'Adjectives are free. These are the standards each promise on this page is measured against, and the artefact you receive as proof of it.',
+  claims = [
+    {
+      claim: 'The colour survives the wash',
+      standard: 'ISO 105, Grade 4 minimum',
+      evidence: 'Wash-test panels photographed per lot and attached to the inspection report.',
+    },
+    {
+      claim: 'The garment stays the size you approved',
+      standard: 'ISO 5077, shrinkage held to ≤3%',
+      evidence: 'Every lot measured against the approved size set before the carton is sealed.',
+    },
+    {
+      claim: 'Defects are caught, not shipped',
+      standard: 'AQL 2.5 major / 4.0 minor',
+      evidence: 'A man-in-plant on final assembly, plus a live video inspection before shipment.',
+    },
+    {
+      claim: 'The factory is audited, not assumed',
+      standard: 'ISO 9001:2015',
+      evidence: 'Certificate number stated on the quote; the full audit report is available under NDA.',
+    },
+    {
+      claim: 'The fabric is what we said it was',
+      standard: 'GRS recycled polyester, OEKO-TEX certified stock',
+      evidence: 'Mill certificates held on file and supplied with the order, not on request.',
+    },
+    {
+      claim: 'Customs is our problem, not yours',
+      standard: 'DDP — Delivered Duty Paid',
+      evidence: 'One landed figure covering manufacture, freight and duties. No bill waiting at the dock.',
+    },
+    {
+      claim: 'Your patterns stay yours',
+      standard: 'NDA signed before the tech pack moves',
+      evidence: 'Your blocks are never reused for another client, and your artwork is never resold.',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-cp" id="proof">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <dl class="cw-cp-list">
+      {claims.map((c, i) => (
+        <div class="cw-cp-row" data-reveal="up" style={`--rd:${i * 50}ms`}>
+          <dt class="cw-cp-claim">{c.claim}</dt>
+          <dd class="cw-cp-body">
+            <p class="cw-cp-standard">{c.standard}</p>
+            <p class="cw-cp-evidence">{c.evidence}</p>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .cw-cp {
+    background: var(--color-linen);
+    padding: 7rem 0 6.5rem;
+  }
+  .cw-cp :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cp :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cp-list {
+    margin: 3.2rem 0 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 22%, transparent);
+  }
+
+  .cw-cp-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+    padding: 1.55rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+  }
+
+  .cw-cp-claim {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.08rem, 2.4vw, 1.28rem);
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 48;
+    color: var(--color-charcoal);
+    text-wrap: balance;
+  }
+
+  .cw-cp-body {
+    margin: 0;
+  }
+  /* The standard is the load-bearing part of each row, so it takes the heading
+     face in steel — the same treatment the site gives every small label that
+     carries voice. */
+  .cw-cp-standard {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 1.02rem;
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+    color: var(--color-steel);
+  }
+  .cw-cp-evidence {
+    margin: 0.4rem 0 0;
+    max-width: 62ch;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 760px) {
+    .cw-cp-row {
+      grid-template-columns: minmax(0, 38%) minmax(0, 62%);
+      gap: 2.4rem;
+      align-items: baseline;
+      padding: 1.7rem 0;
+    }
+  }
+</style>

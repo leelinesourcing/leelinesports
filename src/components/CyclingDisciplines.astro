@@ -1,0 +1,158 @@
+---
+// Disciplines as a ruled definition list.
+//
+// The legacy page ran these four as four identical cards, which is the same
+// shape as the homepage's ICP grid and the golf page's customer grid. A ruled
+// list keeps the content — four rider archetypes with their own fabric and fit
+// requirements — without a third card grid, and lets the discipline name carry
+// the type weight instead of a photo.
+//
+// Static, not switchable: the user explicitly declined a tab panel here.
+import SectionHead from './SectionHead.astro'
+
+interface Discipline {
+  name: string
+  /** Who actually rides it — the line that makes a reader self-identify. */
+  rider: string
+  kit: string
+  build: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  disciplines?: Discipline[]
+}
+
+const {
+  kicker = 'Four disciplines',
+  heading = 'Road Is Not Gravel Is Not Tri.',
+  lede = 'The four disciplines pull the same garment list in different directions. A road jersey wants a closer fit and a higher pocket; a gravel jersey wants a longer sleeve and an abrasion panel. Tell us which you are building for and the spec sheet follows.',
+  disciplines = [
+    {
+      name: 'Road',
+      rider: 'Racers, sportive riders, club runs and weekend chaingangs.',
+      kit: 'Jersey, bib shorts, gilet, arm and leg warmers.',
+      build: '130–160 GSM race-fit jersey, three rear pockets, silicone waist and leg grippers, reflective trim on the rear panel.',
+    },
+    {
+      name: 'Gravel & MTB',
+      rider: 'Gravel racers, trail riders and bikepackers.',
+      kit: 'Relaxed jersey, waist shorts, windbreaker, gloves.',
+      build: 'Abrasion-resistant shoulder and hip panels, longer sleeve, looser body block, UPF 50+ throughout, bar-bag-friendly pocket layout.',
+    },
+    {
+      name: 'Triathlon',
+      rider: 'Triathletes, duathletes and time-triallists.',
+      kit: 'Skinsuit, base layer, socks.',
+      build: 'Fast-drying Lycra, seam-free shoulder for the swim, chamois sized for the bike leg rather than the run, rear pockets for nutrition.',
+    },
+    {
+      name: 'Track',
+      rider: 'Track squads, pursuit and sprint teams.',
+      kit: 'Skinsuit, base layer, socks, cap.',
+      build: 'Seamless aero panels, compression fit, no pockets, and no gripper bands to interrupt the surface of the garment.',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-disc" id="disciplines">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <dl class="cw-disc-list">
+      {disciplines.map((d, i) => (
+        <div class="cw-disc-row" data-reveal="up" style={`--rd:${i * 70}ms`}>
+          <dt class="cw-disc-term">
+            <span class="cw-disc-name">{d.name}</span>
+            <span class="cw-disc-rider">{d.rider}</span>
+          </dt>
+          <dd class="cw-disc-def">
+            <p class="cw-disc-kit">{d.kit}</p>
+            <p class="cw-disc-build">{d.build}</p>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .cw-disc {
+    background: var(--color-linen);
+    padding: 6.5rem 0 6rem;
+  }
+  .cw-disc :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-disc :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-disc-list {
+    margin: 3.2rem 0 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 22%, transparent);
+  }
+
+  .cw-disc-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.9rem;
+    padding: 1.9rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+
+  .cw-disc-term {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .cw-disc-name {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-variation-settings: 'opsz' 80;
+    color: var(--color-charcoal);
+  }
+  .cw-disc-rider {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+  }
+
+  .cw-disc-def {
+    margin: 0;
+  }
+  .cw-disc-kit {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 1.02rem;
+    line-height: 1.45;
+    letter-spacing: 0.005em;
+    color: var(--color-steel);
+  }
+  .cw-disc-build {
+    margin: 0.7rem 0 0;
+    max-width: 62ch;
+    font-size: 0.98rem;
+    line-height: 1.62;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 760px) {
+    .cw-disc-row {
+      /* The discipline name holds the left, the specification the right — the
+         same proportion the plate uses, so the two sections read as a set. */
+      grid-template-columns: minmax(0, 34%) minmax(0, 66%);
+      gap: 2.4rem;
+      align-items: baseline;
+      padding: 2.1rem 0;
+    }
+  }
+</style>

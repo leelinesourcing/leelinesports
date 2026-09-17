@@ -35,7 +35,13 @@ const {
     {
       label: 'Product',
       href: '/golf-apparel-manufacturer/',
-      children: [{ label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' }],
+      // Both vertical pages are listed on every route, so the Product menu is
+      // the same menu whichever one you are on. Adding cycling here changes the
+      // homepage's dropdown; the render is otherwise untouched.
+      children: [
+        { label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' },
+        { label: 'CYCLING APPAREL', href: '/cycling-apparel-manufacturers/' },
+      ],
     },
     // The homepage's default set, kept in step with the golf page's labels.
     // The anchors are not a one-to-one port: the homepage fuses customisation
@@ -66,7 +72,12 @@ const {
         links.map((l) =>
           l.children ? (
             <div class="cw-nav-drop">
-              <a href={l.href} aria-haspopup="true">
+              <a
+                href={l.href}
+                class="cw-nav-drop-trigger"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
                 {l.label}
                 <span class="cw-nav-caret" aria-hidden="true" />
               </a>
@@ -338,8 +349,13 @@ const {
     visibility: hidden;
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
   }
+  /* Hover opens these on a pointer, and the click handler in site.js adds
+     .is-open. :focus-within used to open them too, but it fought the toggle:
+     clicking the trigger focuses it, so a second click could never close the
+     menu. Keyboard users press Enter on the focused link instead, which fires
+     the same click handler. */
   .cw-nav-drop:hover .cw-nav-drop-menu,
-  .cw-nav-drop:focus-within .cw-nav-drop-menu {
+  .cw-nav-drop.is-open .cw-nav-drop-menu {
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, 0);

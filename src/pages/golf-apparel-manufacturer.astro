@@ -24,13 +24,17 @@ const QUOTE_HREF = '#quote'
 // Nav defaults are homepage fragments, which would dead-end on this route.
 //
 // Product mirrors the source site's menu, where GOLF APPAREL sits one level down.
-// Golf is the only product page this build has, so the parent points at it too
-// rather than at a dead link; it becomes a real index when the others ship.
+// The parent points at this page rather than at a dead link; it becomes a real
+// index once there are more product pages than one. Cycling is listed beside it
+// so the menu reads the same here as it does everywhere else.
 const navLinks = [
   {
     label: 'Product',
     href: '/golf-apparel-manufacturer/',
-    children: [{ label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' }],
+    children: [
+      { label: 'GOLF APPAREL', href: '/golf-apparel-manufacturer/' },
+      { label: 'CYCLING APPAREL', href: '/cycling-apparel-manufacturers/' },
+    ],
   },
   { label: 'Customisation', href: '#custom' },
   { label: 'Services', href: '#services' },

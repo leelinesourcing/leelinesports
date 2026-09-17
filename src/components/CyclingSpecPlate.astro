@@ -1,0 +1,245 @@
+---
+// The annotated plate — this page's one loud moment.
+//
+// Everything else on the page is deliberately quiet so this can be the thing
+// that is remembered. A single garment at full column width with keyed callouts
+// reads as a printed technical drawing, which is the register the brand guide
+// asks for ("letterpress studio, not SaaS dashboard").
+//
+// The numbers are reference keys between the markers and the legend, not a
+// sequence — nothing here happens in an order, so they are set as circled keys
+// rather than the numbered steps the rest of the site uses.
+//
+// No cw-cv here: the markers are absolutely positioned, so the section needs
+// real layout before it paints.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Callout {
+  /** 1-2 words, set in Fraunces next to the key. */
+  name: string
+  /** The construction detail that earns the callout. */
+  spec: string
+  /** Marker position on the figure, in per cent of the frame. */
+  x: number
+  y: number
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  image?: string
+  imageAlt?: string
+  callouts?: Callout[]
+}
+
+const {
+  kicker = 'Garment anatomy',
+  heading = 'What a Bib Short Has to Get Right.',
+  lede = 'Six places where a cheap bib short fails first. Every one of them is a decision made before the fabric is cut, not a check made afterwards.',
+  image = r2('cycling-bib-anatomy'),
+  imageAlt = 'Custom cycling bib shorts showing the chamois, bib straps and leg grippers',
+  callouts = [
+    {
+      name: 'Bib straps',
+      spec: 'Mesh-backed four-way stretch, cut wide so the straps sit flat on the shoulder rather than rolling.',
+      x: 34,
+      y: 13,
+    },
+    {
+      name: 'Back panel',
+      spec: 'Laser-cut venting across the spine, so heat leaves before it reaches the chamois.',
+      x: 50,
+      y: 27,
+    },
+    {
+      name: 'Chamois',
+      spec: 'Multi-density anatomical pad, positioned off the pattern rather than dropped in by eye.',
+      x: 50,
+      y: 37,
+    },
+    {
+      name: 'Flatlock seams',
+      spec: 'Flatlock stitched throughout, so there is no raised seam to chafe across a long ride.',
+      x: 29,
+      y: 63,
+    },
+    {
+      name: 'Panels',
+      spec: 'Sublimated before the panels are cut, so the print never lands across a seam and never cracks along one.',
+      x: 73,
+      y: 57,
+    },
+    {
+      name: 'Leg opening',
+      spec: 'Laser-cut hem with a silicone gripper band that holds the leg without pinching it.',
+      x: 36,
+      y: 88,
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-plate" id="anatomy">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <div class="cw-plate-grid">
+      <figure class="cw-plate-fig" data-reveal="scale">
+        <img src={image} alt={imageAlt} width={1000} height={1000} loading="lazy" decoding="async" />
+        {callouts.map((c, i) => (
+          <span class="cw-plate-key" style={`left:${c.x}%; top:${c.y}%`} aria-hidden="true">
+            {i + 1}
+          </span>
+        ))}
+      </figure>
+
+      <ol class="cw-plate-legend">
+        {callouts.map((c, i) => (
+          <li class="cw-plate-row" data-reveal="up" style={`--rd:${i * 60}ms`}>
+            <span class="cw-plate-num" aria-hidden="true">{i + 1}</span>
+            <div class="cw-plate-text">
+              <h3 class="cw-plate-name">{c.name}</h3>
+              <p class="cw-plate-spec">{c.spec}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-plate {
+    background: var(--color-linen);
+    padding: 7rem 0 6.5rem;
+  }
+  .cw-plate :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-plate :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-plate-grid {
+    margin-top: 3.4rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.6rem;
+    align-items: start;
+  }
+
+  .cw-plate-fig {
+    position: relative;
+    /* Queried by the key sizing below, so the keys scale with the frame rather
+       than the viewport. */
+    container-type: inline-size;
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    border-radius: 26px 26px 26px 8px;
+    box-shadow: 0 34px 70px -38px color-mix(in srgb, var(--color-ink) 28%, transparent);
+  }
+  .cw-plate-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    filter: saturate(0.88) contrast(1.03);
+  }
+
+  /*
+    Keys sit on the garment, so they need to survive whatever is behind them:
+    paper fill, a berry ring, and a halo of the frame's own ground to separate
+    the ring from the fabric.
+  */
+  .cw-plate-key {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    /* Scales with the frame rather than the viewport: on a narrow phone the
+       figure is ~300px wide and a fixed 28px key would cover the garment. */
+    width: 26px;
+    height: 26px;
+    width: clamp(20px, 5.4cqw, 30px);
+    height: clamp(20px, 5.4cqw, 30px);
+    border-radius: 50%;
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-berry);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-paper) 78%, transparent);
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: 0.82rem;
+    font-size: clamp(0.7rem, 2cqw, 0.85rem);
+    line-height: 1;
+    color: var(--color-berry);
+    font-variation-settings: 'opsz' 24;
+  }
+
+  .cw-plate-legend {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 1.35rem;
+  }
+  .cw-plate-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.95rem;
+    padding-bottom: 1.35rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  .cw-plate-row:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .cw-plate-num {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-berry);
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: 0.82rem;
+    line-height: 1;
+    color: var(--color-berry);
+    font-variation-settings: 'opsz' 24;
+  }
+  .cw-plate-name {
+    margin: 0.15rem 0 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: 1.22rem;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 48;
+    color: var(--color-charcoal);
+  }
+  .cw-plate-spec {
+    margin: 0.45rem 0 0;
+    font-size: 0.96rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 760px) {
+    .cw-plate-grid {
+      /* The figure leads: it is the point of the section. */
+      grid-template-columns: minmax(0, 46%) minmax(0, 54%);
+      gap: 3.2rem;
+      align-items: center;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .cw-plate-grid {
+      gap: 4rem;
+    }
+  }
+</style>

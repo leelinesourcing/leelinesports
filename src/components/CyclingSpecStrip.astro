@@ -1,0 +1,135 @@
+---
+// The spec strip — six parameters, ruled like a datasheet header.
+//
+// Deliberately not ProofBar: that one is a floating cream plate with four large
+// numerals and a cast shadow. This has no card at all, no shadow and six small
+// figures. It reads as the top of a specification sheet, which is what it is:
+// the first thing a sourcing lead scans for is MOQ and lead time.
+interface Spec {
+  label: string
+  value: string
+  /** Rendered after the value in berry — units, tolerances, the qualifier. */
+  suffix?: string
+}
+
+interface Props {
+  specs?: Spec[]
+}
+
+const {
+  specs = [
+    { label: 'Minimum order', value: '100', suffix: 'per style' },
+    { label: 'Sample turnaround', value: '7', suffix: 'days' },
+    { label: 'Inspection standard', value: 'AQL 2.5', suffix: 'major' },
+    { label: 'Shrinkage', value: '≤3%', suffix: 'ISO 5077' },
+    { label: 'Colourfastness', value: 'Grade 4', suffix: 'ISO 105' },
+    { label: 'Delivery terms', value: 'DDP', suffix: 'duty paid' },
+  ],
+} = Astro.props
+---
+
+<section class="cw-specstrip" id="specs">
+  <div class="cw-wrap">
+    <dl class="cw-specstrip-row">
+      {specs.map((s, i) => (
+        <div class="cw-specstrip-item" data-reveal="up" style={`--rd:${i * 60}ms`}>
+          <dt class="cw-specstrip-label">{s.label}</dt>
+          <dd class="cw-specstrip-value">
+            {s.value}
+            {s.suffix && <span class="cw-specstrip-suffix"> {s.suffix}</span>}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .cw-specstrip {
+    /* Thin on purpose. Anything with more air would read as a section and this
+       is a header line for the page below it.
+       Linen rather than paper: paper sits next to the Types band's cream and the
+       two near-whites would read as one surface. Linen separates them. */
+    background: var(--color-linen);
+    padding: 1.9rem 0;
+  }
+
+  .cw-specstrip-row {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.4rem 1.2rem;
+  }
+
+  .cw-specstrip-item {
+    min-width: 0;
+    padding-inline-start: 1rem;
+    border-inline-start: 1px solid color-mix(in srgb, var(--color-steel) 24%, transparent);
+  }
+  /* The very first cell on each row gets no rule — a leading hairline would read
+     as a stray border rather than a divider. */
+  .cw-specstrip-item:nth-child(odd) {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+
+  .cw-specstrip-label {
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    /* steel, not slate: this is small text on a light ground and slate only
+       reaches 3.9:1 here */
+    color: var(--color-steel);
+  }
+
+  .cw-specstrip-value {
+    margin: 0.35rem 0 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.2rem, 3.4vw, 1.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'opsz' 72;
+    color: var(--color-charcoal);
+  }
+  .cw-specstrip-suffix {
+    font-size: 0.86rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    font-variation-settings: normal;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 620px) {
+    .cw-specstrip-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    /* Re-rule every cell, then clear the ones that open a row. 3n+1 for a
+       three-up grid: cells 1 and 4. */
+    .cw-specstrip-row > .cw-specstrip-item {
+      padding-inline-start: 1rem;
+      border-inline-start: 1px solid color-mix(in srgb, var(--color-steel) 24%, transparent);
+    }
+    .cw-specstrip-item:nth-child(3n + 1) {
+      padding-inline-start: 0;
+      border-inline-start: 0;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .cw-specstrip-row {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0 1.5rem;
+    }
+    /* Six-up: only the first cell opens a row. */
+    .cw-specstrip-row > .cw-specstrip-item {
+      padding-inline-start: 1.5rem;
+      border-inline-start: 1px solid color-mix(in srgb, var(--color-steel) 24%, transparent);
+    }
+    .cw-specstrip-item:first-child {
+      padding-inline-start: 0;
+      border-inline-start: 0;
+    }
+  }
+</style>

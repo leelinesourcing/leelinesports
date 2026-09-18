@@ -33,15 +33,25 @@ const { kicker = reviewHead.kicker, heading = reviewHead.heading, lede = reviewH
       {reviews.map((r, i) => (
         <li class="cw-cyrev-row" data-reveal="up" style={`--rd:${i * 80}ms`}>
           <figure class="cw-cyrev-attrib">
-            <img
-              class="cw-cyrev-photo"
-              src={r.avatar}
-              alt={r.alt ?? ''}
-              width={120}
-              height={120}
-              loading="lazy"
-              decoding="async"
-            />
+            {r.avatar ? (
+              <img
+                class="cw-cyrev-photo"
+                src={r.avatar}
+                alt={r.alt ?? ''}
+                width={120}
+                height={120}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              /* Placeholder for a review with no photograph supplied. A monogram,
+                 not a stock face — putting a stranger's picture under a named
+                 customer is a fabricated endorsement. Swap in the real photo
+                 when it arrives. */
+              <span class="cw-cyrev-photo cw-cyrev-blank" aria-hidden="true">
+                {r.name.trim().charAt(0)}
+              </span>
+            )}
             <figcaption class="cw-cyrev-who">
               <span class="cw-cyrev-name">{r.name}</span>
               <span class="cw-cyrev-role">{r.role}</span>
@@ -96,11 +106,27 @@ const { kicker = reviewHead.kicker, heading = reviewHead.heading, lede = reviewH
     border: 1px solid color-mix(in srgb, var(--color-steel) 20%, transparent);
     filter: saturate(0.88) contrast(1.03);
   }
+  /* The placeholder that stands in when no photograph was supplied: the same
+     88px box as a real one, so the row keeps its shape. */
+  .cw-cyrev-blank {
+    display: grid;
+    place-items: center;
+    background: var(--color-linen);
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-steel);
+  }
+
   .cw-cyrev-who {
-    margin-top: 0.85rem;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+  }
+  /* Only stand the name off the photograph when there is one. */
+  .cw-cyrev-photo + .cw-cyrev-who {
+    margin-top: 0.85rem;
   }
   .cw-cyrev-name {
     font-family: var(--font-heading);
@@ -124,28 +150,41 @@ const { kicker = reviewHead.kicker, heading = reviewHead.heading, lede = reviewH
     margin: 0;
     font-family: var(--font-heading);
     font-weight: 400;
-    font-size: clamp(1.15rem, 2.3vw, 1.42rem);
-    line-height: 1.52;
-    letter-spacing: -0.012em;
+    /* Down from a 1.42rem max, then down again to 1.05rem. These are buyer
+       reviews, not pull quotes — the section's weight belongs to the names and
+       the standard badges, and at display size the longer quotes ran to a wall
+       of type. Slightly above the golf reviews' 1rem: this column is a full
+       container wide rather than half of one. */
+    font-size: clamp(0.94rem, 1.4vw, 1.05rem);
+    line-height: 1.62;
+    letter-spacing: -0.01em;
     font-variation-settings: 'opsz' 48;
     color: var(--color-charcoal);
-    text-wrap: pretty;
+    /* Justified, with the same hyphens: auto the golf reviews use. Justification
+       without it stretches inter-word space until the gaps line up into rivers
+       down the column. It works because Layout sets lang="en". */
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
+  /* Paragraphs are marked by the indent alone, the way the golf reviews do it —
+     no gap between them, so the indent is doing the separating. */
   .cw-cyrev-quote p {
     margin: 0;
-  }
-  .cw-cyrev-quote p + p {
-    margin-top: 0.9rem;
+    text-indent: 2em;
   }
 
   @media (min-width: 760px) {
     .cw-cyrev-row {
       /* Attribution holds a narrow column so the quote gets the full measure —
-         the reverse of the two card treatments already on the site. */
+         the reverse of the two card treatments already on the site.
+         Centred rather than top-aligned: the longer quotes run to six lines, and
+         a photo pinned to the top of that reads as detached from the words it
+         belongs to. */
       grid-template-columns: 15rem minmax(0, 1fr);
       gap: 3rem;
       padding: 3rem 0;
-      align-items: start;
+      align-items: center;
     }
   }
 </style>

@@ -10,6 +10,13 @@
 // sequence — nothing here happens in an order, so they are set as circled keys
 // rather than the numbered steps the rest of the site uses.
 //
+// The x/y percentages are positions on the *visible* frame, which is not the
+// same as positions on the source file: the figure is a 1:1 box and the image is
+// 500×558, so `object-fit: cover` crops 29px off the top and 29px off the
+// bottom. Re-derive these whenever the plate image is swapped — and derive them
+// from the visible frame, not the source, or every marker drifts by ~6% of the
+// height.
+//
 // No cw-cv here: the markers are absolutely positioned, so the section needs
 // real layout before it paints.
 import { r2 } from '../lib/images'
@@ -44,38 +51,38 @@ const {
     {
       name: 'Bib straps',
       spec: 'Mesh-backed four-way stretch, cut wide so the straps sit flat on the shoulder rather than rolling.',
-      x: 34,
-      y: 13,
+      x: 37,
+      y: 17,
     },
     {
       name: 'Back panel',
       spec: 'Laser-cut venting across the spine, so heat leaves before it reaches the chamois.',
       x: 50,
-      y: 27,
+      y: 23,
     },
     {
       name: 'Chamois',
       spec: 'Multi-density anatomical pad, positioned off the pattern rather than dropped in by eye.',
-      x: 50,
-      y: 37,
+      x: 49,
+      y: 70,
     },
     {
       name: 'Flatlock seams',
       spec: 'Flatlock stitched throughout, so there is no raised seam to chafe across a long ride.',
-      x: 29,
+      x: 37,
       y: 63,
     },
     {
       name: 'Panels',
       spec: 'Sublimated before the panels are cut, so the print never lands across a seam and never cracks along one.',
-      x: 73,
-      y: 57,
+      x: 67,
+      y: 56,
     },
     {
       name: 'Leg opening',
       spec: 'Laser-cut hem with a silicone gripper band that holds the leg without pinching it.',
       x: 36,
-      y: 88,
+      y: 94,
     },
   ],
 } = Astro.props
@@ -112,7 +119,7 @@ const {
 
 <style>
   .cw-plate {
-    background: var(--color-linen);
+    background: var(--color-cream);
     padding: 7rem 0 6.5rem;
   }
   .cw-plate :global(.sec-head) {

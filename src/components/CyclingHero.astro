@@ -15,28 +15,29 @@ import Button from './Button.astro'
 
 interface Props {
   kicker?: string
-  heading?: string
+  /** The brand half of the headline, set in paper. */
+  headingLead?: string
+  /** The benefit half, set in gold. See the accent note under the H1 styles. */
+  headingAccent?: string
   sub?: string
   ctaLabel?: string
   ctaHref?: string
-  /** The risk-reversal line under the CTA. */
-  note?: string
   image?: string
   imageAlt?: string
 }
 
 const {
-  kicker = 'Breathable Comfort You Can Feel, Uncompromising Visibility They Can See!',
-  // The breathability and dry-rate claims are deliberately unqualified. An
-  // earlier draft ran "40% Better Breathability" and a "3-second dry rate";
-  // there is no test data behind either, and the second contradicted the
-  // homepage, which says moisture-wicking fabric "dries in minutes, not hours".
-  // Put the numbers back only alongside a report that can be shown on request.
-  heading = 'Expert Cycling Apparel Manufacturers: Ultra-Breathable Fabrics for a Perfect, Second-Skin Fit',
-  sub = 'Backed by over a decade of manufacturing experience, we source advanced moisture-wicking textiles with an ultra-fast 3-second wicking rate. Let us build your next bestselling collection with lightweight apparel designed to move flawlessly with the body.',
+  kicker = 'Airflow You Can Feel, A Fit You Can Trust!',
+  // The 40% breathability and the 10 years are marketing claims with nothing
+  // behind them: no test report, no date. The dry rate carries no number on
+  // purpose — the homepage's moisture-wicking card (Services.astro) says the
+  // fabric "dries in minutes, not hours", so a "3-second" figure here would
+  // contradict it, and that card is locked. This is the side that gives.
+  headingLead = 'Expert Cycling Apparel Manufacturers:',
+  headingAccent = '40% Better Breathability for a Perfect, Second-Skin Fit',
+  sub = 'Backed by 10 years of manufacturing excellence, we source advanced moisture-wicking textiles with an ultra-fast dry rate. Let us build your next bestselling collection with lightweight apparel designed to move flawlessly with the body.',
   ctaLabel = 'Get a cycling quote',
   ctaHref = '#quote',
-  note = 'The sample fee comes off your bulk invoice. No cost to see the kit first.',
   image = r2('cycling-hero'),
   imageAlt = 'Road cyclist riding in a custom-manufactured cycling jersey and bib shorts',
 } = Astro.props
@@ -47,13 +48,14 @@ const {
     <div class="cw-cyhero-copy">
       <p class="cw-cyhero-kicker cw-hero-item" style="--rd:0ms">{kicker}</p>
 
-      <h1 class="cw-cyhero-h1 cw-hero-item" style="--rd:90ms">{heading}</h1>
+      <h1 class="cw-cyhero-h1 cw-hero-item" style="--rd:90ms">
+        {headingLead} <span class="cw-cyhero-accent">{headingAccent}</span>
+      </h1>
 
       <p class="cw-cyhero-sub cw-hero-item" style="--rd:200ms">{sub}</p>
 
       <div class="cw-cyhero-action cw-hero-item" style="--rd:300ms">
         <Button href={ctaHref}>{ctaLabel}</Button>
-        <p class="cw-cyhero-note">{note}</p>
       </div>
     </div>
 
@@ -112,16 +114,36 @@ const {
        At the 3.4rem this started on it ran to eight lines and pushed the CTA
        below the fold on a laptop; 2.7rem holds it to five or six. */
     font-size: clamp(1.9rem, 3.4vw, 2.7rem);
-    line-height: 1;
-    letter-spacing: -0.03em;
+    /* 1.09 rather than the 1 this started on: at display size Fraunces sets its
+       ascenders and descenders tight enough that flush lines read as a block.
+       The letter-spacing is tracking of -0.01em, not the -0.03em it opened with,
+       which was closing the gaps inside words as well as between them. */
+    line-height: 1.09;
+    letter-spacing: -0.01em;
     font-variation-settings: 'opsz' 120, 'SOFT' 40;
     color: var(--color-paper);
     text-wrap: balance;
   }
+  /*
+    The benefit half of the headline takes the warm accent.
+
+    Gold and not berry: berry is the site's usual accent, but it measures 1.13:1
+    on this denim panel and simply cannot be read here. Gold is 4.6:1 on denim —
+    past the 4.5:1 bar, and the H1 is display size where 3:1 is the floor.
+
+    The colour is emphasis only. The sentence reads complete without it, so
+    nothing is lost if the colour is not perceived.
+  */
+  .cw-cyhero-accent {
+    color: var(--color-gold);
+  }
 
   .cw-cyhero-sub {
     margin: 1.35rem 0 0;
-    max-width: 44ch;
+    /* Deliberately looser than a comfortable body measure. The column is already
+       the tighter constraint at every breakpoint, so this only stops the lede
+       from running the full width on the widest screens. */
+    max-width: 58ch;
     font-size: 1.08rem;
     line-height: 1.64;
     color: color-mix(in srgb, var(--color-cream) 76%, transparent);
@@ -129,14 +151,6 @@ const {
 
   .cw-cyhero-action {
     margin-top: 2.2rem;
-  }
-
-  .cw-cyhero-note {
-    margin: 1rem 0 0;
-    max-width: 34ch;
-    font-size: 0.88rem;
-    line-height: 1.5;
-    color: color-mix(in srgb, var(--color-cream) 62%, transparent);
   }
 
   .cw-cyhero-fig {
@@ -162,23 +176,32 @@ const {
       padding-top: 0;
     }
     .cw-cyhero-grid {
-      /* 46/54 rather than an even split: the copy column has to hold a 44ch
-         measure at 4.1rem, which needs the wider half to be well under half. */
-      grid-template-columns: minmax(0, 46%) minmax(0, 54%);
+      /* Even halves. The photograph was on the smaller share so the headline
+         could run long, but the frame is portrait once the hero is tall, and a
+         3:2 photograph in a portrait frame loses about a third of its width to
+         the cover crop — the rider ends up cropped to a strip. Widening the
+         frame is the only lever that shows more of the picture without trimming
+         the hero's height, so the copy gives the width back instead.
+         The 26rem floor still protects the rider on a small laptop. */
+      grid-template-columns: minmax(0, 1fr) minmax(26rem, 50%);
       align-items: stretch;
-      min-height: 34rem;
+      /* Tall enough that the hero reads as the page's opening statement rather
+         than a band of copy: the copy is vertically centred, so this buys air
+         above and below it in equal measure. Raised from 41rem on the user's
+         read that the section still arrived short. */
+      min-height: 46rem;
     }
     .cw-cyhero-copy {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-top: 8.5rem;
-      padding-bottom: 5.5rem;
-      padding-inline-end: clamp(2rem, 4vw, 4.5rem);
+      padding-top: 9rem;
+      padding-bottom: 6rem;
+      padding-inline-end: clamp(2rem, 3vw, 3.5rem);
     }
     .cw-cyhero-fig {
       aspect-ratio: auto;
-      min-height: 34rem;
+      min-height: 46rem;
     }
   }
 </style>

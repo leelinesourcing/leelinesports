@@ -1,0 +1,186 @@
+---
+// Certification as a wall of marks.
+//
+// Modelled on the "Certification Reference Table" on leelineapparel.com — a grid
+// of certification logos with the code under each. That site is a sister brand
+// of the same company (same Leeline name, same Wuhan address), which is why its
+// assets are used here rather than re-sourced; the marks themselves belong to
+// the certification bodies either way.
+//
+// Only the layout idea and the logos are borrowed. The *list* is deliberately
+// shorter than the reference's six: these three are the certifications
+// LeelineSports already publishes in Certifications.astro on the homepage, so
+// nothing here is a mark we cannot point at a certificate for. Displaying a
+// certification the factory does not hold is not a marketing adjective, it is a
+// false compliance claim — the reference's WRAP, SMETA and NFPA 2112 are left
+// out until someone confirms the factory holds them, and NFPA 2112 (flame-
+// resistant garments) has no business on a cycling page in any case.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Cert {
+  code: string
+  label: string
+  mark: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  certs?: Cert[]
+  standardsLine?: string
+  note?: string
+}
+
+const {
+  kicker = 'Certification',
+  heading = 'The Marks Behind the Kit.',
+  lede = 'Held by the factory that makes your order, and open to inspection before you place it.',
+  certs = [
+    {
+      code: 'ISO 9001:2015',
+      label: 'Quality management system',
+      mark: r2('cert-iso-9001'),
+    },
+    {
+      code: 'OEKO-TEX® Standard 100',
+      label: 'Tested for harmful substances',
+      mark: r2('cert-oeko-tex'),
+    },
+    {
+      code: 'BSCI',
+      label: 'Social compliance audit',
+      mark: r2('cert-bsci'),
+    },
+  ],
+  standardsLine = 'Run on every order: AQL 2.5 / 4.0 inspection, ISO 5077 shrinkage, ISO 105 colourfastness.',
+  note = 'Certificates and test reports come with the quote if you ask for them.',
+} = Astro.props
+---
+
+<section class="cw-cycert" id="certification">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <ul class="cw-cycert-grid">
+      {certs.map((c, i) => (
+        <li class="cw-cycert-card" data-reveal="up" style={`--rd:${i * 70}ms`}>
+          <figure class="cw-cycert-logo">
+            <img src={c.mark} alt={`${c.code} certification mark`} width={320} height={200} loading="lazy" decoding="async" />
+          </figure>
+          <span class="cw-cycert-code">{c.code}</span>
+          <span class="cw-cycert-label">{c.label}</span>
+        </li>
+      ))}
+    </ul>
+
+    <p class="cw-cycert-standards" data-reveal="up">{standardsLine}</p>
+    <p class="cw-cycert-note" data-reveal="up">{note}</p>
+  </div>
+</section>
+
+<style>
+  .cw-cycert {
+    /* Linen — one link in the page's linen/cream alternation. The phase is set
+       from the FAQ downward, since Faq is shared with the golf page and cannot
+       move; see the note in the page file. */
+    background: var(--color-linen);
+    padding: 7rem 0 6.5rem;
+  }
+  /* The section head runs the full container width, as on every other page. */
+  .cw-cycert :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cycert :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cycert-grid {
+    margin: 3.2rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.4rem;
+  }
+
+  /* Each mark sits on its own paper tile. The tile is the whole card — logo,
+     code and one line — because the point of the section is that the marks are
+     recognisable at a glance, not that there is copy to read beside them. */
+  .cw-cycert-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.9rem;
+    padding: 2.2rem 1.6rem 1.8rem;
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 20px 20px 20px 6px;
+  }
+
+  .cw-cycert-logo {
+    margin: 0;
+    /* Fixed box so three logos of different natural sizes sit on one optical
+       line. The width has to be 100%: the card is a centred flex column, so a
+       shrink-to-fit figure leaves `max-width: 100%` on the image with nothing to
+       resolve against and the logo overruns the box, landing on top of the code
+       below it. */
+    width: 100%;
+    height: 5.2rem;
+    display: grid;
+    place-items: center;
+  }
+  .cw-cycert-logo img {
+    /* max-height in absolute units, not 100% — a percentage resolves against the
+       grid area and does not clamp here. */
+    max-width: 100%;
+    max-height: 5.2rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .cw-cycert-code {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--color-charcoal);
+    text-wrap: balance;
+  }
+  .cw-cycert-label {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 420;
+    font-size: 0.94rem;
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+    color: var(--color-steel);
+  }
+
+  .cw-cycert-standards {
+    margin: 2.4rem 0 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+  .cw-cycert-note {
+    margin: 0.7rem 0 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 700px) {
+    .cw-cycert-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+</style>

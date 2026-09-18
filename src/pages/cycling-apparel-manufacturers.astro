@@ -13,10 +13,11 @@ import CyclingHero from '../components/CyclingHero.astro'
 import CyclingSpecStrip from '../components/CyclingSpecStrip.astro'
 import CyclingTypes from '../components/CyclingTypes.astro'
 import CyclingSpecPlate from '../components/CyclingSpecPlate.astro'
-import CyclingFabricMatrix from '../components/CyclingFabricMatrix.astro'
+import CyclingCustom from '../components/CyclingCustom.astro'
+import CyclingServices from '../components/CyclingServices.astro'
 import CyclingDisciplines from '../components/CyclingDisciplines.astro'
-import CyclingSampleTimeline from '../components/CyclingSampleTimeline.astro'
-import CyclingClaimProof from '../components/CyclingClaimProof.astro'
+import CyclingCertification from '../components/CyclingCertification.astro'
+import CyclingTrusted from '../components/CyclingTrusted.astro'
 import CyclingReviews from '../components/CyclingReviews.astro'
 import Faq from '../components/Faq.astro'
 import FinalCta from '../components/FinalCta.astro'
@@ -35,7 +36,6 @@ const navLinks = [
     ],
   },
   { label: 'The kit', href: '#types' },
-  { label: 'Build spec', href: '#fabric' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -112,14 +112,21 @@ const schema = [
 ---
 
 <Layout
-  title="Cycling Apparel Manufacturers | Ultra-Breathable, MOQ 100"
-  description="Cycling apparel manufacturers for private-label brands: MOQ 100 per style, 7-day samples, AQL 2.5 QC and DDP delivery. Send a sketch for a quote in 24 hours."
+  title="Cycling Apparel Manufacturer | AQL 2.5 QC, 7-Day Sample, DDP"
+  description="OEM and private-label cycling apparel manufacturers. 7-day samples, AQL 2.5 inspection, ISO 9001:2015, DDP shipping. Quote in one business day. No sales call."
   schema={schema}
 >
   <Nav links={navLinks} ctaLabel="Request a cycling quote" ctaHref={QUOTE_HREF} solid />
 
   <CyclingHero ctaHref={QUOTE_HREF} />
 
+  <!--
+    The sections alternate linen and cream from the spec strip to the FAQ. The
+    phase is not free: Faq is shared with the golf page and is pinned to linen, so
+    the alternation is worked backwards from it — which is why the strip at the
+    top is cream and not linen. Adding, removing or reordering a section shifts
+    the whole chain; re-derive it from the FAQ rather than patching one seam.
+  -->
   <main>
     <CyclingSpecStrip />
 
@@ -127,13 +134,15 @@ const schema = [
 
     <CyclingSpecPlate />
 
-    <CyclingFabricMatrix />
+    <CyclingCustom />
+
+    <CyclingServices />
+
+    <CyclingCertification />
 
     <CyclingDisciplines />
 
-    <CyclingSampleTimeline />
-
-    <CyclingClaimProof />
+    <CyclingTrusted />
 
     <CyclingReviews />
 
@@ -159,8 +168,9 @@ const schema = [
         links: [
           { label: 'The kit', href: '#types' },
           { label: 'Garment anatomy', href: '#anatomy' },
-          { label: 'Build spec', href: '#fabric' },
-          { label: 'Sample to bulk', href: '#timeline' },
+          { label: 'Made your way', href: '#custom' },
+          { label: 'Our services', href: '#services' },
+          { label: 'Certification', href: '#certification' },
         ],
       },
       {
@@ -183,3 +193,18 @@ const schema = [
   />
   <div class="cw-grain" aria-hidden="true"></div>
 </Layout>
+
+<style>
+  /*
+    The closing CTA is centred as a block, but its lede carries the site-wide
+    .cw-lede max-width, so the paragraph box stays flush with the copy column
+    while the text centres inside it — leaving the lede about 25px left of the
+    true centre. Centring the box fixes it.
+
+    Done here rather than in FinalCta.astro because that component also renders
+    the locked homepage, and this is not a change the user asked for there.
+  */
+  :global(#quote .cw-lede) {
+    margin-inline: auto;
+  }
+</style>

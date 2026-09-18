@@ -1,0 +1,288 @@
+---
+// Customisation as two bordered rows, split by the user on 2026-09-18: the cloth
+// on one side, everything else on the other. So the first row is the fabric and
+// the treatments that go into it — including the laser-cut ventilation, which is
+// a fabric treatment rather than a design choice — and the second is fit, colour
+// and construction. Both rows are built the same way: a heading and a sentence
+// across the top, then the illustrated items. The division is carried by the copy
+// and the item counts, not by a different layout.
+//
+// Six and four, not five and five: both divide evenly in the grid, so neither row
+// leaves a hole in its last line. They take different column counts (three and
+// two) because the counts differ, which also gives the four broader tiles room
+// for their longer copy.
+//
+// The photographs are the technique shots the homepage uses in Services plus the
+// three `custom-*` colour/print/fabric shots, all our own images already in R2 —
+// so unlike the hero and the anatomy plate there is no licensing question. They
+// vary from 0.8 to 1.9 in ratio; the cards crop to 4/3, which is safe for the
+// repeating textures and worth checking before swapping in anything figurative.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Item {
+  name: string
+  detail: string
+  img: string
+  alt: string
+}
+
+interface Row {
+  label: string
+  note: string
+  /**
+   * How many the row's items divide into across a wide viewport. A row whose
+   * item count does not divide by three leaves a hole in a three-up grid, so the
+   * count belongs to the row rather than to the section.
+   */
+  cols?: number
+  items: Item[]
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  rows?: Row[]
+}
+
+const {
+  kicker = 'Customisation',
+  heading = 'Your Spec, Not Our Catalogue.',
+  lede = 'Nothing here is a fixed line item. Ten decisions make the garment: six are the cloth and how it is treated, four are the fit, colour and construction you set.',
+  rows = [
+    {
+      label: 'Fabric',
+      note: 'The cloth itself, and what is done to it before a single panel is cut. This is the half that decides what the garment can do — everything below it is a choice about shape, colour or finish.',
+      cols: 3,
+      items: [
+        {
+          name: 'Moisture-wicking knit',
+          detail: 'Pulls sweat off the skin and spreads it flat, so the garment dries quickly rather than sitting heavy and cold on a long descent.',
+          img: r2('moisture-wicking'),
+          alt: 'Moisture-wicking fabric pulling sweat away from the skin',
+        },
+        {
+          name: 'Four-way stretch',
+          detail: 'Recovers in both directions, so a sprint or a squat does not leave the garment bagged out at the knee or across the shoulder.',
+          img: r2('4-way-stretch'),
+          alt: 'Four-way stretch knit used in performance cycling apparel',
+        },
+        {
+          name: 'UPF 50+ protection',
+          detail: 'Knits that hold their rating through repeated washing rather than only on the first wear, across every panel left exposed to the sun.',
+          img: r2('uv-protection'),
+          alt: 'UPF protective knit used in sun-exposed cycling apparel',
+        },
+        {
+          name: 'Laser-cut ventilation',
+          detail: 'Panels cut rather than punched, so the edges stay clean and never fray — placed front, back or underarm wherever the airflow is wanted.',
+          img: r2('laser-cut-ventilation'),
+          alt: 'Perforated laser-cut ventilation panel on performance fabric',
+        },
+        {
+          name: 'Antibacterial finish',
+          detail: 'A silver-ion treatment that resists the bacteria which cause odour, so the kit stays fresh between washes and through a multi-day stage race.',
+          img: r2('antimicrobial'),
+          alt: 'Antimicrobial fabric treatment used in custom cycling apparel',
+        },
+        {
+          name: 'Abrasion-resistant panels',
+          detail: 'Reinforced zones where the wear actually lands — the seat, the knees and the shoulders — so one gravel season does not rub through the shorts.',
+          img: r2('abrasion-resistant-panels'),
+          alt: 'Abrasion-resistant panel on performance apparel',
+        },
+      ],
+    },
+    {
+      label: 'The rest of the garment',
+      note: 'Fit, colour and construction. These are yours to set before a pattern is cut — the garment is built around your answers rather than picked off a shelf.',
+      cols: 2,
+      items: [
+        {
+          name: 'Sleeve length',
+          detail: 'Short, long or sleeveless, with raglan and drop-shoulder blocks available and the sleeve printed in the same run as the body.',
+          img: r2('sleeve-length-sizing'),
+          alt: 'Custom team apparel produced across a full size run',
+        },
+        {
+          name: 'Colourway',
+          detail: 'Pantone-matched across the whole kit, including trim, grippers and the zip tape, so nothing lands a shade out from the jersey.',
+          img: r2('custom-color'),
+          alt: 'Folded fabric swatches in a range of custom colourways',
+        },
+        {
+          name: 'Print & decoration',
+          detail: 'Sublimated, screen printed or embroidered, placed to your artwork — and proofed as a strike-off on fabric before the run is cut.',
+          img: r2('custom-printing'),
+          alt: 'Embroidered motif detail on custom apparel fabric',
+        },
+        {
+          name: 'Flatlock stitching',
+          detail: 'Flat, chafe-free joins that sit level against the skin instead of standing up and rubbing, on every seam the garment carries.',
+          img: r2('flatlock-seams'),
+          alt: 'Flatlock seam on the inside of a performance garment',
+        },
+      ],
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-cycu" id="custom">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <div class="cw-cycu-rows">
+      {rows.map((row, ri) => (
+        <article
+          class:list={['cw-cycu-row', row.cols === 2 && 'cw-cycu-row--pair']}
+          data-reveal="up"
+          style={`--rd:${ri * 90}ms;--cw-cycu-cols:${row.cols ?? 3}`}
+        >
+          <div class="cw-cycu-body">
+            <p class="cw-cycu-label">{row.label}</p>
+            <p class="cw-cycu-note">{row.note}</p>
+          </div>
+          <ul class="cw-cycu-grid">
+            {row.items.map((it, i) => (
+              <li class="cw-cycu-card" data-reveal="up" style={`--rd:${(i % 3) * 60}ms`}>
+                <figure class="cw-cycu-fig">
+                  <img src={it.img} alt={it.alt} width={560} height={420} loading="lazy" decoding="async" />
+                </figure>
+                <h3 class="cw-cycu-name">{it.name}</h3>
+                <p class="cw-cycu-detail">{it.detail}</p>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-cycu {
+    background: var(--color-linen);
+    padding: 7rem 0 6.5rem;
+  }
+  /* The section head runs the full container width, as on every other page. */
+  .cw-cycu :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cycu :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cycu-rows {
+    margin: 3.2rem 0 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.8rem;
+  }
+
+  /* Each row is one card. The body takes the same side padding as the grid under
+     it, so the prose and the first and last column share an edge. */
+  .cw-cycu-row {
+    background: var(--color-paper);
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 22px 22px 22px 7px;
+  }
+
+  .cw-cycu-body {
+    padding: 1.9rem 1.7rem;
+  }
+
+  .cw-cycu-label {
+    margin: 0 0 1.1rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 430;
+    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    letter-spacing: -0.015em;
+    color: var(--color-steel);
+  }
+  .cw-cycu-note {
+    margin: 0;
+    /* No measure cap: this block is the width of the pictures below it. */
+    font-size: 0.97rem;
+    line-height: 1.62;
+    color: var(--color-slate);
+  }
+
+  .cw-cycu-grid {
+    margin: 0;
+    padding: 0 1.7rem 1.9rem;
+    list-style: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .cw-cycu-card {
+    min-width: 0;
+  }
+  .cw-cycu-fig {
+    margin: 0 0 1.05rem;
+    overflow: hidden;
+    background: var(--color-linen);
+    border-radius: 14px 14px 14px 4px;
+  }
+  .cw-cycu-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.03);
+  }
+  .cw-cycu-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.08rem, 1.7vw, 1.26rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    color: var(--color-charcoal);
+  }
+  .cw-cycu-detail {
+    margin: 0.4rem 0 0;
+    font-size: 0.92rem;
+    line-height: 1.58;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 620px) {
+    .cw-cycu-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.2rem 1.5rem;
+    }
+  }
+
+  @media (min-width: 880px) {
+    .cw-cycu-rows {
+      gap: 2.2rem;
+    }
+    .cw-cycu-body {
+      padding: 2.7rem 1.9rem 1.9rem;
+    }
+    .cw-cycu-grid {
+      /* Tighter gutters than the rest of the card so the columns — and the
+         detail under each picture — get the width back. The column count comes
+         from the row, because a row of four in a three-up grid leaves a hole. */
+      padding: 0 1.9rem 2.5rem;
+      grid-template-columns: repeat(var(--cw-cycu-cols, 3), minmax(0, 1fr));
+      gap: 2.4rem 1.4rem;
+    }
+    /*
+      A two-up row gives each picture half the container — half again the size of
+      the three-up row above it, which reads as two different systems rather than
+      one section. The picture is held back to roughly the three-up width; the
+      copy underneath keeps the full column, so the four items still get their
+      longer line length. Left-aligned, as the golf page holds its swatch images.
+    */
+    .cw-cycu-row--pair .cw-cycu-fig {
+      max-width: 65%;
+    }
+  }
+</style>

@@ -1,0 +1,200 @@
+---
+// Who buys, as four illustrated buyer types under a customer count.
+//
+// This replaced CyclingClaimProof (the claim/standard/evidence ledger) on the
+// user's instruction, on the model of the legacy page's "Trusted By Over 1000+
+// Cycling Apparel Customers" band.
+//
+// That band is a wall of third-party logos (company-1 … company-8) and is not
+// reproduced — those are other companies' trademarks, which the user rejected
+// outright when the cycling page was first built. What is borrowed is the idea
+// of a customer-count band; the marks are replaced with the four kinds of buyer
+// the rest of this page is already written for, which is a claim we can
+// actually stand behind.
+//
+// Each type carries a photograph of that kind of riding, uploaded to R2 as
+// `buyer-*`. These replaced the legacy review screenshots (customer-review-*) on
+// 2026-09-18: the user supplied a named picture per buyer type and those are
+// what belong here now. The customer-review keys are still in the bucket but
+// nothing references them.
+//
+// The 1,000+ figure comes from the legacy page's own published claim. It is not
+// evidenced anywhere on this site — see the note in [[cycling-page-decisions]]
+// before treating it as verified.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Buyer {
+  name: string
+  note: string
+  img: string
+  alt: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  figure?: string
+  figureLabel?: string
+  buyers?: Buyer[]
+}
+
+const {
+  kicker = 'Trusted by',
+  heading = 'Who Buys, and Why They Come Back.',
+  lede = 'Over a thousand cycling apparel customers, and they divide into four kinds. What those four have in common is a reorder — the first order proves we can make the kit, the second proves we can make it again.',
+  figure = '1,000+',
+  figureLabel = 'cycling apparel customers',
+  buyers = [
+    {
+      name: 'Brand founders & DTC sellers',
+      note: 'Private-label jerseys and bibs sold under your own mark, from MOQ 100 per style.',
+      img: r2('buyer-brand-founders'),
+      alt: 'Smiling cyclist in a base layer and bib shorts beside her road bike',
+    },
+    {
+      name: 'Clubs & teams',
+      note: 'Club kit in club colours, reordered season after season on the same blocks.',
+      img: r2('buyer-clubs-teams'),
+      alt: 'A line of club riders in formation on a group ride',
+    },
+    {
+      name: 'Event organisers',
+      note: 'One-off event apparel that lands before the date rather than after it.',
+      img: r2('buyer-event-organisers'),
+      alt: 'Two riders on a coastal road wearing custom kit',
+    },
+    {
+      name: 'Retailers & distributors',
+      note: 'Stock programmes held to one specification across every reorder.',
+      img: r2('buyer-retailers-distributors'),
+      alt: 'Cyclist in a long-sleeve jersey pulling a jacket over her shoulders',
+    },
+  ],
+} = Astro.props
+---
+
+<section class="cw-cytrust" id="trusted">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <p class="cw-cytrust-figure" data-reveal="up">
+      <span class="cw-cytrust-number">{figure}</span>
+      <span class="cw-cytrust-label">{figureLabel}</span>
+    </p>
+
+    <ul class="cw-cytrust-cards">
+      {buyers.map((b, i) => (
+        <li class="cw-cytrust-card" data-reveal="up" style={`--rd:${(i % 4) * 60}ms`}>
+          <figure class="cw-cytrust-shot">
+            <img src={b.img} alt={b.alt} width={1200} height={500} loading="lazy" decoding="async" />
+          </figure>
+          <h3 class="cw-cytrust-name">{b.name}</h3>
+          <p class="cw-cytrust-note">{b.note}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cw-cytrust {
+    background: var(--color-linen);
+    padding: 7rem 0 6.5rem;
+  }
+  /* The section head runs the full container width, as on every other page. */
+  .cw-cytrust :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cytrust :global(.sec-lead) {
+    max-width: none;
+  }
+
+  /* The one place on the page a numeral is the point rather than a value in a
+     table, so it takes the heading face and the accent colour at display size.
+     A band rather than a column: the four cards below want the full width. */
+  .cw-cytrust-figure {
+    margin: 3rem 0 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .cw-cytrust-number {
+    font-family: var(--font-heading);
+    font-weight: 620;
+    font-size: clamp(2.8rem, 5.5vw, 4rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    font-variation-settings: 'opsz' 120, 'SOFT' 40;
+    color: var(--color-berry);
+  }
+  .cw-cytrust-label {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 430;
+    font-size: 1.02rem;
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+    color: var(--color-steel);
+  }
+
+  .cw-cytrust-cards {
+    margin: 2.6rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.2rem;
+  }
+  .cw-cytrust-card {
+    min-width: 0;
+  }
+  .cw-cytrust-shot {
+    margin: 0 0 1.05rem;
+    overflow: hidden;
+    background: var(--color-paper);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 14px 14px 14px 4px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  /* cover, not contain. These were wide review screenshots when this section
+     first shipped and contain was right for them; they are photographs now, and
+     the crop is biased upward so faces survive it. */
+  .cw-cytrust-shot img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center 35%;
+  }
+  .cw-cytrust-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 48;
+    color: var(--color-charcoal);
+  }
+  .cw-cytrust-note {
+    margin: 0.42rem 0 0;
+    max-width: 46ch;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+
+  /* Two-up, not four. At four across each photograph was 276px wide, which is
+     thumbnail scale for a picture of a person — the cards read as a strip
+     rather than as four buyer types. Two columns double it to ~570px and suit
+     the four items exactly (2×2). Nothing here goes back to four. */
+  @media (min-width: 700px) {
+    .cw-cytrust-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.8rem 2.2rem;
+    }
+  }
+</style>

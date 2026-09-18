@@ -1,13 +1,20 @@
 ---
-// Disciplines as a ruled definition list.
+// Disciplines as alternating rows, image beside copy.
 //
-// The legacy page ran these four as four identical cards, which is the same
-// shape as the homepage's ICP grid and the golf page's customer grid. A ruled
-// list keeps the content — four rider archetypes with their own fabric and fit
-// requirements — without a third card grid, and lets the discipline name carry
-// the type weight instead of a photo.
+// This started as a ruled definition list — name and rider on the left, kit and
+// build on the right — chosen to avoid a third card grid. The photograph changes
+// the arithmetic: a three-column term/definition/figure split squeezes the
+// specification into a column too narrow to read, so the term and the definition
+// now sit together in one block and the image takes the other side, flipping
+// side on every other discipline.
 //
-// Static, not switchable: the user explicitly declined a tab panel here.
+// Each discipline carries its own supplied photograph (R2 `cycling-discipline-*`),
+// replaced 2026-09-18. Before that the four borrowed shots from the garment
+// list, which read as arbitrary pairings. Note that the files the user supplied
+// are named for the slot rather than for what they depict: the Track image is a
+// road descent, not a velodrome, so its alt text describes the picture and not
+// the heading above it.
+import { r2 } from '../lib/images'
 import SectionHead from './SectionHead.astro'
 
 interface Discipline {
@@ -16,6 +23,8 @@ interface Discipline {
   rider: string
   kit: string
   build: string
+  img: string
+  alt: string
 }
 
 interface Props {
@@ -27,7 +36,7 @@ interface Props {
 
 const {
   kicker = 'Four disciplines',
-  heading = 'Road Is Not Gravel Is Not Tri.',
+  heading = 'Four Sports, Four Different Spec Sheets.',
   lede = 'The four disciplines pull the same garment list in different directions. A road jersey wants a closer fit and a higher pocket; a gravel jersey wants a longer sleeve and an abrasion panel. Tell us which you are building for and the spec sheet follows.',
   disciplines = [
     {
@@ -35,24 +44,32 @@ const {
       rider: 'Racers, sportive riders, club runs and weekend chaingangs.',
       kit: 'Jersey, bib shorts, gilet, arm and leg warmers.',
       build: '130–160 GSM race-fit jersey, three rear pockets, silicone waist and leg grippers, reflective trim on the rear panel.',
+      img: r2('cycling-discipline-road'),
+      alt: 'Two road cyclists riding together on tarmac in custom kit',
     },
     {
       name: 'Gravel & MTB',
       rider: 'Gravel racers, trail riders and bikepackers.',
       kit: 'Relaxed jersey, waist shorts, windbreaker, gloves.',
       build: 'Abrasion-resistant shoulder and hip panels, longer sleeve, looser body block, UPF 50+ throughout, bar-bag-friendly pocket layout.',
+      img: r2('cycling-discipline-gravel'),
+      alt: 'Gravel rider on a forest trail on a drop-bar bike',
     },
     {
       name: 'Triathlon',
       rider: 'Triathletes, duathletes and time-triallists.',
       kit: 'Skinsuit, base layer, socks.',
       build: 'Fast-drying Lycra, seam-free shoulder for the swim, chamois sized for the bike leg rather than the run, rear pockets for nutrition.',
+      img: r2('cycling-discipline-triathlon'),
+      alt: 'Cyclist on a training ride along a tree-lined path',
     },
     {
       name: 'Track',
       rider: 'Track squads, pursuit and sprint teams.',
       kit: 'Skinsuit, base layer, socks, cap.',
       build: 'Seamless aero panels, compression fit, no pockets, and no gripper bands to interrupt the surface of the garment.',
+      img: r2('cycling-discipline-track'),
+      alt: 'Cyclist descending a road in a red and black race kit',
     },
   ],
 } = Astro.props
@@ -62,26 +79,32 @@ const {
   <div class="cw-wrap">
     <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
 
-    <dl class="cw-disc-list">
+    <ul class="cw-disc-list">
       {disciplines.map((d, i) => (
-        <div class="cw-disc-row" data-reveal="up" style={`--rd:${i * 70}ms`}>
-          <dt class="cw-disc-term">
-            <span class="cw-disc-name">{d.name}</span>
-            <span class="cw-disc-rider">{d.rider}</span>
-          </dt>
-          <dd class="cw-disc-def">
+        <li
+          class:list={['cw-disc-row', i % 2 === 1 && 'cw-disc-row--flip']}
+          data-reveal="up"
+          style={`--rd:${(i % 2) * 70}ms`}
+        >
+          <figure class="cw-disc-fig">
+            <img src={d.img} alt={d.alt} width={720} height={540} loading="lazy" decoding="async" />
+          </figure>
+
+          <div class="cw-disc-body">
+            <h3 class="cw-disc-name">{d.name}</h3>
+            <p class="cw-disc-rider">{d.rider}</p>
             <p class="cw-disc-kit">{d.kit}</p>
             <p class="cw-disc-build">{d.build}</p>
-          </dd>
-        </div>
+          </div>
+        </li>
       ))}
-    </dl>
+    </ul>
   </div>
 </section>
 
 <style>
   .cw-disc {
-    background: var(--color-linen);
+    background: var(--color-cream);
     padding: 6.5rem 0 6rem;
   }
   .cw-disc :global(.sec-head) {
@@ -93,23 +116,40 @@ const {
 
   .cw-disc-list {
     margin: 3.2rem 0 0;
+    padding: 0;
+    list-style: none;
     border-top: 1px solid color-mix(in srgb, var(--color-steel) 22%, transparent);
   }
 
   .cw-disc-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.9rem;
-    padding: 1.9rem 0;
+    gap: 1.6rem;
+    padding: 2.2rem 0;
     border-bottom: 1px solid color-mix(in srgb, var(--color-steel) 16%, transparent);
   }
 
-  .cw-disc-term {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+  .cw-disc-fig {
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-paper);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 18px 18px 18px 6px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+  }
+  .cw-disc-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.03);
+  }
+
+  .cw-disc-body {
+    min-width: 0;
   }
   .cw-disc-name {
+    margin: 0;
     font-family: var(--font-heading);
     font-weight: 560;
     font-size: clamp(1.5rem, 3.4vw, 2.1rem);
@@ -119,16 +159,13 @@ const {
     color: var(--color-charcoal);
   }
   .cw-disc-rider {
+    margin: 0.45rem 0 0;
     font-size: 0.92rem;
     line-height: 1.5;
     color: var(--color-slate);
   }
-
-  .cw-disc-def {
-    margin: 0;
-  }
   .cw-disc-kit {
-    margin: 0;
+    margin: 1.1rem 0 0;
     font-family: var(--font-heading);
     font-style: italic;
     font-weight: 420;
@@ -146,13 +183,26 @@ const {
   }
 
   @media (min-width: 760px) {
+    /* The image holds the smaller share; only its side changes, which is what
+       makes the four read as a sequence rather than a list. Flipping the columns
+       as well as the placement is the point — moving the figure into column two
+       without swapping the widths puts it in the 70% track and doubles it. */
     .cw-disc-row {
-      /* The discipline name holds the left, the specification the right — the
-         same proportion the plate uses, so the two sections read as a set. */
-      grid-template-columns: minmax(0, 34%) minmax(0, 66%);
-      gap: 2.4rem;
-      align-items: baseline;
-      padding: 2.1rem 0;
+      grid-template-columns: minmax(0, 30%) minmax(0, 70%);
+      gap: 2.8rem;
+      align-items: center;
+      padding: 2.6rem 0;
+    }
+    .cw-disc-row--flip {
+      grid-template-columns: minmax(0, 70%) minmax(0, 30%);
+    }
+    .cw-disc-row--flip .cw-disc-fig {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .cw-disc-row--flip .cw-disc-body {
+      grid-column: 1;
+      grid-row: 1;
     }
   }
 </style>

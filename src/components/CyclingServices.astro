@@ -1,0 +1,244 @@
+---
+// Services as two rows of three, with a process photograph on each.
+//
+// The six come from the legacy site's own service list in its footer — cut and
+// sew, printing method, embroidery, private label, apparel size chart, packaging
+// — rewritten for cycling rather than lifted. Its "WHY CHOOSE US" panel is *not*
+// the source: that is five promotional clauses, and one of them ("No Minimums,
+// start with any order size") directly contradicts the MOQ 100 this page
+// publishes. Copying it would put two different order terms on one page.
+//
+// Numbered, not bulleted: these are stages of one production run, and the
+// numbering is the only place on this page where sequence is the point. The
+// plate's keys are reference labels; these are steps. The numbering is done by
+// the <ol start> attribute rather than by hand, so splitting the run into two
+// lists does not restart it at 1 in the document outline.
+//
+// The photographs are the two the user supplied on 2026-09-18, named for the
+// service they illustrate: `cut-and-sew` (a cutting and sewing floor) and
+// `services-private-label` (a design desk — sketches, swatches and a tablet).
+//
+// `services-packaging` was supplied first and then replaced: it was a flat
+// illustration rather than a photograph, the only non-documentary image on the
+// page, and the row cropped it from 3:4 to 4:3. It is still in the bucket,
+// unreferenced. The earlier `packaging` key is a different file again and was
+// rejected outright — its cartons carry a third-party brand mark.
+import { r2 } from '../lib/images'
+import SectionHead from './SectionHead.astro'
+
+interface Service {
+  name: string
+  body: string
+}
+
+interface Props {
+  kicker?: string
+  heading?: string
+  lede?: string
+  services?: Service[]
+  /** One photograph per row, in row order. */
+  photos?: { src: string; alt: string }[]
+}
+
+const {
+  kicker = 'Our services',
+  heading = 'Six Stages, One Factory Floor.',
+  lede = 'A cycling order moves through six stages, and all six happen in house. Nothing on this list is subcontracted to a third party you never meet.',
+  services = [
+    {
+      name: 'Cut & sew',
+      body: 'Patterns drafted to your measurements, laid and cut, then sewn on one line rather than farmed out. The block is kept for your reorders.',
+    },
+    {
+      name: 'Sublimation printing',
+      body: 'Panels are printed before they are cut, so full-colour artwork never lands across a seam and never cracks along one.',
+    },
+    {
+      name: 'Embroidery',
+      body: 'Digitised from your artwork and stitched on the frame — the mark you designed is the mark that lands on the garment.',
+    },
+    {
+      name: 'Private label',
+      body: 'Woven labels, care labels, size tabs and hangtags under your brand rather than ours, specified like anything else on the bill.',
+    },
+    {
+      name: 'Apparel size chart',
+      body: 'Graded against your chart or ours, from youth to tall, so the fit holds at both ends of the run and not only at the sample size.',
+    },
+    {
+      name: 'Packaging',
+      body: 'Polybagged, tagged, barcoded and kitted for the channel you ship into — retail shelf or Amazon fulfilment centre.',
+    },
+  ],
+  photos = [
+    {
+      src: r2('cut-and-sew'),
+      alt: 'Cutting and sewing floor with rolls of fabric and production machinery',
+    },
+    {
+      src: r2('services-private-label'),
+      alt: 'Designer at a tablet sketching garments beside fabric swatches and a colour card',
+    },
+  ],
+} = Astro.props
+
+// Two rows of three, so the photographs have somewhere to go.
+const rows = [services.slice(0, 3), services.slice(3, 6)]
+---
+
+<section class="cw-cysvc" id="services">
+  <div class="cw-wrap">
+    <SectionHead kicker={kicker} lead={lede}>{heading}</SectionHead>
+
+    <div class="cw-cysvc-rows">
+      {rows.map((row, ri) => (
+        <div class:list={['cw-cysvc-row', ri % 2 === 1 && 'cw-cysvc-row--flip']}>
+          <figure class="cw-cysvc-fig" data-reveal="up">
+            <img
+              src={photos[ri].src}
+              alt={photos[ri].alt}
+              width={800}
+              height={600}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+
+          <ol class="cw-cysvc-group" start={ri * 3 + 1}>
+            {row.map((s, i) => (
+              <li class="cw-cysvc-item" data-reveal="up" style={`--rd:${i * 60}ms`}>
+                <span class="cw-cysvc-num" aria-hidden="true">{String(ri * 3 + i + 1).padStart(2, '0')}</span>
+                <div class="cw-cysvc-text">
+                  <h3 class="cw-cysvc-name">{s.name}</h3>
+                  <p class="cw-cysvc-body">{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cw-cysvc {
+    /* Cream — one link in the page's linen/cream alternation, which runs end to
+       end on this route. See the note in the page file: the phase is fixed by
+       the FAQ at the foot of the page. */
+    background: var(--color-cream);
+    padding: 7rem 0 6.5rem;
+  }
+  /* The section head runs the full container width, as on every other page. */
+  .cw-cysvc :global(.sec-head) {
+    max-width: none;
+  }
+  .cw-cysvc :global(.sec-lead) {
+    max-width: none;
+  }
+
+  .cw-cysvc-rows {
+    margin: 3.2rem 0 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3rem;
+  }
+  .cw-cysvc-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.8rem;
+  }
+
+  .cw-cysvc-fig {
+    margin: 0;
+    overflow: hidden;
+    background: var(--color-paper);
+    /* the house notch — three corners soft, one cut */
+    border-radius: 18px 18px 18px 6px;
+    border: 1px solid color-mix(in srgb, var(--color-steel) 14%, transparent);
+  }
+  .cw-cysvc-fig img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.03);
+  }
+
+  .cw-cysvc-group {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+  }
+  .cw-cysvc-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-steel) 22%, transparent);
+  }
+  .cw-cysvc-item:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .cw-cysvc-num {
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-variation-settings: 'opsz' 48, 'SOFT' 0;
+    font-size: 0.92rem;
+    letter-spacing: 0.04em;
+    line-height: 1.55;
+    color: var(--color-berry);
+  }
+
+  .cw-cysvc-text {
+    min-width: 0;
+  }
+  .cw-cysvc-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 560;
+    font-size: clamp(1.1rem, 1.9vw, 1.26rem);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    font-variation-settings: 'opsz' 48, 'SOFT' 40;
+    color: var(--color-charcoal);
+  }
+  .cw-cysvc-body {
+    margin: 0.4rem 0 0;
+    max-width: 52ch;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+
+  @media (min-width: 880px) {
+    .cw-cysvc-rows {
+      gap: 3.6rem;
+    }
+    .cw-cysvc-row {
+      /* The photograph keeps the smaller share in both rows; only its side
+         changes. Flipping the widths as well as the placement is the point —
+         moving the figure into column two without swapping the tracks puts it in
+         the wide column and doubles it. */
+      grid-template-columns: minmax(0, 36%) minmax(0, 64%);
+      gap: 3rem;
+      align-items: center;
+    }
+    .cw-cysvc-row--flip {
+      grid-template-columns: minmax(0, 64%) minmax(0, 36%);
+    }
+    .cw-cysvc-row--flip .cw-cysvc-fig {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .cw-cysvc-row--flip .cw-cysvc-group {
+      grid-column: 1;
+      grid-row: 1;
+    }
+  }
+</style>

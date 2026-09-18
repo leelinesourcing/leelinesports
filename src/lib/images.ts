@@ -5,10 +5,20 @@
  *
  * Pass the slug only — the `.webp` extension is added here.
  *
- * Note: replacing an object reuses its key, so the custom domain's CDN keeps
- * serving the previous picture until its cache entry expires (four hours). Purge
- * that path when a swap needs to be visible sooner.
+ * ── Why every URL carries `?v=` ──────────────────────────────────────────────
+ * Replacing an object reuses its key, and an object overwritten in place is not
+ * reliably served afterwards: after the 2026-09-18 image swap, `curl` against
+ * the custom domain still returned the *previous* bytes for eight keys while
+ * `cf-cache-status` reported DYNAMIC, and `wrangler r2 object put` had reported
+ * success. Purging needs a token scope this project does not have.
+ *
+ * A query string is part of the cache key, so bumping IMAGE_VERSION changes
+ * every image URL at once and guarantees a miss. **Bump it whenever images are
+ * replaced in place** — that is the whole mechanism, and the numbers are meant
+ * to go up over time rather than be tidied.
  */
 const R2_BASE = 'https://img.leelinesports.com'
 
-export const r2 = (slug: string) => `${R2_BASE}/${slug}.webp`
+const IMAGE_VERSION = 3
+
+export const r2 = (slug: string) => `${R2_BASE}/${slug}.webp?v=${IMAGE_VERSION}`

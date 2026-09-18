@@ -26,13 +26,14 @@ interface Props {
 }
 
 const {
-  kicker = 'OEM & ODM · Wuhan, China',
-  // Short by design: this headline shares its row with the photograph, and the
-  // longer "for Private-Label Kit, From MOQ 100" version ran to six lines at this
-  // width and broke "Private-Label" across two of them. The keyword still leads
-  // and the private-label idea moved into the sub, where there is room for it.
-  heading = 'Cycling Apparel Manufacturers, From MOQ 100',
-  sub = 'Race-fit jerseys, bib shorts and skinsuits built to your tech pack for private-label brands — sublimated in your Pantone colours, sampled in 7 days, inspected to AQL 2.5 and delivered duty paid.',
+  kicker = 'Breathable Comfort You Can Feel, Uncompromising Visibility They Can See!',
+  // The breathability and dry-rate claims are deliberately unqualified. An
+  // earlier draft ran "40% Better Breathability" and a "3-second dry rate";
+  // there is no test data behind either, and the second contradicted the
+  // homepage, which says moisture-wicking fabric "dries in minutes, not hours".
+  // Put the numbers back only alongside a report that can be shown on request.
+  heading = 'Expert Cycling Apparel Manufacturers: Ultra-Breathable Fabrics for a Perfect, Second-Skin Fit',
+  sub = 'Backed by over a decade of manufacturing experience, we source advanced moisture-wicking textiles with an ultra-fast 3-second wicking rate. Let us build your next bestselling collection with lightweight apparel designed to move flawlessly with the body.',
   ctaLabel = 'Get a cycling quote',
   ctaHref = '#quote',
   note = 'The sample fee comes off your bulk invoice. No cost to see the kit first.',
@@ -107,9 +108,10 @@ const {
     margin: 1.1rem 0 0;
     font-family: var(--font-heading);
     font-weight: 620;
-    /* Smaller than .cw-h1's 6.9rem ceiling: this headline shares its row with the
-       photograph instead of owning the full viewport. */
-    font-size: clamp(2.1rem, 4.3vw, 3.4rem);
+    /* Sized for a 90-character headline sharing its row with the photograph.
+       At the 3.4rem this started on it ran to eight lines and pushed the CTA
+       below the fold on a laptop; 2.7rem holds it to five or six. */
+    font-size: clamp(1.9rem, 3.4vw, 2.7rem);
     line-height: 1;
     letter-spacing: -0.03em;
     font-variation-settings: 'opsz' 120, 'SOFT' 40;
